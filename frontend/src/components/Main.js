@@ -12,7 +12,6 @@ const Main = () => {
     const [isplaying, setisplaying] = useState(false);
     const [currentSong, setCurrentSong] = useState();
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 50);
-  
     const audioElem = useRef();
     
     const fetchSongs = async () => {
@@ -59,7 +58,7 @@ const Main = () => {
         </div> */}
         {songsdata && songsdata.length !== 0 ? (
             <div> 
-        <Playlist songs = {songsdata} currentSong={currentSong} setCurrentSong={setCurrentSong}/>
+       <Playlist songs = {songsdata} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying}/>
       <Player songs={songsdata} setSongs={setSongs} isplaying={isplaying} setisplaying={setisplaying} audioVolume={audioVolume} setAudioVolume={setAudioVolume} audioElem={audioElem} currentSong={currentSong} setCurrentSong={setCurrentSong} />
       </div>
         ):(
@@ -68,7 +67,7 @@ const Main = () => {
         }
 
     <div className='footer'>
-        <div class="">Im footer!</div>
+        <div className="">Sergey Sokolov CLOWN_MUSIC 2023</div>
     </div>
     </div>
 

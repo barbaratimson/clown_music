@@ -113,7 +113,6 @@ nav .logo {
     display: flex;
     height: fit-content;
     border-bottom: 1px solid white;
-    margin-left: 10px;
 }
 
 .nav-search {
@@ -176,10 +175,15 @@ nav .logo {
 
 .footer {
     position: relative;
-    width: 100%;
+    width: 90%;
     height: 100px;
     border-top: 1px solid var(--secondary-color);
     background-color: var(--primary-color);
+    bottom: 50px;
+    color: var(--secondary-color);
+    padding: 10px;
+    margin: auto;
+    border: 1px solid var(--secondary-color);
 }
 
 .page-content {
@@ -314,7 +318,7 @@ position: relative;
     height: 100px;
     padding: 1rem;
     color: rgb(218, 218, 218);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0);
     transition: color 1s;
     transition: background-color 1s;
     z-index: 99;
@@ -329,6 +333,7 @@ position: relative;
 }
 
 .player.active .seek_bar{
+    transition: background-color .4s;
     background-color: var(--secondary-color);
 }
 
@@ -375,13 +380,15 @@ position: relative;
             font-size: 2rem;
             margin: 0 1rem;
             cursor: pointer;
+        }
 
+        .player.active .btn_action:hover {
+            color: rgb(153, 45, 45);
         }
 
         .btn_action:hover {
-            color: rgb(177, 62, 62);
+            color: rgb(163, 159, 159);
         }
-
 
         .pp
         {
@@ -427,7 +434,7 @@ position: relative;
             height: 20px;
             background-color: var(--secondary-color);
             border: 2px solid var(--secondary-color);
-            transition: all .4s ;
+            transition: all .4s;
         }
 
         .audio-volume:hover > input::-webkit-slider-thumb{
@@ -455,8 +462,9 @@ position: relative;
             display: flex;
             flex-direction: column;
             width: 90%;
-            margin: 50px auto;
-            background-color: white;
+            margin: 40px auto;
+            background-color: transparent;
+            margin-bottom: 50px;
 
         }
 
@@ -465,28 +473,30 @@ position: relative;
             align-items: center;
             height: 50px;
             flex-direction: row;
-            background-color: white;
+            background-color: rgb(255, 255, 255,0.85);
             transition: background-color .4s;
             transition: all .2s;
             gap: 20px;
             padding: 10px;
+
         }
         .playlist-song:hover {
             scale: 1.03;
             border: 1px solid var(--secondary-color);
             box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
             z-index: 10;
+            background-color: rgb(255, 255, 255,1);
         }
 
 
         .song-current {
             scale: 1.01;
             background-color: var(--secondary-color);
-            box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
         }
 
         .song-current:hover {
             scale: 1.01;
+            background-color: var(--secondary-color);
         }
 
         .song-card{
@@ -494,6 +504,31 @@ position: relative;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }  
+
+        .auth-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .auth {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            width: 350px;
+            height: 425px;
+            background-color: white;
+            color: var(--secondary-color);
+            background-color: var(--primary-color);
+            border: 1px solid;
+            box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.1)
+        }
+
+        .auth > input {
         }
 
 @media (max-width:950px) {
