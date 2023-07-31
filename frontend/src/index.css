@@ -31,7 +31,7 @@ body{
 
 
 body::-webkit-scrollbar-thumb {
-    background-color: red;
+    background-color: var(--secondary-color);
 }
 
 body::-webkit-scrollbar {
@@ -55,6 +55,7 @@ body::-webkit-scrollbar {
     flex-direction: row;
     width: fit-content !important;
     padding-left: 20px;
+    font-size: 25px;
 }
 
 .logo-text {
@@ -499,6 +500,7 @@ position: relative;
         .song-current:hover {
             scale: 1.01;
             background-color: var(--secondary-color);
+            border: 0;
         }
 
         .song-card{

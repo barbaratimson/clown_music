@@ -92,10 +92,20 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
     } 
   }, [currentSong.url,currentSong.title])
 
+  useEffect(() => {
+    localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
+  }, [currentSong])
+
+
 
   useEffect(() => {
     if (isplaying) {
       audioElem.current.play();
+
+      if (currentSong.progress){ // Надо над этим покумекать
+        audioElem.current.currentTime = currentSong.progress/100 * currentSong.length
+      }
+
     }
     else {
       audioElem.current.pause();

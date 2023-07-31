@@ -10,7 +10,7 @@ const Main = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [songs, setSongs] = useState(songsdata);
     const [isplaying, setisplaying] = useState(false);
-    const [currentSong, setCurrentSong] = useState();
+    const [currentSong, setCurrentSong] = useState(JSON.parse(localStorage.getItem("lastPlayedTrack")));
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 50);
     const audioElem = useRef();
     
@@ -20,7 +20,6 @@ const Main = () => {
             const response = await axios.get(
               'http://localhost:5050/',);
               setSongsData(response.data)
-              setCurrentSong(response.data[0])
               setIsLoading(false)
           } catch (err) {
             console.error('Ошибка name change:', err);
