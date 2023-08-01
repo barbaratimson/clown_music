@@ -2,7 +2,6 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const Playlist = ({currentPlaylist,setCurrentPlaylist,currentSong, setCurrentSong,isplaying,setisplaying}) => {
-
     const handleSongClick = (song) => {
         if (song.title === currentSong.title && isplaying){
             setisplaying(false)
@@ -15,8 +14,11 @@ const Playlist = ({currentPlaylist,setCurrentPlaylist,currentSong, setCurrentSon
     return (
         <div className='playlist-songs-list'>
             <div className='playlist-header'>
-                Ваш плейлист
+                Яндекс музыка
             </div>
+            {currentPlaylist.length !== 0 ? (
+                <div>
+                    
             {currentPlaylist.map((song) => (
                  <div className={`playlist-song ${song.title === currentSong.title ? `song-current ${isplaying ? "" : "paused"}` : ""}`} key = {song.title} onClick={()=>{handleSongClick(song)}}>
                  <div className="play-button">
@@ -26,8 +28,14 @@ const Playlist = ({currentPlaylist,setCurrentPlaylist,currentSong, setCurrentSon
                  {song.title}
                  </div>
              </div>
+             
             ))}
-        
+            </div>
+            ):
+            (
+                <h1>LOADING</h1>
+            )
+            }
         </div>
     );
 

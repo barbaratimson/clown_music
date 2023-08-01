@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Oswald&family=Playfair+Display&family=Roboto+Mono:wght@300&display=swap');
 
+@keyframes color-pulse {
+    0% {
+        background-color: #d6001c;
+    }
+    50%{
+        background-color:#b6021a;
+    }
+    100% {  
+        background-color: #d6001c;
+    }
+
+}
+
 * {
     font-family: 'Open Sans', sans-serif;
 font-family: 'Oswald', sans-serif;
@@ -26,7 +39,7 @@ body{
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(54,12,18,1) 100%); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(50,12,18,1) 100%); */
     background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(21,14,16,1) 100%);
-    background-attachment: initial;
+    background-attachment:fixed;
 }
 
 
@@ -324,9 +337,6 @@ position: relative;
     transition: background-color 1s;
     z-index: 99;
 }
-.player:hover .audio-volume{
-    opacity: 0.5;
-}
 
 .player.active {
     background-color: rgb(0, 0, 0); 
@@ -338,11 +348,20 @@ position: relative;
     background-color: var(--secondary-color);
 }
 
+.player.active .audio-volume progress::-webkit-progress-value{
+    background-color: #57000C;
+}
+
+.player.active .audio-volume input::-webkit-slider-thumb{
+    border: 2px solid var(--secondary-color);
+}
+
 .player.active progress::-webkit-progress-bar{
     background-color: rgb(177, 62, 62)
 }
     .title{
         font-size: inherit;
+        transition: all .2s;
     }
     .navigation{
         width: 100%;
@@ -406,17 +425,12 @@ position: relative;
         }
 
         .audio-volume{
-            opacity: 0;
             position: relative;
             width: 150px;
             height: 20px;
             margin-right: 3px;
-            transition: all .4s;
         }
 
-        .audio-volume:hover{
-            opacity: 1 !important;
-        }
 
         .audio-volume input {  
             appearance: none;
@@ -428,14 +442,17 @@ position: relative;
             background-color: transparent;
             cursor: pointer;
             z-index: 9999;
+            outline: none;
         }
         .audio-volume input::-webkit-slider-thumb{
             appearance: none;
             width: 1px;
             height: 20px;
-            background-color: var(--secondary-color);
-            border: 2px solid var(--secondary-color);
-            transition: all .4s;
+            background-color: #2b2a2a;
+            border: 2px solid #aaaaaa;
+            transition: height .4s;
+            transition: all .2s; 
+            
         }
 
         .audio-volume:hover > input::-webkit-slider-thumb{
@@ -453,19 +470,41 @@ position: relative;
 
         .audio-volume progress::-webkit-progress-bar{
             background-color: white;
+            transition: all .2s;
         }
 
         .audio-volume progress::-webkit-progress-value{
-            background-color: #57000C;
+            background-color:#525252;
+            transition: color .2s;
         }
         
         .playlist-songs-list {
             display: flex;
             flex-direction: column;
             width: 90%;
-            margin: 40px auto;
+            margin: 0 auto;
             background-color: transparent;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
+
+        }
+
+        .playlist-header {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            color: black;
+            font-weight: 700;
+            font-size: 25px;
+            scale: 1.009;
+            border-bottom: 0;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .playlist-song{
+            border-top:1px solid var(--primary-color);
+            border-left:1px solid var(--primary-color);
+            border-right:1px solid var(--primary-color);
 
         }
 
@@ -477,7 +516,6 @@ position: relative;
             background-color: rgb(255, 255, 255,0.85);
             transition: background-color .4s;
             transition: all .2s;
-            gap: 20px;
             padding: 10px;
 
         }
@@ -489,18 +527,42 @@ position: relative;
             background-color: rgb(255, 255, 255,1);
         }
 
+        .playlist-song-title {
+           user-select: none;
+        }
 
+        .playlist-song-state {
+            width: 150px;
+            user-select: none;
+        }
         .song-current {
             scale: 1.01;
             background-color: var(--secondary-color);
             font-size:18px;
             color: white;
+            border: 0;
+            box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
+            animation: color-pulse 2s ease-in infinite;
         }
 
         .song-current:hover {
             scale: 1.01;
             background-color: var(--secondary-color);
+        }
+
+        .song-current.paused {
+            background-color:#7a7a7a;
+            scale: 1.007;
+            animation:none;
+        }
+
+        .song-current.paused:hover {
+            scale: 1.007;
+        }
+
+        .song-current:hover{
             border: 0;
+            scale: 1.013;
         }
 
         .song-card{
@@ -532,6 +594,40 @@ position: relative;
             box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.1)
         }
 
+        .loop-track.active, .play-random.active {
+            color: white;
+            transition: color .2s;
+        }
+        .player.active .loop-track.active, .player.active .play-random.active {
+            color: var(--secondary-color);
+            transition: color .2s;
+        }
+
+        .player.active .playing-controls{
+            color: #57000C;
+        }
+
+
+
+        .playing-controls {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 25px;
+            color: rgb(73, 73, 73);
+            transition: all .2s;
+            transition: opacity .4s;
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+
+        .yaMusic-switch {
+            position: fixed;
+            font-size: 60px;
+            transition: all .2s;
+        }
         .auth > input {
         }
 

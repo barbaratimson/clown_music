@@ -13,7 +13,7 @@ const Navbar = () => {
                 <div className="nav-wrapper">
                     <div className="logo">
         <div className="logo-pic">🤡</div>
-        <div className="logo-text"> Clown Music</div>
+        <div className="logo-text">YaClown Music</div>
         </div>
     <div className="nav-buttons">
     <button className="nav-button">Home</button>

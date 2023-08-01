@@ -1,9 +1,12 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
-import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsSkipEndCircleFill, BsFillSkipEndCircleFill} from 'react-icons/bs';
+import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
 
 let volumeMultiplier = 0.35
-const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, songs})=> {
-  const [playerCanPlay,setPlayerCanPlay] = useState(false)
+const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, currentPlaylist,setSongs})=> {
+  const [playerLoading, setPlayerLoading] = useState(false)
+  const [playerRepeat,setPlayerRepeat] = useState(false)
+  const [playerRandom,setPlayerRandom] = useState(false)
+  
     const audioElem = useRef()
   const clickRef = useRef();
 
@@ -35,30 +38,45 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
 
   const skipBack = ()=>
   {
-    const index = songs.findIndex(x=>x.title === currentSong.title);
+    const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
     if (index === 0)
     {
-      setCurrentSong(songs[songs.length - 1])
+      setCurrentSong(currentPlaylist[currentPlaylist.length - 1])
     }
     else
     {
-      setCurrentSong(songs[index - 1])
+      setCurrentSong(currentPlaylist[index - 1])
     }
     audioElem.current.currentTime = 0;
+    setisplaying(true)
   }
 
 
   const skiptoNext = ()=>
-  { 
-    const index = songs.findIndex(x=>x.title === currentSong.title);
-    if (index === songs.length-1)
+  {  
+    if (playerRepeat){ 
+      audioElem.current.currentTime = 0;
+      audioElem.current.play()
+    } else if (playerRandom) {
+      let randomSong = ()  => (Math.random() * (currentPlaylist.length - 0 + 1) ) << 0
+      let songId = randomSong()
+      if (currentPlaylist[songId] === currentSong) {
+        songId=randomSong()
+      }
+      setCurrentSong(currentPlaylist[songId])
+      
+    } else {
+    const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
+    if (index === currentPlaylist.length-1)
     {
-      setCurrentSong(songs[0])
+      setCurrentSong(currentPlaylist[0])
     }
     else
     {
-      setCurrentSong(songs[index + 1])
+      setCurrentSong(currentPlaylist[index + 1])
     }
+  }
+    setisplaying(true)
     audioElem.current.currentTime = 0;
   }
 
@@ -75,7 +93,7 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
         PlayPause()
       }
   }
-  
+
   useEffect(()=>{
     audioElem.current.volume = audioVolume*volumeMultiplier;
   },[audioVolume])
@@ -127,14 +145,18 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
       </div>
-      <audio src={currentSong.url} ref={audioElem} onCanPlay={()=>{console.log("Могу ебашить");setPlayerCanPlay(true)}} onEnded={skiptoNext} onTimeUpdate={onPlaying} />
+      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setPlayerLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setPlayerLoading(false)}} onEnded={skiptoNext} onTimeUpdate={onPlaying} />
+      <div className='playing-controls'>
+        <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
+        <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
+      </div>
       <div className='audio-volume-container'>    
             <div className='audio-volume'>
             <input type="range" min={0} max={100} value={audioVolume*100} onChange={(e)=>ChangeVolume(e)}></input>
             <progress value={audioVolume*100} max="100"></progress>
             </div>
         </div>
-    </div>
+        </div>
   
   )
 }
