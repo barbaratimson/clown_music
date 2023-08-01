@@ -13,6 +13,19 @@
 
 }
 
+@keyframes song-load {
+    0% {
+        background-color: rgba(119, 119, 119, 0.781);
+    }
+    50%{
+        background-color:rgba(24, 24, 24, 0.781);
+    }
+    100% {  
+        background-color: rgba(119, 119, 119, 0.781);;
+    }
+
+}
+
 * {
     font-family: 'Open Sans', sans-serif;
 font-family: 'Oswald', sans-serif;
@@ -377,6 +390,10 @@ position: relative;
             height: 10px;
             cursor: pointer;
             left: 0;
+        }
+
+        .navigation_wrapper.loading {
+            animation: song-load 1s ease-in-out infinite;
         }
 
         .seek_bar{

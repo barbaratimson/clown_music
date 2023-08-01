@@ -2,7 +2,7 @@ import React, { Component, useEffect, useRef, useState } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
 
 let volumeMultiplier = 0.35
-const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, currentPlaylist,setSongs})=> {
+const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, currentPlaylist,setSongs,isSongLoading,setIsSongLoading})=> {
   const [playerLoading, setPlayerLoading] = useState(false)
   const [playerRepeat,setPlayerRepeat] = useState(false)
   const [playerRandom,setPlayerRandom] = useState(false)
@@ -54,8 +54,8 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
 
   const skiptoNext = ()=>
   {  
+    audioElem.current.currentTime = 0;
     if (playerRepeat){ 
-      audioElem.current.currentTime = 0;
       audioElem.current.play()
     } else if (playerRandom) {
       let randomSong = ()  => (Math.random() * (currentPlaylist.length - 0 + 1) ) << 0
@@ -77,7 +77,6 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
     }
   }
     setisplaying(true)
-    audioElem.current.currentTime = 0;
   }
 
   const onPlaying = (e) => {
@@ -104,11 +103,15 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
   });
 
   useEffect(() => {
-    if (isplaying){
+    if (isplaying && !playerLoading){
             audioElem.current.play()
             setisplaying(true)
-    } 
+    }
   }, [currentSong.url,currentSong.title])
+
+  useEffect(()=>{
+    console.log("fs")
+  },[currentPlaylist])
 
   useEffect(() => {
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
@@ -141,11 +144,11 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
         <p>{currentSong.title}</p>
       </div>
       <div className="navigation">
-        <div className="navigation_wrapper" onClick={checkWidth} ref={clickRef}>
+      <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
       </div>
-      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setPlayerLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setPlayerLoading(false)}} onEnded={skiptoNext} onTimeUpdate={onPlaying} />
+      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={skiptoNext} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>

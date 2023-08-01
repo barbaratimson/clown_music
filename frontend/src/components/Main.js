@@ -16,6 +16,7 @@ const Main = () => {
     const [isplaying, setisplaying] = useState(false);
     const [currentSong, setCurrentSong] = useState(JSON.parse(localStorage.getItem("lastPlayedTrack")));
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 50);
+    const [isSongLoading,setIsSongLoading]= useState(false)
     const audioElem = useRef();
     
     const fetchSongs = async () => {
@@ -37,24 +38,6 @@ const Main = () => {
           }
       };
 
-      const fetchYaMudicSongs = async () => {
-        setIsLoading(true)
-          try {
-            const response = await axios.get(
-              'http://localhost:5051/',);
-              setPlaylistDataYa(response.data)
-              setIsLoading(false)
-          } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-            if (err.code === "!-Error code here-!"){
-                alert("!-Error code here-!")
-            } else {
-                alert("Server unavailable")
-            }
-          }
-      };
-      
       const handlePlayListChange = () =>{
         setYaMusic(!yaMusic)
         if (yaMusic){
@@ -62,11 +45,11 @@ const Main = () => {
         } else {
             setCurrentPlaylist(playlistDataYa)
         }
+        setisplaying(false)
       }
       
     useEffect(()=>{
         fetchSongs()
-        fetchYaMudicSongs()
     },[])
 
     if (isLoading) return <div>Загрузка заебал</div>
@@ -95,7 +78,7 @@ const Main = () => {
         {!yaMusic ? (
        <Playlist currentPlaylist = {playlistData} setCurrentPlaylist = {setCurrentPlaylist} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying}/>
         ):(
-       <PlaylistYaMusic currentPlaylist = {playlistDataYa} setCurrentPlaylist = {setCurrentPlaylist} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying}/>
+       <PlaylistYaMusic playlistDataYa = {playlistDataYa} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setIsSongLoading={setIsSongLoading} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}/>
         )
         }
       <Player 
@@ -104,6 +87,7 @@ const Main = () => {
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          audioElem={audioElem} 
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
+         isSongLoading = {isSongLoading} setIsSongLoading={setIsSongLoading}
          />
       </div>
         ):(
