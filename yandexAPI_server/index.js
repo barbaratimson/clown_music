@@ -9,31 +9,56 @@ app.use(cors())
 
 const api = new YMApi();
 
-let getMyTracks = async () => {
+let getPlaylistTracks= async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
-    let result = await api.getPlaylist("3");
-    result = result.tracks.map((song)=>song.track)
+    let result = await api.getPlaylist(id);
     return result
   } catch (e) {
     console.log(`api error ${e.message}`);
   }
 };
 
-let getTrackLink = async (id) => {
+let getPlaylists = async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
-    const info = await api.getTrackDownloadInfo(`${id}`);
-    const link = await api.getTrackDirectLink(info[1].downloadInfoUrl);
-    return link
+    let result = await api.getUserPlaylists(id);
+    return result
   } catch (e) {
     console.log(`api error ${e.message}`);
   }
 };
 
 
+let getTrackLink = async (id) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    const info = await api.getTrackDownloadInfo(`${id}`);
+    const link = await api.getTrackDirectLink(info[1].downloadInfoUrl);
+    if (link){
+    return link
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+app.get('/trackinfo/:id', async (req,res) =>{
+  let id = req.params.id
+  await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+  let track = await api.getTrack(id)
+  res.json(track)
+})
+
 app.get('/ya/myTracks', async (req,res)=>{
-  let tracks = await getMyTracks()
+  let tracks = await getPlaylistTracks(3)
+  res.json(tracks)
+})
+
+app.get('/ya/playlist/tracks/:id', async (req,res)=>{
+  let id = req.params.id
+  let tracks = await getPlaylistTracks(id)
+  tracks = tracks.tracks.map((song)=>song.track)
   res.json(tracks)
 })
 
@@ -43,7 +68,14 @@ app.get('/ya/tracks/:id', async (req,res)=>{
   res.json(track)
 })
 
+app.get('/ya/playlists/', async (req,res)=>{
+  let track = await getPlaylists(process.env.USER_ID)
+  res.json(track)
+})
 
+
+
+// 65758301
 
 // const getMusicLinks = async ()=>{
 //   let tracks = await getMyTracks()

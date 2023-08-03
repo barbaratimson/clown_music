@@ -1,7 +1,7 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,isplaying,setisplaying, setIsSongLoading,setCurrentPlaylist, audioElem}) => {
+const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,isplaying,setisplaying, setIsSongLoading,setCurrentPlaylist, audioElem, prevSong}) => {
     const [isLoading,setIsLoading]= useState(false)
 
             const handleSongClick = async (song) => {
@@ -60,10 +60,16 @@ const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,
         if (isplaying){
             setisplaying(false)
         const handleTrackChange = async (song) => {
+            let link = await fetchYaSongLink(song.id)
+            if (!link){
+                setCurrentSong(prevSong)
+            } else {
                 setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
+            }
         }
         handleTrackChange(currentSong)
     }
+    console.log(currentSong)
       },[currentSong.id])
 
 
@@ -72,7 +78,7 @@ const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,
     return (
         <div className='playlist-songs-list'>
             <div className='playlist-header'>
-                Яндекс музыка
+                Яндекс Музыка
             </div>
             {playlistDataYa.length !== 0 ? (
                 <div>     
@@ -82,7 +88,7 @@ const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,
                     <div className='playlist-song-state'>{song.title !== currentSong.title ? "PLAY": `${isplaying ? "LISTENING" : "PAUSE"}`}</div>
                  </div>
                  <div className='playlist-song-title'>
-                 {song.title}
+                 {song.artists[0].name + " - " + song.title}
                  </div>
              </div>
              

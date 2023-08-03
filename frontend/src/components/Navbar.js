@@ -25,6 +25,7 @@ const Navbar = () => {
         <div className="nav-search-start">Search</div>
     </div>
     </div>
+    <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button>
     <div className="nav-user">
         <div className ="user-username">Barbaratimson</div>
         <div className="user-avatar">

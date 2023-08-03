@@ -17,7 +17,7 @@ app.get('/',(req,res)=>{
     arr = []
     fs.readdirSync('./songs').map((file)=>{
         file = file.substring(0,file.length-4)
-        arr.push({title:file,url:"http://localhost:5050/api/play/" + file})
+        arr.push({title:file,url:"http://localhost:5050/api/play/" + file,artists:[{name:""}]})
     })
     res.json(arr)
 })

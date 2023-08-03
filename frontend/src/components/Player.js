@@ -1,12 +1,11 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
-
 let volumeMultiplier = 0.35
-const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, currentPlaylist,setSongs,isSongLoading,setIsSongLoading})=> {
+const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSong, setCurrentSong, currentPlaylist,setSongs,isSongLoading,setIsSongLoading,setPrevSong, prevSong})=> {
   const [playerLoading, setPlayerLoading] = useState(false)
-  const [playerRepeat,setPlayerRepeat] = useState(false)
-  const [playerRandom,setPlayerRandom] = useState(false)
-  
+  const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat"))
+  // const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom"))
+    const [playerRandom,setPlayerRandom] = useState(false)
     const audioElem = useRef()
   const clickRef = useRef();
 
@@ -35,48 +34,61 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
     }
 
   }
-
   const skipBack = ()=>
   {
-    const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
-    if (index === 0)
-    {
-      setCurrentSong(currentPlaylist[currentPlaylist.length - 1])
+    if (audioElem.current.currentTime>=5){
+      audioElem.current.currentTime=0
+    } else if (playerRandom) {
+       let randomSong = ()  => (Math.random() * (currentPlaylist.length - 0 + 1) ) << 0
+      let songId = randomSong()
+      if (currentPlaylist[songId].id === currentSong.id) {
+        songId++
+      } else {
+      setCurrentSong(currentPlaylist[songId])
+      }
+    }else{
+      const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
+      if (index === 0)
+      {
+        setCurrentSong(currentPlaylist[currentPlaylist.length - 1])
+      }
+      else
+      {
+        setCurrentSong(currentPlaylist[index - 1])
+      }
+      if (!playerLoading) {
+        audioElem.current.currentTime = 0;
+      }
     }
-    else
-    {
-      setCurrentSong(currentPlaylist[index - 1])
-    }
-    audioElem.current.currentTime = 0;
-    setisplaying(true)
   }
 
-
-  const skiptoNext = ()=>
+    const skiptoNext = ()=>
   {  
-    audioElem.current.currentTime = 0;
     if (playerRepeat){ 
       audioElem.current.play()
     } else if (playerRandom) {
       let randomSong = ()  => (Math.random() * (currentPlaylist.length - 0 + 1) ) << 0
-      let songId = randomSong()
-      if (currentPlaylist[songId] === currentSong) {
-        songId=randomSong()
-      }
-      setCurrentSong(currentPlaylist[songId])
-      
-    } else {
-    const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
+     let songId = randomSong()
+     if (currentPlaylist[songId].id === currentSong.id) {
+       songId=randomSong()
+     } else {
+     setCurrentSong(currentPlaylist[songId])
+     }
+   }else{
+     const index = currentPlaylist.findIndex(x=>x.title === currentSong.title);
     if (index === currentPlaylist.length-1)
-    {
+    { 
       setCurrentSong(currentPlaylist[0])
     }
     else
     {
       setCurrentSong(currentPlaylist[index + 1])
     }
-  }
-    setisplaying(true)
+     if (!playerLoading) {
+       audioElem.current.currentTime = 0;
+     }
+   }
+
   }
 
   const onPlaying = (e) => {
@@ -92,6 +104,7 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
         PlayPause()
       }
   }
+
 
   useEffect(()=>{
     audioElem.current.volume = audioVolume*volumeMultiplier;
@@ -114,9 +127,17 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
   },[currentPlaylist])
 
   useEffect(() => {
+    setPrevSong(currentSong)
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   }, [currentSong])
 
+  useEffect(()=>{
+    localStorage.setItem("playerRandom",playerRandom)
+  },[playerRandom])
+
+  useEffect(()=>{
+    localStorage.setItem("playerRandom",playerRepeat)
+  },[playerRepeat]) 
 
 
   useEffect(() => {
@@ -141,14 +162,14 @@ const Player = ({isplaying, setisplaying, audioVolume, setAudioVolume, currentSo
         <BsFillSkipEndCircleFill className='btn_action' onClick={skiptoNext}/>  
       </div>
       <div className="title">
-        <p>{currentSong.title}</p>
+        <p>{currentSong.artists[0] ? currentSong.artists[0].name + " - " + currentSong.title : ""}</p>
       </div>
       <div className="navigation">
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
       </div>
-      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={skiptoNext} onTimeUpdate={onPlaying} />
+      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>

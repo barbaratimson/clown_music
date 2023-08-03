@@ -67,7 +67,7 @@ body::-webkit-scrollbar {
 
 
 .nav {
-    position: sticky;
+    position: static;
     top:0;
     left: 0;
     height: 70px;
@@ -335,7 +335,7 @@ position: relative;
 }
 
 .player{
-    position: fixed;
+    position:fixed;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -375,6 +375,11 @@ position: relative;
     .title{
         font-size: inherit;
         transition: all .2s;
+        display: flex;
+        flex-direction: column;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 100%;
     }
     .navigation{
         width: 100%;
@@ -546,6 +551,10 @@ position: relative;
 
         .playlist-song-title {
            user-select: none;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           width: 350px;
         }
 
         .playlist-song-state {
