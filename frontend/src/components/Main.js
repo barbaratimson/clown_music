@@ -8,6 +8,7 @@ import Playlist from './Playlist';
 import PlaylistYaMusic from './PlaylistYaMusic';
 import Router from '../router';
 import Playlists from './Playlists';
+import PlaylistsFeed from './PlaylistsFeed';
 const Main = () => {
 
     let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))
@@ -21,8 +22,9 @@ const Main = () => {
     const [isplaying, setisplaying] = useState(false);
     const [currentSong, setCurrentSong] = useState(savedSong ? savedSong : {title:" ",url:" ",artists:[{name:""}]});
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
-    const [isSongLoading,setIsSongLoading]= useState(false)
     const [prevSong,setPrevSong]= useState({})
+    const [currentSongs,setCurrentSongs] = useState([]);
+    const [isSongLoading,setIsSongLoading]= useState(false)
     const audioElem = useRef();
     
     const fetchSongs = async () => {
@@ -31,7 +33,6 @@ const Main = () => {
             const response = await axios.get(
               'http://localhost:5050/',);
               setPlaylistData(response.data)
-              setCurrentPlaylist(response.data)
               setIsLoading(false)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -54,23 +55,17 @@ const Main = () => {
     return (
         <div className="page-content">
             <Navbar/>
+        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
         <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
         {playlistData && playlistData.length !== 0 ? (
             <div> 
-        {/* {!yaMusic ? ( */}
-       <Playlist currentPlaylist={currentPlaylist}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setIsSongLoading={setIsSongLoading} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/>
-        {/* ):( */}
-       {/* <PlaylistYaMusic playlistDataYa = {playlistDataYa} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setIsSongLoading={setIsSongLoading} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/> */}
-        {/* )
-        } */}
+       <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/>
       <Player 
-      currentPlaylist={currentPlaylist} setSongs={setCurrentPlaylist}
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
-         audioElem={audioElem} 
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
-         isSongLoading = {isSongLoading} setIsSongLoading={setIsSongLoading}
-         setPrevSong={setPrevSong} prevSong={prevSong}
+         setPrevSong={setPrevSong} currentSongs = {currentSongs}
+         isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          />
       </div>
         ):(

@@ -19,6 +19,16 @@ let getPlaylistTracks= async (id) => {
   }
 };
 
+let getFeed= async () => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let result = await api.getFeed();
+    return result
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
 let getPlaylists = async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
@@ -43,22 +53,25 @@ let getTrackLink = async (id) => {
   }
 };
 
-app.get('/trackinfo/:id', async (req,res) =>{
+app.get('/ya/trackinfo/:id', async (req,res) =>{
   let id = req.params.id
   await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
   let track = await api.getTrack(id)
-  res.json(track)
+  res.json(track[0])
 })
 
 app.get('/ya/myTracks', async (req,res)=>{
   let tracks = await getPlaylistTracks(3)
+  tracks.title = "Мои треки"
   res.json(tracks)
 })
 
 app.get('/ya/playlist/tracks/:id', async (req,res)=>{
   let id = req.params.id
   let tracks = await getPlaylistTracks(id)
+  if (tracks){
   tracks = tracks.tracks.map((song)=>song.track)
+  }
   res.json(tracks)
 })
 
@@ -73,6 +86,10 @@ app.get('/ya/playlists/', async (req,res)=>{
   res.json(track)
 })
 
+app.get('/ya/feed/', async (req,res)=>{
+  let feed = await getFeed()
+  res.json(feed)
+})
 
 
 // 65758301

@@ -3,7 +3,6 @@ import Main from "./components/Main"
 import Auth from "./components/Auth"
 import Registration from "./components/Registration"
 import About from "./components/About"
-import Playlists from "./components/Playlists"
 
 const Router = () => {
     

@@ -1,7 +1,7 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const Playlists = ({setCurrentPlaylist}) => {
+const PlaylistsFeed = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(false);
@@ -9,23 +9,13 @@ const Playlists = ({setCurrentPlaylist}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              'http://localhost:5051/ya/playlists',);
-              setAllPlaylists(response.data)
+              'http://localhost:5051/ya/feed',);
+              let playlists = response.data.generatedPlaylists.map((playlist) => (
+                playlist = playlist.data
+              ))
+              setAllPlaylists(playlists)
               setIsLoading(false)
           } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-          }
-      };
-      const fetchYaMudicSongs = async () => {
-        setIsLoading(true)
-          try {
-            const response = await axios.get(
-              'http://localhost:5051/ya/myTracks',);
-              setAllPlaylists(prev =>[...prev,response.data])
-              setIsLoading(false)
-              setCurrentPlaylist(response.data)
-          } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
           }
@@ -33,7 +23,6 @@ const Playlists = ({setCurrentPlaylist}) => {
 
       useEffect(()=>{
         fetchSongs()
-        fetchYaMudicSongs()
       },[])
 
       if (isLoading) return <div>Загрузка заебал</div>
@@ -70,4 +59,4 @@ const Playlists = ({setCurrentPlaylist}) => {
 
 };
 
-export default Playlists;
+export default PlaylistsFeed;
