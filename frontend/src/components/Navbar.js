@@ -1,12 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Navbar = () => {
-
+    const [search,setSearch] = useState('')
     
+  
+    const handleSearch = async () => {
+        if (search){
+          try {
+            const response = await axios.get(
+              `http://localhost:5051/ya/search/${search}`,);
+              console.log(response)
+          } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+            console.log(err)
+          }
+        }
+      };
+
     useEffect(() => {
-    }, []);
+        let Debounce = setTimeout(()=>{
+            handleSearch()
+        },350)
+        return () => {
+            clearTimeout(Debounce)
+        }
+    }, [search]);
     
     return (
         <div className="nav">
@@ -21,7 +41,7 @@ const Navbar = () => {
     </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
-        <input type="text" className="nav-search"></input>
+    <input className='nav-search' type='text' defaultValue={"Поиск"} onChange={(e) => {setSearch(`${e.target.value}`)}}/>
         <div className="nav-search-start">Search</div>
     </div>
     </div>

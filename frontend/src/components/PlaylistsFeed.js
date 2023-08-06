@@ -10,9 +10,9 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
           try {
             const response = await axios.get(
               'http://localhost:5051/ya/feed',);
-              let playlists = response.data.generatedPlaylists.map((playlist) => (
-                playlist = playlist.data
-              ))
+              let playlists = response.data.generatedPlaylists.map((playlist) => {
+                return playlist.data
+            })
               setAllPlaylists(playlists)
               setIsLoading(false)
           } catch (err) {
@@ -25,7 +25,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
         fetchSongs()
       },[])
 
-      if (isLoading) return <div>Загрузка заебал</div>
+      if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className="page-content">

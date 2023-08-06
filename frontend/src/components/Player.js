@@ -34,7 +34,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   }
   const skipBack = ()=>
   {   
-    audioElem.current.src = ""
     if (audioElem.current.currentTime>=5){
       audioElem.current.currentTime=0
     } else if (playerRandom) {
@@ -46,6 +45,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       setCurrentSong(currentSongs[songId])
       }
     }else{
+      audioElem.current.src = ""
       const index = currentSongs.findIndex(x=>x.title === currentSong.title);
       if (index === 0)
       {
@@ -60,7 +60,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 
     const skiptoNext = ()=>
   {  
-    audioElem.current.src = ""
     if (playerRepeat){ 
       audioElem.current.play()
     } else if (playerRandom) {
@@ -71,7 +70,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
      } else {
      setCurrentSong(currentSongs[songId])
      }
-   }else{
+   }else if (!isSongLoading){
+    audioElem.current.src = ""
      const index = currentSongs.findIndex(x=>x.title === currentSong.title);
     if (index === currentSongs.length-1)
     { 
@@ -92,8 +92,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 
 
   const handleKeyPress = (e) => {
-    e.preventDefault()
     if (e.key === " "){
+      e.preventDefault()
         PlayPause()
       }
   }

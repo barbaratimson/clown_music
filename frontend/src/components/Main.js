@@ -54,7 +54,7 @@ const Main = () => {
 
     return (
         <div className="page-content">
-            <Navbar/>
+        <Navbar/>
         <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
         <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
         {playlistData && playlistData.length !== 0 ? (

@@ -53,6 +53,17 @@ let getTrackLink = async (id) => {
   }
 };
 
+
+let searchTracks = async (query) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    const result = await api.search(query);
+    return result
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
 app.get('/ya/trackinfo/:id', async (req,res) =>{
   let id = req.params.id
   await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
@@ -90,6 +101,13 @@ app.get('/ya/feed/', async (req,res)=>{
   let feed = await getFeed()
   res.json(feed)
 })
+
+app.get('/ya/search/:query', async (req,res)=>{
+  let query = req.params.query
+  let result = await searchTracks(query)
+  res.json(result)
+})
+
 
 
 // 65758301

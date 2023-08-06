@@ -5,14 +5,17 @@ import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs
 const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading, prevSong}) => {
   const [isLoading,setIsLoading] = useState()
     const handleSongClick = async (song) => {
+      console.log(song)
+      if (!isSongLoading || currentSong.url !== ' '){
         if (song.id === currentSong.id && isplaying){
             setisplaying(false)
-        } else if (song.id !== currentSong.id) {
+        } else if (song.id !== currentSong.id && !isSongLoading || currentSong.url !== '') {
             setCurrentSong(song)
             setisplaying(true)
         } else {
             setisplaying(true)
         }
+      }
     }
 
     const fetchPlaylistSongs = async (id) => {
@@ -92,14 +95,14 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
                 {currentPlaylist ? currentPlaylist.title : ""}
             </div>
             {currentSongs ? (currentSongs.map((song) => (
-                 <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} key = {song.id} onClick={()=>{handleSongClick(song)}}>
+                 <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>
                  <div className='playlist-song-image'>     
-                 <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : ""} loading= "lazy" alt=""></img>
+                 <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                  </div>
-                 <div className='playlist-song-title'>
+                 <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
                  {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
                  </div>
              </div>
