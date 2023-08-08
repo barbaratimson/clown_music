@@ -1,6 +1,7 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import PlaylistsFeed from './PlaylistsFeed';
 const Playlists = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
@@ -40,8 +41,9 @@ const Playlists = ({setCurrentPlaylist}) => {
 
     return (
         <div className="page-content">
-
+            <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
         <div>
+
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (

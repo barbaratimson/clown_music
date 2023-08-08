@@ -730,5 +730,20 @@ position: relative;
         .auth > input {
         }
 
+        .analyzer {
+            position: absolute;
+            display: flex;
+            flex-direction: row-reverse;
+            rotate: -180deg;
+            gap: 20px;
+            bottom: 107px;
+            left: 20px;
+            transition: all 1;
+        }
+        .analyzer-column {
+            border-radius: 10px;
+            transition: all 1s;
+        }
+
 @media (max-width:950px) {
 }

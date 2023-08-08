@@ -6,7 +6,7 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
   const [isLoading,setIsLoading] = useState()
     const handleSongClick = async (song) => {
       console.log(song)
-      if (!isSongLoading || currentSong.url !== ' '){
+      if (!isSongLoading || currentSong.url !== ''){
         if (song.id === currentSong.id && isplaying){
             setisplaying(false)
         } else if (song.id !== currentSong.id && !isSongLoading || currentSong.url !== '') {
@@ -74,6 +74,7 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
       },[currentSong.id])
 
       useEffect(()=>{
+        console.log(currentPlaylist)
         const handleFeed = async () => {
         if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
          let result = await Promise.all(currentPlaylist.tracks.map(async (track) => {
@@ -95,7 +96,7 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
                 {currentPlaylist ? currentPlaylist.title : ""}
             </div>
             {currentSongs ? (currentSongs.map((song) => (
-                 <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
+                 <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>

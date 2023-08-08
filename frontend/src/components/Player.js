@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
+import AudioAnayzer from './AudioAnalyzer';
 let volumeMultiplier = 0.35
 const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, setCurrentSong,setPrevSong})=> {
+  const audioElem = useRef()
   const [playerRepeat,setPlayerRepeat] = useState(false)
   const [playerRandom,setPlayerRandom] = useState(false)
-    const audioElem = useRef()
+  const [analyser,setAnalyzer] = useState()
+  const [frequencyData,setfrequencyData] = useState()
   const clickRef = useRef();
-
   const PlayPause = ()=>
   {
     setisplaying(!isplaying);
@@ -57,7 +59,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       }
     }
   }
-
     const skiptoNext = ()=>
   {  
     if (playerRepeat){ 
@@ -84,6 +85,14 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
    }
   }
 
+  const getAnalyzerInfo= () =>{
+    if (analyser){
+    let a = new Uint8Array(analyser.frequencyBinCount)
+    analyser.getByteFrequencyData(a)
+    return a
+    }
+  }
+
   const onPlaying = (e) => {
     const duration = audioElem.current.duration;
     const ct = audioElem.current.currentTime;
@@ -97,7 +106,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
         PlayPause()
       }
   }
-
 
   useEffect(()=>{
     audioElem.current.volume = audioVolume*volumeMultiplier;
@@ -120,9 +128,18 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   }, [currentSong])
 
+
   useEffect(()=>{
     console.log(localStorage.getItem("playerRep"))
   },[playerRandom,playerRepeat])
+  
+  useEffect(()=>{
+    let a = setTimeout(()=>{
+      setfrequencyData(getAnalyzerInfo())
+    },12)
+    return ()=>clearTimeout(a)
+  })
+
 
   useEffect(() => {
     if (isplaying) {
@@ -139,7 +156,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   }, [isplaying])
 
   return (
-    <div className={`player ${isplaying ? "active" : ""}`}>
+    // <div className={`player ${isplaying ? "active" : ""}`} style={{background:`linear-gradient(90deg, rgba(115,0,0,1) ${frequencyData? frequencyData[0]/10-30:"100"}%, #0f0f0f ${frequencyData? frequencyData[0]/3-30 :"100"}%)`}}>
+    <div className={`player ${isplaying ? "active" : ""}`} style={{background:`linear-gradient(150deg, rgba(115,0,0,1) ${frequencyData? frequencyData[0]/10-40:"100"}%, rgba(0,0,0,1) ${frequencyData? frequencyData[0]/3-30 :"100"}%)`}}>
               <div className="controls">
         <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
         {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={PlayPause}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={PlayPause}/>}
@@ -152,16 +170,25 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       <div className="title">
         {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
       </div>
+      {frequencyData ? 
+        (
+        <div className='analyzer'>
+          { Array.from(frequencyData).map((elem)=>(
+               <div className='analyzer-column' key={Math.random()+elem} style={{backgroundColor:`rgb(${elem},0,0,${elem/2})`,height:`${elem*0.9}px`,width:`15px`,rotate:`${elem*0.95}deg`}}></div>
+          ))}
+        </div>
+        ):(<></>)}  
       </div>
       <div className="navigation">
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
       </div>
-      <audio src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>console.log(e)} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio crossorigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(false)}} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
+        <button type="" onClick={(e)=>{e.preventDefault();setAnalyzer(AudioAnayzer(audioElem))}}>Поставить</button>
       </div>
       <div className='audio-volume-container'>    
             <div className='audio-volume'>

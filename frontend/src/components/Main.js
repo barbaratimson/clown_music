@@ -9,18 +9,18 @@ import PlaylistYaMusic from './PlaylistYaMusic';
 import Router from '../router';
 import Playlists from './Playlists';
 import PlaylistsFeed from './PlaylistsFeed';
+
 const Main = () => {
 
     let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))
 
     let volume = localStorage.getItem("player_volume")
     const [playlistData,setPlaylistData] = useState([])
-    const [yaMusic,setYaMusic] = useState(localStorage.getItem("yaMusic"))
     const [playlistDataYa,setPlaylistDataYa] = useState([])
     const [isLoading, setIsLoading] = useState(false);
     const [currentPlaylist, setCurrentPlaylist] = useState([]);
     const [isplaying, setisplaying] = useState(false);
-    const [currentSong, setCurrentSong] = useState(savedSong ? savedSong : {title:" ",url:" ",artists:[{name:""}]});
+    const [currentSong, setCurrentSong] = useState(savedSong ? savedSong : {title:"",url:"",artists:[{name:""}]});
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
@@ -55,8 +55,9 @@ const Main = () => {
     return (
         <div className="page-content">
         <Navbar/>
-        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
-        <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
+        <Routes>
+            <Route path='playlists' element={<Playlists setCurrentPlaylist={setCurrentPlaylist}/>}/>
+        </Routes>
         {playlistData && playlistData.length !== 0 ? (
             <div> 
        <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/>
