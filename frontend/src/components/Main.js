@@ -55,9 +55,7 @@ const Main = () => {
     return (
         <div className="page-content">
         <Navbar/>
-        <Routes>
-            <Route path='playlists' element={<Playlists setCurrentPlaylist={setCurrentPlaylist}/>}/>
-        </Routes>
+            <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
         {playlistData && playlistData.length !== 0 ? (
             <div> 
        <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/>
@@ -74,9 +72,9 @@ const Main = () => {
         )
         }
 
-    <div className='footer'>
+    {/* <div className='footer'>
         <div className="">Sergey Sokolov CLOWN_MUSIC 2023</div>
-    </div>
+    </div> */}
     </div>
 
 

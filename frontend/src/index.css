@@ -62,7 +62,7 @@ body{
     padding: 0;
     width: 100vw;
     height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
     /* background-color: var(--primary-color); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(54,12,18,1) 100%); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(50,12,18,1) 100%); */
@@ -233,14 +233,26 @@ nav .logo {
 
 .playlists {
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: start;
-    flex-wrap: wrap;
     overflow: hidden;
     justify-content: center;
     padding: 20px;
     gap: 20px;
 }
+
+.playlists-container {
+    position: absolute;
+    width: 300px;
+    height: 700px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 50px auto;
+}
+
+.playlists-container::-webkit-scrollbar{
+    display: none;
+} 
 
 .playlist-card{
     display: flex;
@@ -366,7 +378,7 @@ position: relative;
 
 .playlist-card:hover .playlist-card-desc {
     opacity: 1;
-    transform: none;
+    transform: translate(-10px);
 }
 
 .playlist-card:hover .playlist-card-length {
@@ -392,7 +404,7 @@ position: relative;
 .playlist-song-image {
     display: flex;
     justify-content: center;
-    width: 50px;
+    width: 50px;    
     height: 50px;
  }
 
@@ -577,17 +589,32 @@ position: relative;
         }
         
         .playlist-songs-list {
+            position: relative;
+            width: 1400px;
+            margin: 0 auto;
+        }
+        .playlist-songs-list:hover {
+            z-index: 100;
+        }
+
+        .playlist-songs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .playlist-songs-container {
             display: flex;
             flex-direction: column;
             width: 90%;
             margin: 0 auto;
             background-color: transparent;
             margin-bottom: 180px;
-
+            height: 700px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            border-radius: 10px;
         }
 
         .playlist-header {
-            width: 100%;
+            width: 90%;
             background-color: rgba(255, 255, 255, 0.85);
             padding: 25px;
             color: black;
@@ -597,6 +624,7 @@ position: relative;
             border-bottom: 0;
             margin-top: 10px;
             margin-bottom: 10px;
+            margin: 10px auto;
         }
 
         .playlist-song{
@@ -614,7 +642,7 @@ position: relative;
             background-color: rgb(255, 255, 255,0.85);
             transition: background-color .4s;
             transition: all .2s;
-            padding: 10px;
+            padding: 30px;
 
         }
         .playlist-song:hover {

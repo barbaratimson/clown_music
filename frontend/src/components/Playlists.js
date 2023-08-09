@@ -40,10 +40,8 @@ const Playlists = ({setCurrentPlaylist}) => {
       if (isLoading) return <div>Загрузка заебал</div>
 
     return (
-        <div className="page-content">
-            <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
-        <div>
-
+        <div className='playlists-container'>
+                        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
@@ -65,8 +63,6 @@ const Playlists = ({setCurrentPlaylist}) => {
 
      
         </div>
-
-    </div>
 
     );
 

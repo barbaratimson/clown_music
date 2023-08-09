@@ -92,11 +92,13 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
 
     return (
         <div className='playlist-songs-list'>
-            <div className='playlist-header'>
+
+                          <div className='playlist-header'>
                 {currentPlaylist ? currentPlaylist.title : ""}
             </div>
+              <div className='playlist-songs-container'>
             {currentSongs ? (currentSongs.map((song) => (
-                 <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
+              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>
@@ -109,7 +111,8 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
              </div>
             ))):(" ")}
         
-        </div>
+            </div>
+            </div>
     );
 
 };

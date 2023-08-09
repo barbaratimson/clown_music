@@ -28,8 +28,6 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
       if (isLoading) return <div>Загрузка</div>
 
     return (
-        <div className="page-content">
-
         <div>
             {allPlaylists ? (
                 <div className="playlists">           
@@ -52,8 +50,6 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
 
      
         </div>
-
-    </div>
 
     );
 

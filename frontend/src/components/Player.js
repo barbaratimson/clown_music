@@ -10,7 +10,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   const [frequencyData,setfrequencyData] = useState()
   const [fftSize,setfftSize] = useState()
 
-  const [columnWidth,setColumnWidth] = useState(5)
+  const [visualizerSpeed,setVsualizerSpeed] = useState(1)
+  const [visualizerOpacity,setVsualizerOpacity] = useState(1)
 
   const clickRef = useRef();
   const audioVisualizer = useRef()
@@ -178,7 +179,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     let a = setTimeout(()=>{
       setfrequencyData(getAnalyzerInfo())
       renderVisualizer()
-    },15)
+    },visualizerSpeed)
     return ()=>clearTimeout(a)
   })
 
@@ -230,7 +231,17 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
         {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
       </div>
 
-      <canvas className='analyzer' ref={audioVisualizer}></canvas> 
+      <canvas style={{opacity:`${visualizerOpacity}`}} className='analyzer' ref={audioVisualizer}></canvas> 
+
+      {/* {frequencyData ? 
+        (
+        <div className='analyzer' style={{gap:"0px",left:"0"}}>
+          { Array.from(frequencyData).map((elem)=>(
+              //  <div className='analyzer-column' key={Math.random()+elem} style={{backgroundColor:`rgb(${elem},0,0,${elem/2})`,height:`${elem*0.9}px`,width:`10px`,rotate:`${elem > 160 ? 0 :(elem*0.95)+30}deg`}}></div>
+               <div className='analyzer-column' key={Math.random()+elem} style={{backgroundColor:`rgb(${elem},0,0,${elem/2})`,height:`${elem*0.9}px`,width:`${columnWidth}px`,}}></div>
+          ))}
+        </div>
+        ):(<></>)}   */}
       </div>
       <div className="navigation">
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
@@ -250,7 +261,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
         </div>
             <div className='analyzer-settings'>
             <button type="" onClick={(e)=>{e.preventDefault();setAnalyzer(AudioAnayzer(audioElem))}}>AudioCTX</button>
-                <input type="range" step={0.1} min={0} max={10} value={columnWidth} onChange={(e)=>{setColumnWidth(e.target.value);console.log(e.target.value)}} ></input>
+                <input type="range" step={1} min={1} max={30} value={visualizerSpeed} onChange={(e)=>{setVsualizerSpeed(e.target.value)}} ></input>
+                <input type="range" step={0.05} min={0} max={1} value={visualizerOpacity} onChange={(e)=>{setVsualizerOpacity(e.target.value)}} ></input>
                 <select value={fftSize? fftSize : localStorage.getItem("analyzer_fftSize")} onChange={(e)=>{localStorage.setItem("analyzer_fftSize",e.target.value);setfftSize(e.target.value)}}>
                   <option value="64">64</option>
                   <option value="128">128</option>
@@ -260,7 +272,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
                   <option value="2048">2048</option>
                   <option value="4096">4096</option>
                 </select>
-                {columnWidth}
             </div>
 
         </div>

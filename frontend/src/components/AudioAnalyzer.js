@@ -7,7 +7,7 @@ const AudioAnayzer = (audioElem) => {
   let fftSize = localStorage.getItem("analyzer_fftSize")
     let source = audioCtx.createMediaElementSource(audioElem.current)
     let analyser = audioCtx.createAnalyser();
-    analyser.fftSize = fftSize && fftSize > 128 ? fftSize : 1024;
+    analyser.fftSize = fftSize && fftSize >= 64 ? fftSize : 1024;
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
     return analyser
