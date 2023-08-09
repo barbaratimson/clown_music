@@ -41,7 +41,7 @@ const Navbar = () => {
     </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
-    <input className='nav-search' type='text' defaultValue={"Поиск"} onChange={(e) => {setSearch(`${e.target.value}`)}}/>
+    <input className='nav-search' type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
         <div className="nav-search-start">Search</div>
     </div>
     </div>

@@ -467,7 +467,7 @@ position: relative;
             position: absolute;
             bottom: 100%;
             min-width: 100%;
-            background-color: rgba(119, 119, 119, 0.781);
+            background-color: rgb(141,141,141);
             height: 10px;
             cursor: pointer;
             left: 0;
@@ -582,7 +582,7 @@ position: relative;
             width: 90%;
             margin: 0 auto;
             background-color: transparent;
-            margin-bottom: 60px;
+            margin-bottom: 180px;
 
         }
 
@@ -734,15 +734,15 @@ position: relative;
             position: absolute;
             display: flex;
             flex-direction: row-reverse;
-            rotate: -180deg;
-            gap: 20px;
-            bottom: 107px;
-            left: 20px;
-            transition: all 1;
+            bottom: 110px;
+            left: 0;
+            pointer-events: none;
+            user-select: none;
+            /* rotate: -180deg; */
         }
         .analyzer-column {
-            border-radius: 10px;
-            transition: all 1s;
+            border-radius: 0 0 10px 10px;
+            pointer-events: none;
         }
 
 @media (max-width:950px) {
