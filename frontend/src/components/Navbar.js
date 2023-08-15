@@ -1,17 +1,34 @@
 import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 
-const Navbar = () => {
+const Navbar = ({setCurrentSong,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
     const [search,setSearch] = useState('')
+    const [searchResults,setSearchResults] = useState()
+    const [showUserMenu,setShowUserMenu] = useState(false)
     
-  
+    const handleSongClick = async (song) => {
+        console.log(song)
+        if (currentSong.url !== ''){
+          if (song.id === currentSong.id && isplaying){
+              setisplaying(false)
+          } else if (song.id !== currentSong.id &&  currentSong.url !== '') {
+              setCurrentSong(song)
+              setisplaying(true)
+          } else {
+              setisplaying(true)
+          }
+        }
+      }
+
     const handleSearch = async () => {
         if (search){
           try {
             const response = await axios.get(
               `http://localhost:5051/ya/search/${search}`,);
-              console.log(response)
+              setSearchResults(response.data)
+              console.log(response.data)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -28,6 +45,7 @@ const Navbar = () => {
         }
     }, [search]);
     
+
     return (
         <div className="nav">
                 <div className="nav-wrapper">
@@ -35,24 +53,49 @@ const Navbar = () => {
         <div className="logo-pic">🤡</div>
         <div className="logo-text">YaClown Music</div>
         </div>
-    <div className="nav-buttons">
-    <button className="nav-button">Home</button>
-    <button className="nav-button">About</button>
-    </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
     <input className='nav-search' type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
         <div className="nav-search-start">Search</div>
     </div>
+    <div className={`nav-search-results ${!search ? "hidden" : ""}`}>
+        {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
+           <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
+           <div className="play-button">
+              <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
+           </div>
+           <div className='playlist-song-image'>     
+           <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+           </div>
+           <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
+           {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
+           </div>
+       </div>
+        ))):(<></>)}
+
+         {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
+           <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);console.log(playlist)}}>
+           <div className="playlist-card-image">
+               <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
+               <div className="playlist-card-desc">{playlist.title}</div>
+               <div className="playlist-card-length">{playlist.trackCount}</div>
+               <div className="playlist-card-play">
+                   
+               </div>
+           </div>
+       </div>
+        ))):(<></>)}
+        
+    </div>
     </div>
     <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button>
-    <div className="nav-user">
+    <div className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
         <div className ="user-username">Barbaratimson</div>
         <div className="user-avatar">
             <img src="https://sun9-36.userapi.com/impg/KBThyRabdLXw6Km0CnJ4gQJKcR7iw5Uu8T6wpg/D0Bh4x-veqY.jpg?size=822x1024&quality=95&sign=8f9825c03df99a8adaa7b94c9d0639d5&type=album" alt=""></img>
         </div>
     </div>
-    <div className="user-menu hidden"></div>
+    <div className={`user-menu ${!showUserMenu? "hidden" : ""}`}></div>
 </div>
 
     </div>

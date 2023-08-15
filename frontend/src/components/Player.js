@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
 import AudioAnayzer from './AudioAnalyzer';
-let volumeMultiplier = 0.35
-const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, setCurrentSong,setPrevSong})=> {
+let volumeMultiplier = 0.5
+const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const audioElem = useRef()
   const [playerRepeat,setPlayerRepeat] = useState(false)
   const [playerRandom,setPlayerRandom] = useState(false)
@@ -15,12 +15,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 
   const clickRef = useRef();
   const audioVisualizer = useRef()
-  const PlayPause = ()=>
-  {
-    setisplaying(!isplaying);
-
-  }
-
   const ChangeVolume = (e) =>  {
     let volume = parseFloat(e.target.value/100)
     setAudioVolume(volume)
@@ -42,6 +36,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   }
   const skipBack = ()=>
   {   
+    audioElem.current.src = ""
     if (audioElem.current.currentTime>=5){
       audioElem.current.currentTime=0
     } else if (playerRandom) {
@@ -53,7 +48,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       setCurrentSong(currentSongs[songId])
       }
     }else{
-      audioElem.current.src = ""
       const index = currentSongs.findIndex(x=>x.title === currentSong.title);
       if (index === 0)
       {
@@ -64,9 +58,15 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
         setCurrentSong(currentSongs[index - 1])
       }
     }
+    if (!isplaying) {
+      setisplaying(true)
+     }
   }
+
+
     const skiptoNext = ()=>
   {  
+    audioElem.current.src = ""
     if (playerRepeat){ 
       audioElem.current.play()
     } else if (playerRandom) {
@@ -78,7 +78,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
      setCurrentSong(currentSongs[songId])
      }
    }else if (!isSongLoading){
-    audioElem.current.src = ""
      const index = currentSongs.findIndex(x=>x.title === currentSong.title);
     if (index === currentSongs.length-1)
     { 
@@ -88,6 +87,9 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     {
       setCurrentSong(currentSongs[index + 1])
     }
+   }
+   if (!isplaying) {
+    setisplaying(true)
    }
   }
 
@@ -107,9 +109,9 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 
 
   const handleKeyPress = (e) => {
-    if (e.key === " "){
+    if (e.key === " " && e.srcElement.tagName !== "INPUT"){
       e.preventDefault()
-        PlayPause()
+        setisplaying(!isplaying)
       }
   }
 
@@ -126,21 +128,19 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     const ctx = audioVisualizer.current.getContext('2d')
     let data = Array.from(frequencyData)
     ctx.clearRect(0,0,audioVisualizer.current.width,audioVisualizer.current.height)
-    const columnWidth = ((audioVisualizer.current.width/data.length)+1.5)
-    const heightScale = audioVisualizer.current.height /500
+    const columnWidth = ((audioVisualizer.current.width/data.length)+6)
+    const heightScale = audioVisualizer.current.height/80
     let xPos = 0
     for (let i = 0;i<data.length;i++) {
       let columnHeight = data[i] * heightScale
-      let color = `rgb(${data[i]},0,0)`
+      let color = `rgb(${data[i]+40},0,0)`
+      // let color = dominantColor
       drawColumns(xPos,columnWidth,columnHeight,color)
       
       xPos += columnWidth -1
     }
   }
   }
-
-
-
 
 
   useEffect(()=>{
@@ -157,20 +157,14 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
             audioElem.current.play()
             setisplaying(true)
     }
+    
   }, [currentSong.url,currentSong.title])
+
 
   useEffect(() => {
     setPrevSong(currentSong)
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   }, [currentSong])
-
-
-  useEffect(()=>{
-    console.log(localStorage.getItem("playerRep"))
-  },[playerRandom,playerRepeat])
-  
-
-
 
 
 
@@ -179,23 +173,18 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     let a = setTimeout(()=>{
       setfrequencyData(getAnalyzerInfo())
       renderVisualizer()
-    },visualizerSpeed)
+    },20)
     return ()=>clearTimeout(a)
   })
 
 
-  useEffect(()=>{
-    window.addEventListener('resize',()=>{
-      audioVisualizer.current.width = window.innerWidth
-      audioVisualizer.current.height = window.innerHeight
-    },false)
-  },[])
 
-  
   useEffect(()=>{
     audioVisualizer.current.width = window.innerWidth
     audioVisualizer.current.height = window.innerHeight
-  },[])
+},[window.innerWidth, window.innerHeight])
+
+
 
 
 
@@ -203,52 +192,35 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   useEffect(() => {
     if (isplaying) {
       audioElem.current.play();
-
-      if (currentSong.progress){ // Надо над этим покумекать
+      if (currentSong.progress){ 
         audioElem.current.currentTime = currentSong.progress/100 * currentSong.length
       }
-
     }
     else {
       audioElem.current.pause();
     }
+
   }, [isplaying])
 
   return (
-    // <div className={`player ${isplaying ? "active" : ""}`} style={{background:`linear-gradient(90deg, rgba(115,0,0,1) ${frequencyData? frequencyData[0]/10-30:"100"}%, #0f0f0f ${frequencyData? frequencyData[0]/3-30 :"100"}%)`}}>
-    <div className={`player ${isplaying ? "active" : ""}`} style={{background:`${frequencyData ? `linear-gradient(150deg, rgba(115,0,0,1) ${frequencyData? frequencyData[3]/10-40:"100"}%, rgba(0,0,0,1) ${frequencyData? frequencyData[3]/3-30 :"100"}%)` : "black"}`}}>
-              <div className="controls">
-        <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
-        {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={PlayPause}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={PlayPause}/>}
-        <BsFillSkipEndCircleFill style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
-      </div>
-      <div className='song-info'>
-      <div className='image' >
-      {/* <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/70x70` : ""} loading= "lazy" alt=""></img> */}
-      <img style={{scale:`${frequencyData && frequencyData[3] > 160 ? frequencyData[3]/175 : 1}`,transition:"all .2s"}} src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/70x70` : ""} loading= "lazy" alt=""></img>
+    <div className={`player ${isplaying ? "active" : ""}`}>
+      <div className='image'>
+        <div className='filter'> 
+        </div>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300` : ""} loading= "lazy" alt=""></img>
       </div>
       <div className="title">
         {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
       </div>
-
-      <canvas style={{opacity:`${visualizerOpacity}`}} className='analyzer' ref={audioVisualizer}></canvas> 
-
-      {/* {frequencyData ? 
-        (
-        <div className='analyzer' style={{gap:"0px",left:"0"}}>
-          { Array.from(frequencyData).map((elem)=>(
-              //  <div className='analyzer-column' key={Math.random()+elem} style={{backgroundColor:`rgb(${elem},0,0,${elem/2})`,height:`${elem*0.9}px`,width:`10px`,rotate:`${elem > 160 ? 0 :(elem*0.95)+30}deg`}}></div>
-               <div className='analyzer-column' key={Math.random()+elem} style={{backgroundColor:`rgb(${elem},0,0,${elem/2})`,height:`${elem*0.9}px`,width:`${columnWidth}px`,}}></div>
-          ))}
-        </div>
-        ):(<></>)}   */}
+      <div className="controls">
+        <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
+        {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={()=>{setisplaying(!isplaying)}}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={()=>{setisplaying(!isplaying)}}/>}
+        <BsFillSkipEndCircleFill style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
-      <div className="navigation">
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
-      </div>
-      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{console.log("Гружу");setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(false)}} onCanPlay={()=>{console.log("Могу ебашить");setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
@@ -259,10 +231,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
             <progress value={audioVolume*100} max="100"></progress>
             </div>
         </div>
-            <div className='analyzer-settings'>
+            {/* <div className='analyzer-settings'>
             <button type="" onClick={(e)=>{e.preventDefault();setAnalyzer(AudioAnayzer(audioElem))}}>AudioCTX</button>
-                <input type="range" step={1} min={1} max={30} value={visualizerSpeed} onChange={(e)=>{setVsualizerSpeed(e.target.value)}} ></input>
-                <input type="range" step={0.05} min={0} max={1} value={visualizerOpacity} onChange={(e)=>{setVsualizerOpacity(e.target.value)}} ></input>
                 <select value={fftSize? fftSize : localStorage.getItem("analyzer_fftSize")} onChange={(e)=>{localStorage.setItem("analyzer_fftSize",e.target.value);setfftSize(e.target.value)}}>
                   <option value="64">64</option>
                   <option value="128">128</option>
@@ -272,7 +242,10 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
                   <option value="2048">2048</option>
                   <option value="4096">4096</option>
                 </select>
-            </div>
+            </div> */}
+            <div className='analyzer-wrapper'>
+      <canvas style={{filter:`blur(200px)`,opacity:"0.8"}} className='analyzer' ref={audioVisualizer}></canvas> 
+      </div>
 
         </div>
   

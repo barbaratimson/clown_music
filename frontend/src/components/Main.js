@@ -25,8 +25,11 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
     const [isSongLoading,setIsSongLoading]= useState(false)
+    const [dominantColor,setDominantColor]= useState(false)
+    const [showPlaylists,setShowPlaylists] = useState(false)
+
     const audioElem = useRef();
-    
+
     const fetchSongs = async () => {
         setIsLoading(true)
           try {
@@ -50,22 +53,23 @@ const Main = () => {
         fetchSongs()
     },[])
 
-    if (isLoading) return <div>Загрузка заебал</div>
+    if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className="page-content">
-        <Navbar/>
-            <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
+        <Navbar setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+        <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
         {playlistData && playlistData.length !== 0 ? (
-            <div> 
-       <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem} prevSong = {prevSong} setPrevSong={setPrevSong}/>
-      <Player 
+            <div className='player-wrapper'> 
+       <Player 
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
          setPrevSong={setPrevSong} currentSongs = {currentSongs}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+         setDominantColor={setDominantColor} dominantColor={dominantColor}
          />
+         <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem.current} prevSong = {prevSong} setPrevSong={setPrevSong}/>
       </div>
         ):(
             <></>

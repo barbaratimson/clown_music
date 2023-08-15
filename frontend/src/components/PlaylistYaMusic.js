@@ -73,7 +73,7 @@ const Playlist = ({playlistDataYa,setPlaylistDataYa,currentSong, setCurrentSong,
       },[currentSong.id])
 
 
-    if (isLoading) return <div>Загрузка заебал</div>
+    if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className='playlist-songs-list'>

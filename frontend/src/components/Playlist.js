@@ -5,26 +5,24 @@ import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs
 const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading, prevSong}) => {
   const [isLoading,setIsLoading] = useState()
     const handleSongClick = async (song) => {
-      console.log(song)
-      if (!isSongLoading || currentSong.url !== ''){
         if (song.id === currentSong.id && isplaying){
             setisplaying(false)
-        } else if (song.id !== currentSong.id && !isSongLoading || currentSong.url !== '') {
+        } else if (!isSongLoading && song.id !== currentSong.id) {
             setCurrentSong(song)
             setisplaying(true)
         } else {
             setisplaying(true)
-        }
       }
     }
 
-    const fetchPlaylistSongs = async (id) => {
+    const fetchPlaylistSongs = async (userId,kind) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `http://localhost:5051/ya/playlist/tracks/${id}`,);
+              `http://localhost:5051/ya/playlist/tracks/${userId}/${kind}`,);
               setCurrentSongs(response.data)
               setIsLoading(false)
+              console.log(response)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -34,10 +32,8 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
 
     const fetchYaSongLink = async (id) => {
           try {
-            setIsLoading(true)
             const response = await axios.get(
               `http://localhost:5051/ya/tracks/${id}`,);
-              setIsLoading(false)
             return response.data
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -46,11 +42,9 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
       };
 
       const fetchYaSongInfo = async (id) => {
-        setIsLoading(true)
         try {
           const response = await axios.get(
             `http://localhost:5051/ya/trackinfo/${id}`,);
-            setIsLoading(false)
           return response.data
         } catch (err) {
           console.error('Ошибка при получении списка треков:', err);
@@ -60,21 +54,14 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
 
     useEffect(()=>{
         if (isplaying){
-            setisplaying(false)
         const handleTrackChange = async (song) => {
-            let link = await fetchYaSongLink(song.id)
-            if (!link){
-                setCurrentSong(prevSong)
-            } else {
                 setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
-            }
         }
         handleTrackChange(currentSong)
     }
       },[currentSong.id])
 
       useEffect(()=>{
-        console.log(currentPlaylist)
         const handleFeed = async () => {
         if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
          let result = await Promise.all(currentPlaylist.tracks.map(async (track) => {
@@ -82,23 +69,24 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
         }));
         setCurrentSongs(result)
 
-        } else {
-          fetchPlaylistSongs(currentPlaylist.kind)
+        } else if (currentPlaylist.owner) {
+          fetchPlaylistSongs(currentPlaylist.owner.uid,currentPlaylist.kind)
         }
       }
       handleFeed()
       },[currentPlaylist])
 
+      if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className='playlist-songs-list'>
 
-                          <div className='playlist-header'>
+                          {/* <div className='playlist-header'>
                 {currentPlaylist ? currentPlaylist.title : ""}
-            </div>
+            </div> */}
               <div className='playlist-songs-container'>
             {currentSongs ? (currentSongs.map((song) => (
-              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
+              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading ? handleSongClick(song) : console.log("Error ")}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>

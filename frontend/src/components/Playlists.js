@@ -37,10 +37,10 @@ const Playlists = ({setCurrentPlaylist}) => {
         fetchYaMudicSongs()
       },[])
 
-      if (isLoading) return <div>Загрузка заебал</div>
+      if (isLoading) return <div>Загрузка</div>
 
     return (
-        <div className='playlists-container'>
+        <div className='playlists-container' style={{display:"none"}}>
                         <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
             {allPlaylists ? (
                 <div className="playlists">           
