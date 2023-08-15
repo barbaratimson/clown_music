@@ -88,7 +88,7 @@ const Navbar = ({setCurrentSong,setisplaying,currentSong,isplaying,setCurrentPla
         
     </div>
     </div>
-    <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button>
+    {/* <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button> */}
     <div className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
         <div className ="user-username">Barbaratimson</div>
         <div className="user-avatar">
