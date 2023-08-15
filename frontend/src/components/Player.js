@@ -173,7 +173,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     let a = setTimeout(()=>{
       setfrequencyData(getAnalyzerInfo())
       renderVisualizer()
-    },20)
+    },30)
     return ()=>clearTimeout(a)
   })
 
@@ -221,10 +221,10 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
       <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
-      <div className='playing-controls'>
+      {/* <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
-      </div>
+      </div> */}
       <div className='audio-volume-container'>    
             <div className='audio-volume'>
             <input type="range" min={0} max={100} value={audioVolume*100} onChange={(e)=>ChangeVolume(e)}></input>
