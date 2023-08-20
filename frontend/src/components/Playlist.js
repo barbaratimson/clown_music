@@ -52,6 +52,16 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
         }
     };
 
+    function millisToMinutesAndSeconds(millis) {
+      if (millis){
+      var minutes = Math.floor(millis / 60000);
+      var seconds = ((millis % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+      } else {
+        return '-:-'
+      }
+    }
+
     useEffect(()=>{
         if (isplaying){
         const handleTrackChange = async (song) => {
@@ -95,6 +105,9 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
                  </div>
                  <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
                  {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
+                 </div>
+                 <div className='playlist-song-duration'>
+                    {millisToMinutesAndSeconds(song.durationMs)}
                  </div>
              </div>
             ))):(" ")}

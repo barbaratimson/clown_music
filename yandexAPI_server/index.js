@@ -19,7 +19,7 @@ let getPlaylistTracks= async (kind,userId) => {
   }
 };
 
-let getFeed= async () => {
+let getFeed = async () => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
     let result = await api.getFeed();
@@ -33,6 +33,16 @@ let getPlaylists = async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
     let result = await api.getUserPlaylists(id);
+    return result
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+let getPlaylistsRichTracks = async (id=267472538) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let result = await api.getLikedTracks(id);
     return result
   } catch (e) {
     console.log(`api error ${e.message}`);
@@ -73,9 +83,17 @@ app.get('/ya/trackinfo/:id', async (req,res) =>{
 
 app.get('/ya/myTracks', async (req,res)=>{
   let tracks = await getPlaylistTracks(3)
-  tracks.title = "Мои треки"
+  tracks.title = "Мне нравится"
   res.json(tracks)
 })
+
+app.get('/ya/myTracks', async (req,res)=>{
+  let tracks = await getPlaylistTracks(3)
+  tracks.title = "Мне нравится"
+  res.json(tracks)
+})
+
+
 
 app.get('/ya/playlist/tracks/:userId/:kind', async (req,res)=>{
   let userId = req.params.userId
@@ -109,6 +127,11 @@ app.get('/ya/search/:query', async (req,res)=>{
   res.json(result)
 })
 
+app.get('/ya/LikedTracks', async (req,res)=>{
+  let query = req.params.query
+  let result = await getPlaylistsRichTracks()
+  res.json(result)
+})
 
 
 // 65758301

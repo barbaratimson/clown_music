@@ -30,55 +30,52 @@ const Main = () => {
 
     const audioElem = useRef();
 
-    const fetchSongs = async () => {
-        setIsLoading(true)
-          try {
-            const response = await axios.get(
-              'http://localhost:5050/',);
-              setPlaylistData(response.data)
-              setIsLoading(false)
-          } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-            if (err.code === "!-Error code here-!"){
-                alert("!-Error code here-!")
-            } else {
-                alert("Server unavailable")
-            }
-          }
-      };
+    // const fetchSongs = async () => {
+    //     setIsLoading(true)
+    //       try {
+    //         const response = await axios.get(
+    //           'http://localhost:5050/',);
+    //           setPlaylistData(response.data)
+    //           setIsLoading(false)
+    //       } catch (err) {
+    //         console.error('Ошибка при получении списка треков:', err);
+    //         console.log(err)
+    //         if (err.code === "!-Error code here-!"){
+    //             alert("!-Error code here-!")
+    //         } else {
+    //             alert("Server unavailable")
+    //         }
+    //       }
+    //   };
 
       
-    useEffect(()=>{
-        fetchSongs()
-    },[])
+    // useEffect(()=>{
+    //     fetchSongs()
+    // },[])
 
     if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className="page-content">
         <Navbar setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+        <div className='page-wrapper'> 
         <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
-        {playlistData && playlistData.length !== 0 ? (
             <div className='player-wrapper'> 
        <Player 
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
-         setPrevSong={setPrevSong} currentSongs = {currentSongs}
+         setPrevSong={setPrevSong} prevSong={prevSong}
+         currentSongs = {currentSongs}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          setDominantColor={setDominantColor} dominantColor={dominantColor}
          />
-         <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem.current} prevSong = {prevSong} setPrevSong={setPrevSong}/>
+           <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem.current} prevSong = {prevSong} setPrevSong={setPrevSong}/>
       </div>
-        ):(
-            <></>
-        )
-        }
-
-    {/* <div className='footer'>
+        </div>
+    <div className='footer'>
         <div className="">Sergey Sokolov CLOWN_MUSIC 2023</div>
-    </div> */}
+    </div>
     </div>
 
 

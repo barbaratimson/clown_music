@@ -26,6 +26,7 @@ const Playlists = ({setCurrentPlaylist}) => {
               setAllPlaylists(prev =>[...prev,response.data])
               setIsLoading(false)
               setCurrentPlaylist(response.data)
+              console.log(response.data)
           } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -40,7 +41,7 @@ const Playlists = ({setCurrentPlaylist}) => {
       if (isLoading) return <div>Загрузка</div>
 
     return (
-        <div className='playlists-container' style={{display:"none"}}>
+        <div className='playlists-container'>
                         <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
             {allPlaylists ? (
                 <div className="playlists">           
@@ -49,7 +50,7 @@ const Playlists = ({setCurrentPlaylist}) => {
                 <div className="playlist-card-image">
                     <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
                     <div className="playlist-card-desc">{playlist.title}</div>
-                    <div className="playlist-card-length">{playlist.trackCount}</div>
+                    {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
                     <div className="playlist-card-play">
                         
                     </div>
