@@ -8,6 +8,7 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
         if (song.id === currentSong.id && isplaying){
             setisplaying(false)
         } else if (!isSongLoading && song.id !== currentSong.id) {
+          audioElem.current.src = ' '
             setCurrentSong(song)
             setisplaying(true)
         } else {

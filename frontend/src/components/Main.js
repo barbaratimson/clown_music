@@ -9,6 +9,7 @@ import PlaylistYaMusic from './PlaylistYaMusic';
 import Router from '../router';
 import Playlists from './Playlists';
 import PlaylistsFeed from './PlaylistsFeed';
+import NavPanel from './NavPanel';
 
 const Main = () => {
 
@@ -58,6 +59,7 @@ const Main = () => {
     return (
         <div className="page-content">
         <Navbar setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+        <NavPanel/>
         <div className='page-wrapper'> 
         <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
             <div className='player-wrapper'> 
@@ -66,11 +68,18 @@ const Main = () => {
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
          setPrevSong={setPrevSong} prevSong={prevSong}
-         currentSongs = {currentSongs}
+         currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          setDominantColor={setDominantColor} dominantColor={dominantColor}
          />
-           <Playlist isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSongs={currentSongs}  playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa} currentSong={currentSong} setCurrentSong={setCurrentSong} setisplaying={setisplaying} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem.current} prevSong = {prevSong} setPrevSong={setPrevSong}/>
+           <Playlist 
+           isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs}
+            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
+              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
+               currentSong={currentSong} setCurrentSong={setCurrentSong}
+                setisplaying={setisplaying} isplaying={isplaying}
+                 setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
+                  prevSong = {prevSong} setPrevSong={setPrevSong}/>
       </div>
         </div>
     <div className='footer'>

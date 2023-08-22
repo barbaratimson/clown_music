@@ -18,6 +18,7 @@ const Playlists = ({setCurrentPlaylist}) => {
             console.log(err)
           }
       };
+      
       const fetchYaMudicSongs = async () => {
         setIsLoading(true)
           try {
@@ -48,12 +49,11 @@ const Playlists = ({setCurrentPlaylist}) => {
                 {allPlaylists.map((playlist) => playlist.available ? (
                 <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist)}}>
                 <div className="playlist-card-image">
-                    <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
+                <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
+                </div>
+                <div className='playlist-card-info'>
                     <div className="playlist-card-desc">{playlist.title}</div>
                     {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
-                    <div className="playlist-card-play">
-                        
-                    </div>
                 </div>
             </div>
             ):(null))}  

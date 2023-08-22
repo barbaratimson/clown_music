@@ -5,7 +5,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(false);
-    const fetchSongs = async () => {
+    const fetchFeedPlaylists = async () => {
         setIsLoading(true)
           try {
             const response = await axios.get(
@@ -22,7 +22,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
       };
 
       useEffect(()=>{
-        fetchSongs()
+        fetchFeedPlaylists()
       },[])
 
       if (isLoading) return <div>Загрузка</div>
@@ -32,15 +32,14 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
-                <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist)}}>
-                <div className="playlist-card-image">
-                    <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
-                    <div className="playlist-card-desc">{playlist.title}</div>
-                    {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
-                    <div className="playlist-card-play">
-                        
-                    </div>
-                </div>
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist)}}>
+                  <div className="playlist-card-image">
+                  <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
+                  </div>
+                  <div className='playlist-card-info'>
+                      <div className="playlist-card-desc">{playlist.title}</div>
+                      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+                  </div>
             </div>
             ):(null))}  
             </div>
