@@ -61,7 +61,10 @@ const Main = () => {
         <Navbar setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <NavPanel/>
         <div className='page-wrapper'> 
+        <div className='playlists-container'>
+        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
         <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
+        </div>
             <div className='player-wrapper'> 
        <Player 
        isplaying={isplaying} setisplaying={setisplaying}
@@ -73,7 +76,8 @@ const Main = () => {
          setDominantColor={setDominantColor} dominantColor={dominantColor}
          />
            <Playlist 
-           isSongLoading={isSongLoading} setCurrentSongs={setCurrentSongs}
+           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+           setCurrentSongs={setCurrentSongs}
             currentPlaylist={currentPlaylist} currentSongs={currentSongs}
               playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                currentSong={currentSong} setCurrentSong={setCurrentSong}
@@ -81,6 +85,9 @@ const Main = () => {
                  setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                   prevSong = {prevSong} setPrevSong={setPrevSong}/>
       </div>
+        <div className='scroll-to-top'>
+            <button className='scroll-to-top-button' type=""></button>
+        </div>
         </div>
     <div className='footer'>
         <div className="">Sergey Sokolov CLOWN_MUSIC 2023</div>

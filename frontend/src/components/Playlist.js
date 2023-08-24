@@ -2,17 +2,17 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
-const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading, prevSong}) => {
+const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
   const [isLoading,setIsLoading] = useState()
     const handleSongClick = async (song) => {
         if (song.id === currentSong.id && isplaying){
-            setisplaying(false)
-        } else if (!isSongLoading && song.id !== currentSong.id) {
+            audioElem.current.pause()
+        } else if (song.id !== currentSong.id) {
+          setIsSongLoading(true)
           audioElem.current.src = ' '
             setCurrentSong(song)
-            setisplaying(true)
-        } else {
-            setisplaying(true)
+        } else{
+            audioElem.current.play()
       }
     }
 
@@ -64,12 +64,10 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
     }
 
     useEffect(()=>{
-        if (isplaying){
         const handleTrackChange = async (song) => {
                 setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
-        }
-        handleTrackChange(currentSong)
     }
+    handleTrackChange(currentSong)
       },[currentSong.id])
 
       useEffect(()=>{

@@ -1,7 +1,6 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import PlaylistsFeed from './PlaylistsFeed';
 const Playlists = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
@@ -25,9 +24,9 @@ const Playlists = ({setCurrentPlaylist}) => {
             const response = await axios.get(
               'http://localhost:5051/ya/myTracks',);
               setAllPlaylists(prev =>[...prev,response.data])
-              setIsLoading(false)
               setCurrentPlaylist(response.data)
               console.log(response.data)
+              setIsLoading(false)
           } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -42,8 +41,7 @@ const Playlists = ({setCurrentPlaylist}) => {
       if (isLoading) return <div>Загрузка</div>
 
     return (
-        <div className='playlists-container'>
-                        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
+        <div>
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (

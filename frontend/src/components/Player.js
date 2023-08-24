@@ -113,7 +113,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   const handleKeyPress = (e) => {
     if (e.key === " " && e.srcElement.tagName !== "INPUT"){
       e.preventDefault()
-        setisplaying(!isplaying)
+      !isplaying ? audioElem.current.play() : audioElem.current.pause()
       }
   }
 
@@ -155,10 +155,11 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   });
 
   useEffect(() => {
-    if (isplaying && !isSongLoading){
+    try {
             audioElem.current.play()
-            setisplaying(true)
-    }
+  } catch (e) {
+    console.error(e)
+  }
     
   }, [currentSong.url,currentSong.title])
 
@@ -197,22 +198,22 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 
 
 
-  useEffect(() => {
-    if (isplaying) {
-      audioElem.current.play();
-      if (currentSong.progress){ 
-        audioElem.current.currentTime = currentSong.progress/100 * currentSong.length
-      }
-    }
-    else {
-      audioElem.current.pause();
-    }
+  // useEffect(() => {
+  //   if (isplaying) {
+  //     audioElem.current.play();
+  //     if (currentSong.progress){ 
+  //       audioElem.current.currentTime = currentSong.progress/100 * currentSong.length
+  //     }
+  //   }
+  //   else {
+  //     audioElem.current.pause();
+  //   }
 
-  }, [isplaying])
+  // }, [isplaying])
 
   return (
     <div className={`player ${isplaying ? "active" : ""}`}>
-      <div className='player-image-section' onClick={()=>{setisplaying(!isplaying)}}>
+      <div className='player-image-section' onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}>
       <div className='image'>
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300` : ""} loading= "lazy" alt=""></img>
       </div>
@@ -226,13 +227,13 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       </div>
       <div className="controls">
         <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
-        {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={()=>{setisplaying(!isplaying)}}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={()=>{setisplaying(!isplaying)}}/>}
+        {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={()=>{audioElem.current.pause()}}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={()=>{audioElem.current.play()}}/>}
         <BsFillSkipEndCircleFill style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
-      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(true)}} onCanPlay={()=>{setIsSongLoading(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(true)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
