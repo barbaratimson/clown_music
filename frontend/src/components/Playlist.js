@@ -9,6 +9,8 @@ const Playlist = ({currentPlaylist,audioElem, currentSong, setCurrentSong,isplay
             audioElem.current.pause()
         } else if (song.id !== currentSong.id) {
           setIsSongLoading(true)
+          audioElem.current.currentTime = 0
+          currentSong.progress = 0
           audioElem.current.src = ' '
             setCurrentSong(song)
         } else{

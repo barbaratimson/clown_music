@@ -155,12 +155,12 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   });
 
   useEffect(() => {
-    try {
-            audioElem.current.play()
-  } catch (e) {
-    console.error(e)
-  }
-    
+    if (currentSong.available){
+    audioElem.current.play()
+    .catch(e=>console.warn(e))
+    } else {
+      skiptoNext()
+    }
   }, [currentSong.url,currentSong.title])
 
 
@@ -222,18 +222,18 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       </div>
       </div>
       <div className='player-controls-section'>
-      <div className="title">
-        {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
-      </div>
       <div className="controls">
         <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
         {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={()=>{audioElem.current.pause()}}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={()=>{audioElem.current.play()}}/>}
         <BsFillSkipEndCircleFill style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
+      <div className="title">
+        {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
+      </div>
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
-      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}} onError={(e)=>{setIsSongLoading(true)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{currentSong.url !== "" ?setIsSongLoading(true) : console.log("Error")}}  onError={(e)=>{currentSong.url !== "" ?setIsSongLoading(true) : console.log("Error")}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
