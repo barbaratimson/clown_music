@@ -5,7 +5,6 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import Player from './Player';
 import Playlist from './Playlist';
-import PlaylistYaMusic from './PlaylistYaMusic';
 import Router from '../router';
 import Playlists from './Playlists';
 import PlaylistsFeed from './PlaylistsFeed';

@@ -155,11 +155,11 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   });
 
   useEffect(() => {
-    if (currentSong.available){
-    audioElem.current.play()
-    .catch(e=>console.warn(e))
-    } else {
+    if (!currentSong.available){
       skiptoNext()
+    } else {
+      audioElem.current.play()
+      .catch(e=>console.warn(e))
     }
   }, [currentSong.url,currentSong.title])
 
