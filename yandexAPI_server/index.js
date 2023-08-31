@@ -1,13 +1,16 @@
-import { YMApi } from "ym-api";
+import { YMApi, WrappedYMApi } from "ym-api";
 import express from 'express'
 import cors from 'cors'
 import {} from 'dotenv/config'
+import { timeStamp } from "console";
 
 const app = express()
 
 app.use(cors())
 
 const api = new YMApi();
+
+const wrappedYMApi = new WrappedYMApi();
 
 let getPlaylistTracks= async (kind,userId) => {
   try {
@@ -29,6 +32,7 @@ let getFeed = async () => {
   }
 };
 
+
 let getPlaylists = async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
@@ -39,10 +43,10 @@ let getPlaylists = async (id) => {
   }
 };
 
-let getPlaylistsRichTracks = async (id=267472538) => {
+let getLikedTracks = async (userId=process.env.USER_ID) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
-    let result = await api.getLikedTracks(id);
+    let result = await api.getLikedTracks(userId);
     return result
   } catch (e) {
     console.log(`api error ${e.message}`);
@@ -53,10 +57,47 @@ let getPlaylistsRichTracks = async (id=267472538) => {
 let getTrackLink = async (id) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
-    const info = await api.getTrackDownloadInfo(`${id}`);
-    const link = await api.getTrackDirectLink(info[1].downloadInfoUrl);
+    let info = await api.getTrackDownloadInfo(`${id}`);
+    info = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
+    const link = await api.getTrackDirectLink(info.downloadInfoUrl);
     if (link){
     return link
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+let getTrackSupplement = async (id) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let lyrics = await api.getTrackSupplement(`${id}`);
+    if (lyrics){
+    return lyrics
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+let likeTracks = async (userId,tracks) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let response = await api.likeTracks(userId,tracks);
+    if (response){
+    return response
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+let dislikeTracks = async (userId,tracks) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let response = await api.dislikeTracks(userId,tracks);
+    if (response){
+    return response
     }
   } catch (e) {
     console.log(`api error ${e.message}`);
@@ -70,9 +111,10 @@ let searchTracks = async (query) => {
     const result = await api.search(query);
     return result
   } catch (e) {
-    console.log(`api error ${e.message}`);
+    console.log(`api error ${e}`);
   }
 };
+
 
 app.get('/ya/trackinfo/:id', async (req,res) =>{
   let id = req.params.id
@@ -87,12 +129,10 @@ app.get('/ya/myTracks', async (req,res)=>{
   res.json(tracks)
 })
 
-app.get('/ya/myTracks', async (req,res)=>{
-  let tracks = await getPlaylistTracks(3)
-  tracks.title = "Мне нравится"
+app.get('/ya/likedTracks', async (req,res)=>{
+  let tracks = await getLikedTracks()
   res.json(tracks)
 })
-
 
 
 app.get('/ya/playlist/tracks/:userId/:kind', async (req,res)=>{
@@ -108,6 +148,12 @@ app.get('/ya/playlist/tracks/:userId/:kind', async (req,res)=>{
 app.get('/ya/tracks/:id', async (req,res)=>{
   let id = req.params.id
   let track = await getTrackLink(id)
+  res.json(track)
+})
+
+app.get('/ya/tracks/:id/supplement', async (req,res)=>{
+  let id = req.params.id
+  let track = await getTrackSupplement(id)
   res.json(track)
 })
 
@@ -127,11 +173,23 @@ app.get('/ya/search/:query', async (req,res)=>{
   res.json(result)
 })
 
-app.get('/ya/LikedTracks', async (req,res)=>{
-  let query = req.params.query
-  let result = await getPlaylistsRichTracks()
+app.get('/ya/likeTracks/:userId/:track', async (req,res)=>{
+  let tracks = req.params.track
+  let userId = req.params.userId
+  console.log(tracks,userId)
+  let result = await likeTracks(userId,tracks)
   res.json(result)
 })
+
+app.get('/ya/dislikeTracks/:userId/:track', async (req,res)=>{
+  let tracks = req.params.track
+  let userId = req.params.userId
+  console.log(tracks,userId)
+  let result = await dislikeTracks(userId,tracks)
+  res.json(result)
+})
+
+
 
 
 // 65758301

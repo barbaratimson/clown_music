@@ -14,7 +14,6 @@ const Playlists = ({setCurrentPlaylist}) => {
               setIsLoading(false)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
           }
       };
       
@@ -25,11 +24,9 @@ const Playlists = ({setCurrentPlaylist}) => {
               'http://localhost:5051/ya/myTracks',);
               setAllPlaylists(prev =>[...prev,response.data])
               setCurrentPlaylist(response.data)
-              console.log(response.data)
               setIsLoading(false)
           } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
           }
       };
 

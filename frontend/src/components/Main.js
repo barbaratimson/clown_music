@@ -25,39 +25,36 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
     const [isSongLoading,setIsSongLoading]= useState(false)
-    const [dominantColor,setDominantColor]= useState(false)
     const [showPlaylists,setShowPlaylists] = useState(false)
+    const [likedSongs,setLikedSongs] = useState([])
 
     const audioElem = useRef();
 
-    // const fetchSongs = async () => {
-    //     setIsLoading(true)
-    //       try {
-    //         const response = await axios.get(
-    //           'http://localhost:5050/',);
-    //           setPlaylistData(response.data)
-    //           setIsLoading(false)
-    //       } catch (err) {
-    //         console.error('Ошибка при получении списка треков:', err);
-    //         console.log(err)
-    //         if (err.code === "!-Error code here-!"){
-    //             alert("!-Error code here-!")
-    //         } else {
-    //             alert("Server unavailable")
-    //         }
-    //       }
-    //   };
+    const fetchLikedSongs = async (id) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5051/ya/likedTracks`,);
+          setLikedSongs(response.data.library.tracks)
+        } catch (err) {
+          console.error('Ошибка при получении списка треков:', err);
+          console.log(err)
+        }
+    };
 
       
-    // useEffect(()=>{
-    //     fetchSongs()
-    // },[])
+    useEffect(()=>{
+        fetchLikedSongs()
+    },[])
 
+
+    useEffect(()=>{
+      console.log(likedSongs)
+  },[likedSongs])
     if (isLoading) return <div>Загрузка</div>
 
     return (
         <div className="page-content">
-        <Navbar setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+        <Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <NavPanel/>
         <div className='page-wrapper'> 
         <div className='playlists-container'>
@@ -72,7 +69,6 @@ const Main = () => {
          setPrevSong={setPrevSong} prevSong={prevSong}
          currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-         setDominantColor={setDominantColor} dominantColor={dominantColor}
          />
            <Playlist 
            isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
@@ -82,7 +78,9 @@ const Main = () => {
                currentSong={currentSong} setCurrentSong={setCurrentSong}
                 setisplaying={setisplaying} isplaying={isplaying}
                  setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
-                  prevSong = {prevSong} setPrevSong={setPrevSong}/>
+                  prevSong = {prevSong} setPrevSong={setPrevSong}
+                  likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
+                  />
       </div>
         <div className='scroll-to-top'>
             <button className='scroll-to-top-button' type=""></button>

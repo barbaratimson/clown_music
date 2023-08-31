@@ -233,7 +233,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
         </div>
-      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{currentSong.url !== "" ?setIsSongLoading(true) : console.log("Error")}}  onError={(e)=>{currentSong.url !== "" ?setIsSongLoading(true) : console.log("Error")}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{currentSong.url !== "" ?setIsSongLoading(true) : console.log("Error")}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
       <div className='playing-controls'>
         <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>

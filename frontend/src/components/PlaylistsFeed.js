@@ -20,7 +20,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
             console.log(err)
           }
       };
-
+    
       useEffect(()=>{
         fetchFeedPlaylists()
       },[])

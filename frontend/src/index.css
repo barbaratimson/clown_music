@@ -360,7 +360,7 @@ nav .logo {
     overflow: hidden;
     align-items: center;
     width: 60%;
-    height: 95vh;
+    height: 100vh;
     color: rgb(218, 218, 218);
     background-color: rgb(0, 0, 0,0.2);
     /* transition: background-color 1s; */
@@ -378,6 +378,7 @@ nav .logo {
     left: 0;
     margin-bottom: 10px;
     background-color: rgb(0, 0, 0);
+    /* background-color: transparent; */
 }
 
 .player-image-section {
@@ -386,7 +387,7 @@ nav .logo {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50%;
+    height: 60%;
 }
 
 .player.active {
@@ -431,6 +432,7 @@ nav .logo {
         justify-content: center;
         padding-top: 20px;
         z-index: 1;
+        user-select: none;
     }
 
     .second-image {
@@ -443,15 +445,16 @@ nav .logo {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        filter: blur(10px);
+        filter: blur(4px);
         z-index: -1;
         opacity: 1;
+        user-select: none;
     }
 
     .second-image > img {
-        width: 150%;
         height: 150%;
-        opacity: 0.5;
+        box-sizing: border-box;
+        opacity: 0.2;
     }   
     
 
@@ -654,7 +657,20 @@ nav .logo {
             padding-right: 25px;
         }
 
- 
+        .playlist-song-actions {
+            height: 100%;
+        }
+
+        .playlist-song-like-button {
+            text-align: center;
+            padding: 5px;
+            user-select: none;
+        }
+
+        .playlist-song-like-button:hover {
+            background-color: #525252;
+        }
+        
         .song-current {
             scale: 1.01;
             background-color:rgb(214, 0, 28,0.2);
@@ -665,13 +681,8 @@ nav .logo {
             animation: color-pulse 2.4s ease-in infinite;
         }
 
-        .song-current:hover {
-            scale: 1.01;
-            background-color:var(--secondary-color);
-        }
-
         .song-current:hover .playlist-song-duration {
-            padding-right: 20px;
+            padding-right: 10px;
         }
 
         .song-current.paused {
@@ -680,14 +691,14 @@ nav .logo {
             animation:none;
         }
 
+        .song-current:hover{
+            border: 0;
+            scale: 1.015;
+        }
         .song-current.paused:hover {
             scale: 1.007;
         }
 
-        .song-current:hover{
-            border: 0;
-            scale: 1.013;
-        }
 
         .song-card{
             display: flex;

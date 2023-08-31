@@ -3,24 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 
-const Navbar = ({setCurrentSong,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
+const Navbar = ({setCurrentSong,setIsSongLoading,audioElem,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     
     const handleSongClick = async (song) => {
-        console.log(song)
-        if (currentSong.url !== ''){
-          if (song.id === currentSong.id && isplaying){
-              setisplaying(false)
-          } else if (song.id !== currentSong.id &&  currentSong.url !== '') {
-              setCurrentSong(song)
-              setisplaying(true)
-          } else {
-              setisplaying(true)
-          }
-        }
+        if (song.id === currentSong.id && isplaying){
+            audioElem.current.pause()
+        } else if (song.id !== currentSong.id) {
+          setIsSongLoading(true)
+          audioElem.current.currentTime = 0
+          currentSong.progress = 0
+          audioElem.current.src = ' '
+            setCurrentSong(song)
+        } else{
+            audioElem.current.play().catch(err=>console.error(err))
       }
+    }
 
     const handleSearch = async () => {
         if (search){
