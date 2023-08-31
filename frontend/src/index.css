@@ -829,8 +829,8 @@ nav .logo {
 
 @media screen and (max-width:480px) {
     body {
-        width: 100dvw;
-        height: 100dvh;
+        width: 100vw;
+        height: 100vh;
         overflow-x: hidden;
     }
     .player-wrapper {
@@ -846,7 +846,7 @@ nav .logo {
 
     .player {
         width: 100%;
-        height: 75dvh;
+        height: 75vh;
     }
 
     .playlists-container {
