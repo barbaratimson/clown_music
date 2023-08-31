@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const Navbar = ({setCurrentSong,setIsSongLoading,audioElem,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
@@ -26,7 +28,7 @@ const Navbar = ({setCurrentSong,setIsSongLoading,audioElem,setisplaying,currentS
         if (search){
           try {
             const response = await axios.get(
-              `http://localhost:5051/ya/search/${search}`,);
+              `${link}/ya/search/${search}`,);
               setSearchResults(response.data)
               console.log(response.data)
           } catch (err) {

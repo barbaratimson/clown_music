@@ -1,6 +1,9 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const PlaylistsFeed = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
@@ -9,7 +12,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              'http://localhost:5051/ya/feed',);
+              `${link}/ya/feed`,);
               let playlists = response.data.generatedPlaylists.map((playlist) => {
                 return playlist.data
             })

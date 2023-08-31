@@ -2,6 +2,9 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
+
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
   const [isLoading,setIsLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
@@ -23,7 +26,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `http://localhost:5051/ya/playlist/tracks/${userId}/${kind}`,);
+              `${link}/ya/playlist/tracks/${userId}/${kind}`,);
               setCurrentSongs(response.data)
               setIsLoading(false)
               console.log(response)
@@ -37,7 +40,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
     const fetchYaSongLink = async (id) => {
           try {
             const response = await axios.get(
-              `http://localhost:5051/ya/tracks/${id}`,);
+              `${link}/ya/tracks/${id}`,);
             return response.data
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -48,7 +51,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
       const fetchYaSongInfo = async (id) => {
         try {
           const response = await axios.get(
-            `http://localhost:5051/ya/trackinfo/${id}`,);
+            `${link}/ya/trackinfo/${id}`,);
           return response.data
         } catch (err) {
           console.error('Ошибка при получении списка треков:', err);
@@ -60,7 +63,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
     const fetchYaSongSupplement = async (id) => {
       try {
         const response = await axios.get(
-          `http://localhost:5051/ya/tracks/${id}/supplement`,);
+          `${link}/ya/tracks/${id}/supplement`,);
         return response.data
       } catch (err) {
         console.error('Ошибка при получении списка треков:', err);
@@ -71,7 +74,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
   const likeSong = async (song) => {
     try {
       const response = await axios.get(
-        `http://localhost:5051/ya/likeTracks/${267472538}/${song.id}`,);
+        `${link}/ya/likeTracks/${267472538}/${song.id}`,);
         return response.data
     } catch (err) {
       console.error('Ошибка при получении списка треков:', err);
@@ -82,7 +85,7 @@ const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, current
 const dislikeSong = async (song) => {
   try {
     const response = await axios.get(
-      `http://localhost:5051/ya/dislikeTracks/${267472538}/${song.id}`,);
+      `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
     return response.data
   } catch (err) {
     console.error('Ошибка при получении списка треков:', err);
@@ -123,7 +126,6 @@ const dislikeSong = async (song) => {
       },[currentSong.id])
 
       useEffect(()=>{
-        console.log(currentPlaylist)
         const handleFeed = async () => {
         if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
          let result = await Promise.all(currentPlaylist.tracks.map(async (track) => {

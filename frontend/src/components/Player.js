@@ -136,7 +136,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
     for (let i = 0;i<data.length;i++) {
       let columnHeight = data[i] * heightScale
       let color = `rgb(${data[i]+40},0,0)`
-      // let color = dominantColor
       drawColumns(xPos,columnWidth,columnHeight,color)
       
       xPos += columnWidth -1
@@ -196,21 +195,6 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
 },[window.innerWidth, window.innerHeight])
 
 
-
-
-  // useEffect(() => {
-  //   if (isplaying) {
-  //     audioElem.current.play();
-  //     if (currentSong.progress){ 
-  //       audioElem.current.currentTime = currentSong.progress/100 * currentSong.length
-  //     }
-  //   }
-  //   else {
-  //     audioElem.current.pause();
-  //   }
-
-  // }, [isplaying])
-
   return (
     <div className={`player ${isplaying ? "active" : ""}`}>
       <div className='player-image-section' onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}>
@@ -218,7 +202,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300` : ""} loading= "lazy" alt=""></img>
       </div>
       <div className='second-image'>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/400x400` : ""} loading= "lazy" alt=""></img>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : ""} loading= "lazy" alt=""></img>
       </div>
       </div>
       <div className='player-controls-section'>

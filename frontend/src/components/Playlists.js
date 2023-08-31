@@ -1,6 +1,9 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const Playlists = ({setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
@@ -9,7 +12,7 @@ const Playlists = ({setCurrentPlaylist}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              'http://localhost:5051/ya/playlists',);
+              `${link}/ya/playlists`,);
               setAllPlaylists(response.data)
               setIsLoading(false)
           } catch (err) {
@@ -21,7 +24,7 @@ const Playlists = ({setCurrentPlaylist}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              'http://localhost:5051/ya/myTracks',);
+              `${link}/ya/myTracks`,);
               setAllPlaylists(prev =>[...prev,response.data])
               setCurrentPlaylist(response.data)
               setIsLoading(false)

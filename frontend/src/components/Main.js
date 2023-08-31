@@ -47,9 +47,6 @@ const Main = () => {
     },[])
 
 
-    useEffect(()=>{
-      console.log(likedSongs)
-  },[likedSongs])
     if (isLoading) return <div>Загрузка</div>
 
     return (
