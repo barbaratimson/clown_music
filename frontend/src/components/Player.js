@@ -154,12 +154,8 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
   });
 
   useEffect(() => {
-    if (!currentSong.available){
-      skiptoNext()
-    } else {
       audioElem.current.play()
       .catch(e=>console.warn(e))
-    }
   }, [currentSong.url,currentSong.title])
 
 
@@ -212,7 +208,7 @@ const Player = ({isplaying, setisplaying, currentSongs, audioVolume, setAudioVol
         <BsFillSkipEndCircleFill style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
       <div className="title">
-        {currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
+        {currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
       </div>
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>

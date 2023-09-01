@@ -118,9 +118,9 @@ const dislikeSong = async (song) => {
     }
 
     useEffect(()=>{
-        const handleTrackChange = async (song) => {
-          console.log(await fetchYaSongSupplement(currentSong.id))
-                setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
+        const handleTrackChange = async (song) => {       
+            console.log(await fetchYaSongSupplement(currentSong.id))
+                  setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
     }
     handleTrackChange(currentSong)
       },[currentSong.id])

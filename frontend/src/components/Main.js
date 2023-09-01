@@ -10,6 +10,8 @@ import Playlists from './Playlists';
 import PlaylistsFeed from './PlaylistsFeed';
 import NavPanel from './NavPanel';
 
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const Main = () => {
 
     let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))
@@ -33,7 +35,7 @@ const Main = () => {
     const fetchLikedSongs = async (id) => {
         try {
           const response = await axios.get(
-            `http://localhost:5051/ya/likedTracks`,);
+            `${link}/ya/likedTracks`,);
           setLikedSongs(response.data.library.tracks)
         } catch (err) {
           console.error('Ошибка при получении списка треков:', err);
