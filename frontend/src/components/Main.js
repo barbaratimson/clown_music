@@ -86,7 +86,7 @@ const Main = () => {
         </div>
         </div>
     <div className='footer'>
-        <div className="">Sergey Sokolov CLOWN_MUSIC 2023</div>
+        <div className="footer-content">Sergey Sokolov CLOWN_MUSIC 2023</div>
     </div>
     </div>
 

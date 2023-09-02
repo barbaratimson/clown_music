@@ -5,16 +5,16 @@ import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({currentPlaylist,audioElem, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
   const [isLoading,setIsLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
     const handleSongClick = async (song) => {
         if (song.id === currentSong.id && isplaying){
             audioElem.current.pause()
         } else if (song.id !== currentSong.id) {
-          setIsSongLoading(true)
           audioElem.current.currentTime = 0
           currentSong.progress = 0
+          setPrevSong(currentSong)
           audioElem.current.src = ' '
             setCurrentSong(song)
         } else{
@@ -118,9 +118,10 @@ const dislikeSong = async (song) => {
     }
 
     useEffect(()=>{
-        const handleTrackChange = async (song) => {       
-            console.log(await fetchYaSongSupplement(currentSong.id))
+        const handleTrackChange = async (song) => {  
+          setIsSongLoading(true)     
                   setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
+                  console.log(await fetchYaSongSupplement(currentSong.id))
     }
     handleTrackChange(currentSong)
       },[currentSong.id])
