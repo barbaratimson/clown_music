@@ -33,6 +33,7 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
         audioElem.current.currentTime = 0
         audioElem.current.play()
       } else {
+        audioElem.current.src = ""
         setCurrentSong(prevSong)
       }
   }
@@ -47,6 +48,7 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
       audioElem.current.play()
     } else if (playerRandom) {
       setPrevSong(currentSong)
+      audioElem.current.src = ""
            let randomSong = ()  => (Math.random() * (currentSongs.length - 0 + 1) ) << 0
       let newSongId = randomSong()
       if (currentSong.id === currentSongs[newSongId].id) {
@@ -57,6 +59,7 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
    }else if (!isSongLoading){
      const index = currentSongs.findIndex(x=>x.title === currentSong.title);
      setPrevSong(currentSong)
+     audioElem.current.src = ""
     if (index === currentSongs.length-1)
     { 
       setCurrentSong(currentSongs[0])
