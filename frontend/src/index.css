@@ -927,6 +927,10 @@ nav .logo {
         padding: 0 10px;
     }
 
+    .playlist-song-actions {
+        display: none;
+    }
+
     .playlist-song-duration {
         padding: 0;
     }
