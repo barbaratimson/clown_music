@@ -98,17 +98,14 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
       )
     ) {
       setDeviceType("Mobile");
+      audioVolume = 1
     } else {
       setDeviceType("Desktop");
     }
   }, []);
 
   useEffect(()=>{
-    if (deviceType === "Mobile"){
-      audioElem.current.volume = audioVolume*1;
-    } else {
     audioElem.current.volume = audioVolume*volumeMultiplier;
-    }
   },[audioVolume])
 
   useEffect(() => {
