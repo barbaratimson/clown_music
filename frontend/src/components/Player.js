@@ -5,6 +5,8 @@ let volumeMultiplier = 0.5
 const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
+  const [deviceType, setDeviceType] = useState("");
+
 
   const clickRef = useRef();
   const ChangeVolume = (e) =>  {
@@ -89,8 +91,24 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   }
 
 
+  useEffect(() => {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
+        navigator.userAgent
+      )
+    ) {
+      setDeviceType("Mobile");
+    } else {
+      setDeviceType("Desktop");
+    }
+  }, []);
+
   useEffect(()=>{
+    if (deviceType === "Mobile"){
+      audioElem.current.volume = audioVolume*1;
+    } else {
     audioElem.current.volume = audioVolume*volumeMultiplier;
+    }
   },[audioVolume])
 
   useEffect(() => {
