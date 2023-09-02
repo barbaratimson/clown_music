@@ -932,7 +932,7 @@ nav .logo {
     }
 
     .playlist-song-duration {
-        padding: 0;
+        padding-left: 10px;
     }
     .audio-volume {
         display: none;
