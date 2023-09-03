@@ -21,7 +21,7 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
     const offset = e.nativeEvent.offsetX;
 
     const divprogress = offset / width * 100;
-    let currentTime = divprogress / 100 * currentSong.length
+    let currentTime = divprogress / 100 * currentSong.duration
 
     if (audioElem.current.currentTime !== 0) {
         audioElem.current.currentTime=currentTime
@@ -79,15 +79,22 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   const onPlaying = (e) => {
     const duration = audioElem.current.duration;
     const ct = audioElem.current.currentTime;
-    setCurrentSong({ ...currentSong, "progress": ct / duration * 100, "length": duration })
+
+    if (audioElem.current.duration) {
+    navigator.mediaSession.setPositionState({
+      duration: audioElem.current.duration,
+      position: audioElem.current.currentTime,
+    });
+  }
+    setCurrentSong({ ...currentSong, "position": ct / duration * 100, "duration": duration })
     }
 
 
   const handleKeyPress = (e) => {
-    if (e.key === " " && e.srcElement.tagName !== "INPUT"){
-      e.preventDefault()
-      !isplaying ? audioElem.current.play() : audioElem.current.pause()
-      }
+   if (e.key === " " && e.srcElement.tagName !== "INPUT"){
+     e.preventDefault()
+     !isplaying ? audioElem.current.play() : audioElem.current.pause()
+     }
   }
 
 
@@ -102,7 +109,22 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
     } else {
       setDeviceType("Desktop");
     }
+
   }, []);
+
+  useEffect(() => {
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      skipBack()
+    });
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      skiptoNext()
+    });
+
+    navigator.mediaSession.setActionHandler("seekto", (e) => {
+      audioElem.current.currentTime = e.seekTime
+    });
+
+  },[]);
 
   useEffect(()=>{
     audioElem.current.volume = audioVolume*volumeMultiplier;
@@ -114,14 +136,26 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   });
 
   useEffect(() => {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentSong.title,
+      artist: currentSong.artists[0].name,
+      artwork: [
+        {
+          src: `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300`,
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ]
+    })
       audioElem.current.play()
       .catch(e=>console.warn(e))
   }, [currentSong.url,currentSong.title])
 
 
   useEffect(() => {
+    console.log(audioElem.current.currentTime)
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
-  }, [currentSong])
+  },[currentSong])
 
 
   useEffect(() => {
@@ -153,11 +187,13 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
         {currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name + " - " + currentSong.title :  currentSong.title}
       </div>
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
-          <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div>
+          <div className="seek_bar" style={{width: `${currentSong.position+"%"}`}}></div>
         </div>
-      <audio crossOrigin="anonymous" src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying} />
+      <audio autobuffer preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}>
+
+      </audio>
       <div className='playing-controls'>
-        <BsRepeat1 className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
+        <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
       </div>
       <div className='audio-volume-container'>    
