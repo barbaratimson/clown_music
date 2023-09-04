@@ -79,15 +79,9 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   const onPlaying = (e) => {
     const duration = audioElem.current.duration;
     const ct = audioElem.current.currentTime;
-
-    if (audioElem.current.duration) {
-    navigator.mediaSession.setPositionState({
-      duration: audioElem.current.duration,
-      position: audioElem.current.currentTime,
-    });
-  }
+    console.log(getBuffered(duration))
     setCurrentSong({ ...currentSong, "position": ct / duration * 100, "duration": duration })
-    }
+  }
 
 
   const handleKeyPress = (e) => {
@@ -97,6 +91,18 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
      }
   }
 
+  const getBuffered = (duration) => {
+    if (duration > 0) {
+      for (var i = 0; i < audioElem.current.buffered.length; i++) {
+        if (
+          audioElem.current.buffered.start(audioElem.current.buffered.length - 1 - i) < audioElem.current.currentTime
+        ) {
+            return audioElem.current.buffered.end((audioElem.current.buffered.length - i) / duration) *100 + "%";
+        }
+      }
+    }
+  };
+  
 
   useEffect(() => {
     if (
@@ -112,6 +118,8 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
 
   }, []);
 
+
+
   useEffect(() => {
     navigator.mediaSession.setActionHandler("previoustrack", () => {
       skipBack()
@@ -124,7 +132,7 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
       audioElem.current.currentTime = e.seekTime
     });
 
-  },[]);
+  },[currentSongs]);
 
   useEffect(()=>{
     audioElem.current.volume = audioVolume*volumeMultiplier;
@@ -138,22 +146,21 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   useEffect(() => {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: currentSong.title,
-      artist: currentSong.artists[0].name,
+      artist:currentSong.artists ? currentSong.artists[0].name : "",
       artwork: [
         {
-          src: `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300`,
+          src: currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300` : "",
           sizes: "512x512",
           type: "image/png",
         },
       ]
     })
       audioElem.current.play()
-      .catch(e=>console.warn(e))
-  }, [currentSong.url,currentSong.title])
+      .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
+  }, [currentSong.url || currentSong.title])
 
 
   useEffect(() => {
-    console.log(audioElem.current.currentTime)
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   },[currentSong])
 

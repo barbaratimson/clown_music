@@ -14,8 +14,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
 
-    let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))
-
+    let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))  
     let volume = localStorage.getItem("player_volume")
     const [playlistData,setPlaylistData] = useState([])
     const [playlistDataYa,setPlaylistDataYa] = useState([])

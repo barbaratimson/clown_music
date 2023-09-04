@@ -41,7 +41,7 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
           try {
             const response = await axios.get(
               `${link}/ya/tracks/${id}`,);
-            return response.data
+                return response.data
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -119,7 +119,7 @@ const dislikeSong = async (song) => {
 
     useEffect(()=>{
         const handleTrackChange = async (song) => {  
-          setIsSongLoading(true)     
+          setIsSongLoading(true)
                   setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
                   console.log(await fetchYaSongSupplement(currentSong.id))
     }
