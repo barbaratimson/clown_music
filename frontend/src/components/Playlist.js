@@ -145,10 +145,6 @@ const dislikeSong = async (song) => {
 
     return (
         <div className='playlist-songs-list'>
-
-                          {/* <div className='playlist-header'>
-                {currentPlaylist ? currentPlaylist.title : ""}
-            </div> */}
               <div className='playlist-songs-container'>
             {currentSongs ? (currentSongs.map((song) => (
               <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
