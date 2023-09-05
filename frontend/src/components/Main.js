@@ -52,7 +52,6 @@ const Main = () => {
 
     return (
         <div className="page-content">
-        <Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <NavPanel/>
         <div className='page-wrapper'> 
         <div className='playlists-container'>
@@ -68,26 +67,28 @@ const Main = () => {
          currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
+         children = {<Playlist 
+          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+          setCurrentSongs={setCurrentSongs}
+           currentPlaylist={currentPlaylist} currentSongs={currentSongs}
+             playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
+              currentSong={currentSong} setCurrentSong={setCurrentSong}
+               setisplaying={setisplaying} isplaying={isplaying}
+                setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
+                 prevSong = {prevSong} setPrevSong={setPrevSong}
+                 likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
+                 />}
+                 children2 = {    <Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>}
          />
-           <Playlist 
-           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-           setCurrentSongs={setCurrentSongs}
-            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
-              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-               currentSong={currentSong} setCurrentSong={setCurrentSong}
-                setisplaying={setisplaying} isplaying={isplaying}
-                 setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
-                  prevSong = {prevSong} setPrevSong={setPrevSong}
-                  likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
-                  />
+        
       </div>
         <div className='scroll-to-top'>
             <button className='scroll-to-top-button' type=""></button>
         </div>
         </div>
-    <div className='footer'>
+    {/* <div className='footer'>
         <div className="footer-content">Sergey Sokolov CLOWN_MUSIC 2023</div>
-    </div>
+    </div> */}
     </div>
 
 
