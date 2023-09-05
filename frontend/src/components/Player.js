@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle} from 'react-icons/bs';
+import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill, BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
 import AudioAnayzer from './AudioAnalyzer';
+import axios  from 'axios';
+const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
+  const [similarTracks, setSimilarTracks] = useState("");
 
 
   const clickRef = useRef();
@@ -74,6 +77,16 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   }
   }
 
+  const fetchSimilarTracks = async (id) => {
+    try {
+      const response = await axios.get(
+        `${link}/ya/tracks/${id}/similar`,);
+      return response.data.similarTracks
+    } catch (err) {
+      console.error('Ошибка при получении списка треков:', err);
+      console.log(err)
+    }
+};
 
 
   const onPlaying = (e) => {
@@ -117,7 +130,6 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
   }, []);
 
 
-
   useEffect(() => {
     navigator.mediaSession.setActionHandler("previoustrack", () => {
       skipBack()
@@ -129,7 +141,6 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
     navigator.mediaSession.setActionHandler("seekto", (e) => {
       audioElem.current.currentTime = e.seekTime
     });
-
   },[currentSongs]);
 
   useEffect(()=>{
@@ -155,6 +166,12 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
     })
       audioElem.current.play()
       .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
+
+      const handleSimilarTracks = async (song) => {  
+        setSimilarTracks(await fetchSimilarTracks(song.id))
+        console.log(await fetchSimilarTracks(song.id))
+  }
+  handleSimilarTracks(currentSong)
   }, [currentSong.url || currentSong.title])
 
 
@@ -174,14 +191,39 @@ const Player = ({isplaying, setisplaying, prevSong, currentSongs, audioVolume, s
 
   return (
     <div className={`player ${isplaying ? "active" : ""}`}>
-      <div className='player-image-section' onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}>
+      <div className='player-image-section'>
       <div className='image'>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/300x300` : ""} loading= "lazy" alt=""></img>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
       </div>
-      <div className='second-image'>
+      <div className='player-track-info'>
+        <div className='player-track-title'>{currentSong.title} </div>
+        <div className='player-track-artists'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+      </div>
+      <div className='second-image' onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}>
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : ""} loading= "lazy" alt=""></img>
       </div>
       </div>
+
+      <div className='player-song-info-section'>
+      {similarTracks ? (similarTracks.map((song) => (
+              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id}>
+                 <div className="play-button">
+                    <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
+                 </div>
+                 <div className='playlist-song-image'>      
+                 <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                 </div>
+                 <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
+                 {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
+                 </div>
+                 <div className='playlist-song-duration'>
+                    {/* {millisToMinutesAndSeconds(song.durationMs)} */}
+                 </div>
+             </div>
+            ))):(" ")}
+        
+      </div>
+      
       <div className='player-controls-section'>
       <div className="controls">
         <BsFillSkipStartCircleFill style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>

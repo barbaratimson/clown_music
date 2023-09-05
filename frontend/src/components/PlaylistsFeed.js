@@ -28,8 +28,6 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
         fetchFeedPlaylists()
       },[])
 
-      if (isLoading) return <div>Загрузка</div>
-
     return (
         <div>
             {allPlaylists ? (

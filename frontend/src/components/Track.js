@@ -2,11 +2,10 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
-import Track from './Track';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Track = ({currentPlaylist,audioElem,setPrevSong, song, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
   const [isLoading,setIsLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
     const handleSongClick = async (song) => {
@@ -23,21 +22,6 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
       }
     }
 
-    const fetchPlaylistSongs = async (userId,kind) => {
-        setIsLoading(true)
-          try {
-            const response = await axios.get(
-              `${link}/ya/playlist/tracks/${userId}/${kind}`,);
-              setCurrentSongs(response.data)
-              setIsLoading(false)
-              console.log(response)
-          } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-          }
-      };
-
-
     const fetchYaSongLink = async (id) => {
           try {
             const response = await axios.get(
@@ -48,17 +32,6 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
             console.log(err)
           }
       };
-
-      const fetchYaSongInfo = async (id) => {
-        try {
-          const response = await axios.get(
-            `${link}/ya/trackinfo/${id}`,);
-          return response.data
-        } catch (err) {
-          console.error('Ошибка при получении списка треков:', err);
-          console.log(err)
-        }
-    };
 
     
     const fetchYaSongSupplement = async (id) => {
@@ -118,36 +91,7 @@ const dislikeSong = async (song) => {
       }
     }
 
-    useEffect(()=>{
-        const handleTrackChange = async (song) => {  
-          setIsSongLoading(true)
-                  setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
-                  console.log(await fetchYaSongSupplement(currentSong.id))
-    }
-    handleTrackChange(currentSong)
-      },[currentSong.id])
-
-      useEffect(()=>{
-        const handleFeed = async () => {
-        if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
-         let result = await Promise.all(currentPlaylist.tracks.map(async (track) => {
-            return await fetchYaSongInfo(track.id)
-        }));
-        setCurrentSongs(result)
-
-        } else if (currentPlaylist.owner) {
-          fetchPlaylistSongs(currentPlaylist.owner.uid,currentPlaylist.kind)
-        }
-      }
-      handleFeed()
-      },[currentPlaylist])
-
-      if (isLoading) return <div style={{width:'400px',height:'600px',display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
-
     return (
-        <div className='playlist-songs-list'>
-              <div className='playlist-songs-container'>
-            {/* {currentSongs ? (currentSongs.map((song) => (
               <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
@@ -170,16 +114,9 @@ const dislikeSong = async (song) => {
                     {millisToMinutesAndSeconds(song.durationMs)}
                  </div>
              </div>
-            ))):(" ")} */}
-
-                        {currentSongs ? (currentSongs.map((song) => (
-                          <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-            ))):(" ")}
         
-            </div>
-            </div>
     );
 
 };
 
-export default Playlist;
+export default Track;

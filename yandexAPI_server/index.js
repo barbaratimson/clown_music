@@ -80,6 +80,18 @@ let getTrackSupplement = async (id) => {
   }
 };
 
+let getSimilarTracks = async (id) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let lyrics = await api.getSimilarTracks(`${id}`);
+    if (lyrics){
+    return lyrics
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
 let likeTracks = async (userId,tracks) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
@@ -150,6 +162,13 @@ app.get('/ya/tracks/:id', async (req,res)=>{
   let track = await getTrackLink(id)
   res.json(track)
 })
+
+app.get('/ya/tracks/:id/similar', async (req,res)=>{
+  let id = req.params.id
+  let track = await getSimilarTracks(id)
+  res.json(track)
+})
+
 
 app.get('/ya/tracks/:id/supplement', async (req,res)=>{
   let id = req.params.id
