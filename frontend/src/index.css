@@ -2,13 +2,13 @@
 
 @keyframes color-pulse {
     0% {
-        background-color: #d6001c;
+        background-color: rgb(214, 0, 0.2);
     }
     50%{
-        background-color:#b6021a;
+        background-color:rgb(182, 2, 26,1);
     }
     100% {  
-        background-color: #d6001c;
+        background-color: rgb(214, 0, 0.2);
     }
 
 }
@@ -87,7 +87,7 @@ body::-webkit-scrollbar {
     position: static;
     top:0;
     left: 0;
-    height: 60px;
+    height: 80px;
     width: 100%;
     background-color: rgb(15, 15, 15,0.95);
 }
@@ -95,40 +95,49 @@ body::-webkit-scrollbar {
 .nav-selection {
     display: flex;
     flex-direction: row;
+    height: 100%;
+}
+
+.nav-selection-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.nav-selection-button:hover {
+    background-color: rgb(163, 159, 159,0.2);
 }
 
 
 .logo {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    width: fit-content !important;
+    font-size: 25px;
+    transition: scale .2s ease-in-out;
+    cursor: pointer;
+}
+
+.logo:hover {
+    scale: 1.5;
+}
+
+
+.logo-pic{
     display: flex;
     flex-direction: row;
-    width: fit-content !important;
-    padding-left: 20px;
-    font-size: 25px;
-}
-
-.logo-text {
-    text-align: center;
-    color: var(--secondary-color);
-}
-.logo-pic{
-    text-align: center;
+    justify-content: center;
+    align-items: center;
     height: 100%;
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 100%;
 }
-
-.nav-buttons {
-    display: flex;
-    height: 65%;
-    width: fit-content;
-}
-.nav-button {
-    background-color: transparent;
-    border: 0;
-    transition: all .2s;
-    color: white;
-    font-size: 18px;
-    min-width: 80px;
-}
-
 
 .nav-wrapper {
     display: flex;
@@ -136,13 +145,6 @@ body::-webkit-scrollbar {
     height: 100%;
     width: 100%;
     align-items: center;
-}
-
-nav .logo {
-    color: red;
-    width: 200px;
-    font-size: 40px;
-    text-align: center;
 }
 
 .nav-search-wrapper{
@@ -406,8 +408,8 @@ nav .logo {
 }
 .player-track-title {
     margin-bottom: 15px;
- font-size: 30px;
- font-weight: 600;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 
@@ -422,7 +424,7 @@ nav .logo {
     overflow-y: scroll;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 0 20px;
     background-color: rgb(25, 25, 25,0.85);
 }
 
@@ -463,10 +465,78 @@ nav .logo {
 /* .player.active .btn_action:hover {
     color: rgb(153, 45, 45);
 } */
+.player.folded{
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    width: 100vw;
+    height: 20vh;
+    color: rgb(218, 218, 218);
+    background-color: rgb(0, 0, 0,0.2);
+    /* transition: background-color 1s; */
+    
+}
+
+.player-controls-section {
+    display: flex;
+    padding: 10px;
+    padding-right: 20px;
+    width: 100%;
+    background-color: rgb(15, 15, 15,0.95);
+}
+
+.player-image-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 40px;
+    background-color: rgb(15, 15, 15,0.95);
+}
+
+.player-track-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    width: 100%;
+    margin-left: 40px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+.player-track-title {
+    margin-bottom: 15px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+
+.player-track-artists {
+    font-size: 25px;
+    color: #ddd;
+}
+
+.player-song-info-section {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    background-color: rgb(25, 25, 25,0.85);
+    transition: all 1s;
+}
+
+
+
+
 
 .loop-track.active, .play-random.active {
     color: white;
-    transition: color .2s;
+    transition: color .2s; 
 }
 
     .title{
@@ -553,7 +623,7 @@ nav .logo {
             width: 0;
             height: 5px;
             background-color: rgb(255, 255, 255);
-            transition: background-color .4s;
+            transition: all .4s;
         }
 
         .buffer-bar{
@@ -696,10 +766,11 @@ nav .logo {
         }
         .playlist-song:hover {
             scale: 1.03;
+            padding-left: 20px;
             border: none;
             box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
             z-index: 10;
-            background-color: rgb(51, 51, 51);
+            background-color: rgb(107, 107, 107,0.5);
         }
 
 
@@ -731,7 +802,7 @@ nav .logo {
         }
 
         .playlist-song-like-button {
-            text-align: center;
+            text-align: center; 
             padding: 5px;
             user-select: none;
         }
@@ -762,6 +833,7 @@ nav .logo {
 
         .song-current:hover{
             border: 0;
+            padding-left: 10;
             scale: 1.025;
         }
         .song-current.paused:hover {
@@ -811,6 +883,7 @@ nav .logo {
             color: rgb(73, 73, 73);
             transition: all .2s;
             transition: opacity .4s;
+            cursor: pointer;
         }
 
         .auth > input {
@@ -966,7 +1039,7 @@ nav .logo {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 20px;
+        gap: 30px;
         margin-bottom: 0;
     }
     

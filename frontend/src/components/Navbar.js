@@ -51,17 +51,17 @@ const Navbar = ({setCurrentSong,setIsSongLoading,audioElem,setisplaying,currentS
     return (
         <div className="nav">
                 <div className="nav-wrapper">
-                    <div className="logo">
+                <div className="logo">
         <div className="logo-pic">🤡</div>
         {/* <div className="logo-text">YaClown Music</div> */}
         </div>
-        <div className='nav-selection'>
+        <div className='nav-selection'>               
         <div className='nav-selection-button'>Current playlist</div>
         <div className='nav-selection-button'>Your playlists</div>
         <div className='nav-selection-button'>Feed</div>
         <div className='nav-selection-button'>Artists</div>
         </div>
-    <div className="nav-search-wrapper">
+    <div className="nav-search-wrapper" style={{display:"none"}}>
     <div className="nav-searchbar">
     <input className='nav-search' type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
         <div className="nav-search-start">Search</div>
@@ -97,7 +97,7 @@ const Navbar = ({setCurrentSong,setIsSongLoading,audioElem,setisplaying,currentS
     </div>
     </div>
     {/* <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button> */}
-    <div className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
+    <div className="nav-user " style={{display:"none"}} onClick={()=>{setShowUserMenu(!showUserMenu)}}>
         {/* <div className ="user-username">Barbaratimson</div> */}
         <div className="user-avatar">
             <img src="https://sun9-36.userapi.com/impg/KBThyRabdLXw6Km0CnJ4gQJKcR7iw5Uu8T6wpg/D0Bh4x-veqY.jpg?size=822x1024&quality=95&sign=8f9825c03df99a8adaa7b94c9d0639d5&type=album" alt=""></img>

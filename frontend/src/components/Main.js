@@ -26,7 +26,7 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
     const [isSongLoading,setIsSongLoading]= useState(false)
-    const [showPlaylists,setShowPlaylists] = useState(false)
+    const [playerFolded,setPlayerFolded] = useState(true)
     const [likedSongs,setLikedSongs] = useState([])
 
     const audioElem = useRef();
@@ -67,6 +67,7 @@ const Main = () => {
          currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
+         playerFolded={playerFolded}
          children = {<Playlist 
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs}
@@ -78,7 +79,7 @@ const Main = () => {
                  prevSong = {prevSong} setPrevSong={setPrevSong}
                  likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
                  />}
-                 children2 = {    <Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>}
+                 children2 = {<Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>}
          />
         
       </div>
@@ -86,9 +87,12 @@ const Main = () => {
             <button className='scroll-to-top-button' type=""></button>
         </div>
         </div>
-    {/* <div className='footer'>
-        <div className="footer-content">Sergey Sokolov CLOWN_MUSIC 2023</div>
-    </div> */}
+        <div className='second-image-filter'>
+      </div>
+        <div className='second-image'>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : ""} loading= "lazy" alt=""></img>
+      </div>
+    
     </div>
 
 

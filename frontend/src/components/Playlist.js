@@ -105,19 +105,6 @@ const dislikeSong = async (song) => {
       }
     }
 
-    const handleRemoveSong = (song) =>  {
-      setLikedSongs(prev => {
-        const newSongs = prev.filter(e => e.id !== song.id);
-        return newSongs
-      })
-      if (currentPlaylist.kind === 3) {
-        setCurrentSongs(prev => {
-          const newSongs = prev.filter(e => e.id !== song.id);
-          return newSongs
-        })
-      }
-    }
-
     useEffect(()=>{
         const handleTrackChange = async (song) => {  
           setIsSongLoading(true)

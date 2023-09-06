@@ -5,7 +5,7 @@ import AudioAnayzer from './AudioAnalyzer';
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
+const Player = ({isplaying, playerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -97,7 +97,7 @@ const Player = ({isplaying, children,children2, setisplaying, prevSong, currentS
     const buffered = getBuffered()
     setCurrentSong({ ...currentSong, "position": ct / duration * 100, "duration": duration,"buffered":buffered})
   }
-
+  
 
   const handleKeyPress = (e) => {
    if (e.key === " " && e.srcElement.tagName !== "INPUT"){
@@ -193,20 +193,16 @@ const Player = ({isplaying, children,children2, setisplaying, prevSong, currentS
 
 
   return (
+    <div>
     <div className={`player ${isplaying ? "active" : ""}`}>
       {children2}
       <div className='player-image-section'>
       <div className='image'>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className='player-track-info'>
         <div className='player-track-title'>{currentSong.title} </div>
         <div className='player-track-artists'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
-      </div>
-      <div className='second-image-filter'>
-      </div>
-      <div className='second-image' onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : ""} loading= "lazy" alt=""></img>
       </div>
       </div>
             <div className='player-controls-section'>
@@ -236,6 +232,7 @@ const Player = ({isplaying, children,children2, setisplaying, prevSong, currentS
       </div>
       
       <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}></audio>     
+      </div>
       </div>
   )
 }
