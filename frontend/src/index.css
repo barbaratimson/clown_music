@@ -123,6 +123,7 @@ body::-webkit-scrollbar {
     font-size: 25px;
     transition: scale .2s ease-in-out;
     cursor: pointer;
+    padding: 10px;
 }
 
 .logo:hover {
@@ -136,8 +137,6 @@ body::-webkit-scrollbar {
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding-left: 20px;
-    padding-right: 10px;
     width: 100%;
 }
 
