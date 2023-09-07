@@ -132,33 +132,8 @@ const dislikeSong = async (song) => {
       if (isLoading) return <div style={{width:'400px',height:'600px',display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
 
     return (
-        <div className='playlist-songs-list'>
+        <div className={`playlist-songs-list`}>
               <div className='playlist-songs-container'>
-            {/* {currentSongs ? (currentSongs.map((song) => (
-              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
-                 <div className="play-button">
-                    <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
-                 </div>
-                 <div className='playlist-song-image'>      
-                 <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
-                 </div>
-                 <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
-                 {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
-                 </div>
-                 <div className='playlist-song-actions'>
-                  {!likedSongs.find((elem) => elem.id === song.id) ? (
-                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);likedSongs.push({id:song.id})}}>Like</div>
-                  ): (
-                    <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}>Dislike</div>
-                  )
-                  }
-                 </div>
-                 <div className='playlist-song-duration'>
-                    {millisToMinutesAndSeconds(song.durationMs)}
-                 </div>
-             </div>
-            ))):(" ")} */}
-
                         {currentSongs ? (currentSongs.map((song) => (
                           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ))):(" ")}

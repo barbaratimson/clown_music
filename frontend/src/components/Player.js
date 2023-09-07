@@ -194,24 +194,33 @@ const Player = ({isplaying, playerFolded, children,children2, setisplaying, prev
 
   return (
     <div>
-    <div className={`player ${isplaying ? "active" : ""}`}>
-      {children2}
-      <div className='player-image-section'>
-      <div className='image'>
+    <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
+      <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
+      <div className={`image`}>
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
-      <div className='player-track-info'>
+      <div className={`player-track-info`}>
         <div className='player-track-title'>{currentSong.title} </div>
         <div className='player-track-artists'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
       </div>
-            <div className='player-controls-section'>
-      <div className="controls">
+            <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
+      <div className={`controls ${playerFolded ? "folded" : ""}`}>
         <RiSkipBackLine style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
         {isplaying ? <RiPauseFill className='btn_action pp' onClick={()=>{audioElem.current.pause()}}/> : <RiPlayLine className='btn_action pp' onClick={()=>{audioElem.current.play()}}/>}
         <RiSkipForwardLine style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
-
+      
+      <div className={`player-image-section-folded ${!playerFolded ? "not-active" : ""} `}>
+      <div className={`image-folded`}>
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/100x100` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
+      </div>
+      <div className={`player-track-info-folded`}>
+        <div className='player-track-title-folded'>{currentSong.title} </div>
+        <div className='player-track-artists-folded'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+      </div>
+      </div>
+      
       <div className='playing-controls'>
         <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
@@ -223,11 +232,11 @@ const Player = ({isplaying, playerFolded, children,children2, setisplaying, prev
             </div>
         </div> 
       </div>
-      <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""}`} onClick={checkWidth} ref={clickRef}>
+      <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""} ${playerFolded ? "folded" : ""}`} onClick={checkWidth} ref={clickRef}>
           <div className="seek_bar" style={{width: `${currentSong.position+"%"}`}}></div>
           <div className="buffer-bar" style={{width: `${!isSongLoading ? currentSong.buffered+"%" : 0}`}}></div>
       </div>
-      <div className='player-song-info-section'>
+      <div className={`player-song-info-section ${playerFolded ? "folded" : ""}`}>
         {children}
       </div>
       

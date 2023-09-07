@@ -52,6 +52,7 @@ const Main = () => {
 
     return (
         <div className="page-content">
+          <Navbar setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <NavPanel/>
         <div className='page-wrapper'> 
         <div className='playlists-container'>
@@ -79,7 +80,6 @@ const Main = () => {
                  prevSong = {prevSong} setPrevSong={setPrevSong}
                  likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
                  />}
-                 children2 = {<Navbar setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>}
          />
         
       </div>
