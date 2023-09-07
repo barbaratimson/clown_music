@@ -413,6 +413,7 @@ body::-webkit-scrollbar {
 }
 
 .player-song-info-section {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -422,9 +423,9 @@ body::-webkit-scrollbar {
     transition: all 1s;
 }
 
-/* .player-song-info-section.folded {
-    opacity: 0;
-} */
+.player-song-info-section.folded {
+    bottom: 5px;
+}
 
 .player-song-info-section::-webkit-scrollbar {
     display: none;
@@ -995,9 +996,17 @@ body::-webkit-scrollbar {
     }
 
     .player {
-        width: 100%;
+        padding: 0;
+        top: 0 !important;
     }
 
+    .player-image-section-folded{
+        display: none;
+    }
+
+    .player-song-info-section {
+        padding: 0;
+    }
 
     .playlists-container {
         display: none;
@@ -1108,7 +1117,6 @@ body::-webkit-scrollbar {
     .nav {
         display: none;
     }  
-
     .playlist-song {
         font-size: 12px;
     }
