@@ -587,7 +587,7 @@ body::-webkit-scrollbar {
         display: flex;
         z-index: 0;
         user-select: none;
-        border-radius: 10px;
+        border-radius: 5px;
         justify-content: center;
         align-items: center;
         overflow: hidden;
