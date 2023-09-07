@@ -1,10 +1,11 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import PlaylistsFeed from './PlaylistsFeed';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlists = ({setCurrentPlaylist}) => {
+const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(false);
@@ -42,10 +43,11 @@ const Playlists = ({setCurrentPlaylist}) => {
 
     return (
         <div>
+                  <PlaylistsFeed setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
-                <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist)}}>
+                <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
                 <div className="playlist-card-image">
                 <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
                 </div>
@@ -60,7 +62,6 @@ const Playlists = ({setCurrentPlaylist}) => {
                <></>
             )}
 
-     
         </div>
 
     );

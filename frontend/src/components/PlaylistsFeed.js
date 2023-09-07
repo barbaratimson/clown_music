@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const PlaylistsFeed = ({setCurrentPlaylist}) => {
+const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ const PlaylistsFeed = ({setCurrentPlaylist}) => {
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
-                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist)}}>
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
                   <div className="playlist-card-image">
                   <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
                   </div>

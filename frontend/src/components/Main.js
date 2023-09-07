@@ -53,11 +53,10 @@ const Main = () => {
     return (
         <div className="page-content">
           <Navbar setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
-        <NavPanel/>
-        <div className='page-wrapper'> 
+        <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
         <div className='playlists-container'>
-        <PlaylistsFeed setCurrentPlaylist={setCurrentPlaylist}/>
-        <Playlists setCurrentPlaylist={setCurrentPlaylist}/>
+        <Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>
+        </div>       
         </div>
             <div className='player-wrapper'> 
        <Player 
@@ -85,7 +84,6 @@ const Main = () => {
       </div>
         <div className='scroll-to-top'>
             <button className='scroll-to-top-button' type=""></button>
-        </div>
         </div>
         <div className='second-image-filter'>
       </div>
