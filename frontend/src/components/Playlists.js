@@ -42,28 +42,31 @@ const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
       if (isLoading) return <div>Загрузка</div>
 
     return (
-        <div>
-                  {/* <PlaylistsFeed setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/> */}
+      <div className='playlists-container'>
+      <PlaylistsFeed setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>
+<div>
+          <div className='playlists-title'>Your Playlists</div>
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
-                <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
-                <div className="playlist-card-image">
-                <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
-                </div>
-                <div className='playlist-card-info'>
-                    <div className="playlist-card-desc">{playlist.title}</div>
-                    <div className="playlist-card-length">{playlist.trackCount}</div>
-                </div>
-            </div>
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
+                  <div className="playlist-card-image">
+                  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                  </div>
+                  <div className='playlist-card-info'>
+                      <div className="playlist-card-desc">{playlist.title}</div>
+                      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+                  </div>
+              </div>
             ):(null))}  
             </div>
             ): (
                <></>
             )}
 
+     
         </div>
-
+         </div>
     );
 
 };

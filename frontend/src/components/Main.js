@@ -55,9 +55,7 @@ const Main = () => {
         <div className="page-content">
           <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
-        <div className='playlists-container'>
-        <Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>
-        </div>       
+        <Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>     
         </div>
             <div className='player-wrapper'> 
        <Player 

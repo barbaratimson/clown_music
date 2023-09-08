@@ -179,7 +179,6 @@ const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, s
 
 
   useEffect(() => {
-    console.log(playerRepeat)
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   },[currentSong])
 
