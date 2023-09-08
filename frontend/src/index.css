@@ -63,7 +63,7 @@ body{
     padding: 0;
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* background-color: var(--primary-color); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(54,12,18,1) 100%); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(50,12,18,1) 100%); */
@@ -110,8 +110,12 @@ body::-webkit-scrollbar {
     color: #ddd;
 }
 
-.nav-selection-button:hover {
+.nav-selection-button.active {
     background-color: rgb(163, 159, 159,0.2);
+}
+
+.nav-selection-button:hover {
+    background-color: rgb(163, 159, 159,0.5);
 }
 
 
@@ -251,7 +255,6 @@ body::-webkit-scrollbar {
 .page-content-wrapper {
     position: relative;
     top: 50px;
-    height: 100vh; 
     width: 100vw;
     transition: all .4s;
     visibility: none;
@@ -996,6 +999,7 @@ body::-webkit-scrollbar {
     .player {
         padding: 0;
         top: 0 !important;
+        transition: none;
     }
 
     .player-image-section-folded{
@@ -1004,6 +1008,7 @@ body::-webkit-scrollbar {
 
     .player-song-info-section {
         padding: 0;
+        transition: none;
     }
 
     .playlists-container {
@@ -1063,6 +1068,10 @@ body::-webkit-scrollbar {
         min-width: 150px;
         box-sizing: border-box;
         border: 0;
+    }
+
+    .second-image-filter {
+        height: 100dvh;
     }
 
     .player-track-info {

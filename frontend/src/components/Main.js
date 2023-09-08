@@ -26,8 +26,9 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
     const [isSongLoading,setIsSongLoading]= useState(false)
-    const [playerFolded,setPlayerFolded] = useState(true)
+    const [playerFolded,setPlayerFolded] = useState(false)
     const [likedSongs,setLikedSongs] = useState([])
+    const [currentPage,setCurrentPage] = useState(currentPlaylist)
 
     const audioElem = useRef();
 
@@ -52,7 +53,7 @@ const Main = () => {
 
     return (
         <div className="page-content">
-          <Navbar setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+          <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
         <div className='playlists-container'>
         <Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>

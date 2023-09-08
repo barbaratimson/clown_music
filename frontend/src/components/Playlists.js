@@ -43,7 +43,7 @@ const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
 
     return (
         <div>
-                  <PlaylistsFeed setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>
+                  {/* <PlaylistsFeed setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/> */}
             {allPlaylists ? (
                 <div className="playlists">           
                 {allPlaylists.map((playlist) => playlist.available ? (
@@ -53,7 +53,7 @@ const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
                 </div>
                 <div className='playlist-card-info'>
                     <div className="playlist-card-desc">{playlist.title}</div>
-                    {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+                    <div className="playlist-card-length">{playlist.trackCount}</div>
                 </div>
             </div>
             ):(null))}  

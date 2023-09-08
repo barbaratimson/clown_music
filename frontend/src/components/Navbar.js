@@ -5,7 +5,7 @@ import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({setCurrentSong,setPlayerFolded,setIsSongLoading,audioElem,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
+const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIsSongLoading,audioElem,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
@@ -28,7 +28,7 @@ const Navbar = ({setCurrentSong,setPlayerFolded,setIsSongLoading,audioElem,setis
         if (search){
           try {
             const response = await axios.get(
-              `${link}/ya/search/${search}`,);
+              `${link}/ya/search/${search}`);
               setSearchResults(response.data)
               console.log(response.data)
           } catch (err) {
@@ -56,10 +56,10 @@ const Navbar = ({setCurrentSong,setPlayerFolded,setIsSongLoading,audioElem,setis
         {/* <div className="logo-text">YaClown Music</div> */}
         </div>
         <div className='nav-selection'>               
-        <div className='nav-selection-button' onClick={()=>{setPlayerFolded(false)}}>Current playlist</div>
-        <div className='nav-selection-button' onClick={()=>{setPlayerFolded(true)}}>Your playlists</div>
-        <div className='nav-selection-button'>Feed</div>
-        <div className='nav-selection-button'>Artists</div>
+        <div className={`nav-selection-button ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>Current playlist</div>
+        <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>Your playlists</div>
+        <div className={`nav-selection-button ${currentPage === "feed" ? "active" : ""}`} onClick={()=>{setCurrentPage("feed");setPlayerFolded(true)}}>Feed</div>
+        <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>Artists</div>
         </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">

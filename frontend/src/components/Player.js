@@ -52,7 +52,6 @@ const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, s
     if (playerRepeat && audioElem.current.currentTime === currentSong.duration){ 
       audioElem.current.currentTime = 0
       audioElem.current.play()
-      console.log("Чгш")
     } else if (playerRandom) {
       setPrevSong(currentSong)
       audioElem.current.src = ""
@@ -167,14 +166,15 @@ const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, s
         },
       ]
     })
+
       audioElem.current.play()
       .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
 
-      const handleSimilarTracks = async (song) => {  
-        setSimilarTracks(await fetchSimilarTracks(song.id))
-        console.log(await fetchSimilarTracks(song.id))
-  }
-  handleSimilarTracks(currentSong)
+  //     const handleSimilarTracks = async (song) => {  
+  //       setSimilarTracks(await fetchSimilarTracks(song.id))
+  //       console.log(await fetchSimilarTracks(song.id))
+  // }
+  // handleSimilarTracks(currentSong)
   }, [currentSong.url || currentSong.title])
 
 
