@@ -84,12 +84,12 @@ body::-webkit-scrollbar {
 
 
 .nav {
-    position: absolute;
+    position: fixed;
     top:0;
     left: 0;
     height: 50px;
     width: 100%;
-    z-index: 1000;
+    z-index: 20;
     background-color: rgb(15, 15, 15,0.95);
 }
 
@@ -143,9 +143,9 @@ body::-webkit-scrollbar {
 .nav-wrapper {
     display: flex;
     flex-direction: row;
+    align-items: center;
     height: 100%;
     width: 100%;
-    align-items: center;
 }
 
 .nav-search-wrapper{
@@ -248,11 +248,10 @@ body::-webkit-scrollbar {
     width: 35%;
     justify-content: center;
 }
-
 .page-content-wrapper {
     position: relative;
     top: 50px;
-    height: 100vh;
+    height: 100vh; 
     width: 100vw;
     transition: all .4s;
     visibility: none;
@@ -385,8 +384,8 @@ body::-webkit-scrollbar {
     flex-direction: column;
     overflow: hidden;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     color: rgb(218, 218, 218);
     transition: all 1s;
 }
@@ -1098,6 +1097,11 @@ body::-webkit-scrollbar {
         text-align: center;
         justify-content: center;
         padding: 0 10px;
+    }
+
+    .navigation_wrapper{
+        position:relative;
+        bottom:155px;
     }
 
     .playlist-song-actions {

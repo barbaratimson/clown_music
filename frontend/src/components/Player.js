@@ -5,7 +5,7 @@ import AudioAnayzer from './AudioAnalyzer';
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, playerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
+const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -125,6 +125,7 @@ const Player = ({isplaying, playerFolded, children,children2, setisplaying, prev
     ) {
       setDeviceType("Mobile");
       audioVolume = 1
+      setPlayerFolded(false)
     } else {
       setDeviceType("Desktop");
     }

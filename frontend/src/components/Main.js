@@ -67,7 +67,7 @@ const Main = () => {
          currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
-         playerFolded={playerFolded}
+         playerFolded={playerFolded} setPlayerFolded={setPlayerFolded}
          children = {<Playlist 
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs}
