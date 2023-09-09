@@ -1,11 +1,11 @@
 import React, { Children, useEffect, useRef, useState } from 'react';
 import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
 import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine} from 'react-icons/ri'
-import AudioAnayzer from './AudioAnalyzer';
+import Artist from './Artist';
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
+const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -201,7 +201,7 @@ const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, s
       </div>
       <div className={`player-track-info`}>
         <div className='player-track-title'>{currentSong.title} </div>
-        <div className='player-track-artists'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
       </div>
             <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
@@ -219,8 +219,9 @@ const Player = ({isplaying, playerFolded, setPlayerFolded, children,children2, s
         <div className='player-track-title-folded'>{currentSong.title} </div>
         <div className='player-track-artists-folded'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
+      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}></div>
       </div>
-      
+        
       <div className='playing-controls'>
         <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>

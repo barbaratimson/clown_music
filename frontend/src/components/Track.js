@@ -22,32 +22,10 @@ const Track = ({currentPlaylist,audioElem,setPrevSong, song, likedSongs, setLike
       }
     }
 
-    const fetchYaSongLink = async (id) => {
-          try {
-            const response = await axios.get(
-              `${link}/ya/tracks/${id}`,);
-                return response.data
-          } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-          }
-      };
-
     
-    const fetchYaSongSupplement = async (id) => {
-      try {
-        const response = await axios.get(
-          `${link}/ya/tracks/${id}/supplement`,);
-        return response.data
-      } catch (err) {
-        console.error('Ошибка при получении списка треков:', err);
-        console.log(err)
-      }
-  };
-
   const likeSong = async (song) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${link}/ya/likeTracks/${267472538}/${song.id}`,);
         return response.data
     } catch (err) {
@@ -58,7 +36,7 @@ const Track = ({currentPlaylist,audioElem,setPrevSong, song, likedSongs, setLike
 
 const dislikeSong = async (song) => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
     return response.data
   } catch (err) {

@@ -9,7 +9,7 @@ import Router from '../router';
 import Playlists from './Playlists';
 import PlaylistsFeed from './PlaylistsFeed';
 import NavPanel from './NavPanel';
-
+import Artist from './Artist';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -29,6 +29,8 @@ const Main = () => {
     const [playerFolded,setPlayerFolded] = useState(true)
     const [likedSongs,setLikedSongs] = useState([])
     const [currentPage,setCurrentPage] = useState("userPlaylists")
+    const [artist,setArtist] = useState([])
+
 
     const audioElem = useRef();
 
@@ -61,7 +63,9 @@ const Main = () => {
         <div className="page-content">
           <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
-          {currentPage && currentPage==="userPlaylists" ? (<Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>) : currentPage === "artists" ? (<div>HUI</div>): currentPage === "chart"? (<div>CHART</div>) : (null)}
+          {currentPage && currentPage==="userPlaylists" ? (<Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>) : 
+          currentPage === "artists" ? (<Artist artist={artist} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded}/>): 
+          currentPage === "chart"? (<div>CHART</div>) : (null)}
         
         </div>
             <div className='player-wrapper'> 
@@ -74,6 +78,7 @@ const Main = () => {
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
          playerFolded={playerFolded} setPlayerFolded={setPlayerFolded}
+         setArtist={setArtist}
          children = {<Playlist 
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs}

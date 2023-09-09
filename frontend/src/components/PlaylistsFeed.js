@@ -13,10 +13,7 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
           try {
             const response = await axios.get(
               `${link}/ya/feed`,);
-              let playlists = response.data.generatedPlaylists.map((playlist) => {
-                return playlist.data
-            })
-              setAllPlaylists(playlists)
+              setAllPlaylists(response.data.generatedPlaylists)
               setIsLoading(false)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -31,23 +28,22 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
     return (
         <div>
           <div className='playlists-title'>Recommended</div>
-            {allPlaylists ? (
+
                 <div className="playlists">           
-                {allPlaylists.map((playlist) => playlist.available ? (
-                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
+                {allPlaylists ? (allPlaylists.map((playlist) => playlist.data.available ? (
+                  <div className="playlist-card" key={playlist.data.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist.data);setPlayerFolded(false)}}>
                   <div className="playlist-card-image">
-                  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                  <img src={playlist.data.ogImage ? `http://${playlist.data.ogImage.substring(0, playlist.data.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                   </div>
                   <div className='playlist-card-info'>
-                      <div className="playlist-card-desc">{playlist.title}</div>
+                      <div className="playlist-card-desc">{playlist.data.title}</div>
                       {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
                   </div>
               </div>
-            ):(null))}  
+            ):(null))
+            ):(null)}  
             </div>
-            ): (
-               <></>
-            )}
+
 
      
         </div>
