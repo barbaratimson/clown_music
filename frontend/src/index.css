@@ -63,7 +63,7 @@ body{
     padding: 0;
     width: 100vw;
     height: 100vh;
-    /* overflow: hidden; */
+    overflow: hidden;
     /* background-color: var(--primary-color); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(54,12,18,1) 100%); */
     /* background: linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(50,12,18,1) 100%); */

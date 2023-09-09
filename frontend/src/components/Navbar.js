@@ -47,7 +47,6 @@ const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIs
         }
     }, [search]);
     
-
     return (
         <div className="nav">
                 <div className="nav-wrapper">
@@ -58,7 +57,7 @@ const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIs
         <div className='nav-selection'>               
         <div className={`nav-selection-button ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>Current playlist</div>
         <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>Your playlists</div>
-        <div className={`nav-selection-button ${currentPage === "feed" ? "active" : ""}`} onClick={()=>{setCurrentPage("feed");setPlayerFolded(true)}}>Feed</div>
+        <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>Chart</div>
         <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>Artists</div>
         </div>
     <div className="nav-search-wrapper">
