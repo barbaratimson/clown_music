@@ -39,7 +39,7 @@ const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
         fetchYaMudicSongs()
       },[])
 
-      if (isLoading) return <div>Загрузка</div>
+      if (isLoading) return <div style={{width:'400px',height:'600px',display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
 
     return (
       <div className='playlists-container'>

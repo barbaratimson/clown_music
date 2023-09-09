@@ -253,17 +253,17 @@ body::-webkit-scrollbar {
     justify-content: center;
 }
 .page-content-wrapper {
-    top: 50px;
+    position: relative;
     width: 100vw;
-    transition: all .4s;
+    transition: all 1s;
     visibility: none;
     opacity: 0;
+    z-index: 10;
 }
 
 .page-content-wrapper.visible {
     visibility: visible;
     opacity: 1;
-    transition: all 1s;
 }
 
 .playlists-container {
@@ -275,7 +275,6 @@ body::-webkit-scrollbar {
     padding-top: 10%;
     width: 100%;
     gap: 40px;
-    z-index: 10;
 }
 
 .playlists-title {

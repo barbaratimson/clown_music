@@ -27,7 +27,7 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
       useEffect(()=>{
         fetchFeedPlaylists()
       },[])
-
+      if (isLoading) return <div style={{width:"100%",height:"100%",display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
     return (
         <div>
           <div className='playlists-title'>Recommended</div>
