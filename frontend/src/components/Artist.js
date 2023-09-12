@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PlaylistsFeed from './PlaylistsFeed';
 import Track from './Track';
+import Loader from './Loader';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -25,8 +26,7 @@ const Artist = ({artist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylis
           fetchArtist(artist)
       },[artist])
 
-      if (isLoading) return <div style={{width:'400px',height:'600px',display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
-
+      if (isLoading) return <Loader></Loader>
     return (
       <div>
         {console.log(artistResult)}

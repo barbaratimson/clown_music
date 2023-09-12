@@ -11,6 +11,7 @@ import PlaylistsFeed from './PlaylistsFeed';
 import NavPanel from './NavPanel';
 import Artist from './Artist';
 import Chart from './Chart';
+import Loader from './Loader';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -60,7 +61,7 @@ const Main = () => {
       document.body.style.backgroundColor=data.darkVibrant
     },[data])
 
-    if (isLoading) return <div>Загрузка</div>
+    if (isLoading) return <Loader></Loader>
 
     return (
         <div className="page-content">

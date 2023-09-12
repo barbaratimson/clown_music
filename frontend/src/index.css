@@ -13,6 +13,13 @@
 
 }
 
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform:rotate(360deg);
+    }
+}
+
 @keyframes bubble-out {
     0%{
         scale: 1;
@@ -258,6 +265,7 @@ body::-webkit-scrollbar {
 .page-content-wrapper {
     position: absolute;
     width: 100vw;
+    height: 100%;
     transition: all 1s;
     margin-top: 50px;
     padding-bottom: 100px;
@@ -534,7 +542,7 @@ body::-webkit-scrollbar {
     width: 100%;
     padding-top: 30px;
     padding-left: 40px;
-    background-color: #10100f;
+    background-color: rgb(16, 16, 15);
     transition: opacity .4s;
 }
 
@@ -1010,7 +1018,7 @@ body::-webkit-scrollbar {
             flex-direction: row;
             width: 100%;
             padding: 30px 40px 40px 40px;
-            background-color: rgb(15, 15, 15,0.95);
+            background-color: rgb(15, 15, 15,0.85);
         }
 
             
@@ -1040,7 +1048,27 @@ body::-webkit-scrollbar {
             padding: 15px;
             font-size: 25px;
             color: #ddd;
-            background-color:rgb(15, 15, 15,0.9);
+            background-color:rgb(15, 15, 15,0.8);
+        }
+        
+        .page-content{
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        .loader {
+            width: 99%;
+            height: 100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            /* background-color: rgb(16, 16, 15,0.5); */
+            font-size: 100px;
+        }
+
+        .loader .spinner {
+            animation: spin .6s ease-out infinite;
+            color: #ddd;
         }
 
 
@@ -1109,7 +1137,7 @@ body::-webkit-scrollbar {
     .song-current.paused {
         background-color:#7a7a7a;
         scale: 1;
-        animation:none;
+        animation: color-pulse 2.4s ease-in infinite;
     }
 
     .song-current:hover{

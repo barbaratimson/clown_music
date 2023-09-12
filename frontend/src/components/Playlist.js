@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
 import Track from './Track';
+import Loader from './Loader';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -83,7 +84,7 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
       handleFeed()
       },[currentPlaylist])
 
-      if (isTracksLoading) return <div style={{width:'400px',height:'600px',display:"flex",justifyContent:'center',alignItems:'center',fontSize:'40px',color:'white'}}>Загрузка</div>
+      if (isTracksLoading) return <Loader></Loader>
 
     return (
               <div className='playlist-songs-container'>
