@@ -78,6 +78,7 @@ body{
     background-color: rgb(0, 0, 0);
     background-attachment:fixed;
     transition: background-color .4s;
+    scrollbar-gutter: stable;
 
 }
 
@@ -265,7 +266,6 @@ body::-webkit-scrollbar {
 .page-content-wrapper {
     position: absolute;
     width: 100vw;
-    height: 100%;
     transition: all 1s;
     margin-top: 50px;
     padding-bottom: 100px;
@@ -285,9 +285,8 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 10%;
-    width: 100%;
     gap: 40px;
+    padding-top: 5%;
 }
 
 .playlists-title {
@@ -463,7 +462,6 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
     padding: 20px;
     background-color: rgb(15, 15, 15,0.5);
     transition: all 1s;
@@ -1057,8 +1055,9 @@ body::-webkit-scrollbar {
             display: flex;
         }
         .loader {
-            width: 99%;
+            width: 100%;
             height: 100%;
+            padding: 100px;
             display:flex;
             justify-content:center;
             align-items:center;

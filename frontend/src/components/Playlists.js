@@ -28,7 +28,6 @@ const Playlists = ({setPlayerFolded,setCurrentPlaylist}) => {
             const response = await axios.get(
               `${link}/ya/myTracks`,);
               setAllPlaylists(prev =>[...prev,response.data])
-              setCurrentPlaylist(response.data)
               setIsLoading(false)
           } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
