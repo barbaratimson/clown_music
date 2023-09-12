@@ -583,6 +583,7 @@ body::-webkit-scrollbar {
 
 .player-image-section-folded.not-active {
     opacity: 0;
+    transition: none;
 }
 
 

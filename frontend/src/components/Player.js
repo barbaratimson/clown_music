@@ -219,9 +219,9 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
       </div>
       <div className={`player-track-info-folded`}>
         <div className='player-track-title-folded'>{currentSong.title} </div>
-        <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
-      <div className='player-show-full' onClick={()=>{setPlayerFolded(false);setCurrentPage("artists")}}></div>
+      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}></div>
       </div>
         
       <div className='playing-controls'>

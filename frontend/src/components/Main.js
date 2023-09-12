@@ -46,9 +46,22 @@ const Main = () => {
         }
     };
 
-      
+    const fetchYaMudicSongs = async () => {
+      setIsLoading(true)
+        try {
+          const response = await axios.get(
+            `${link}/ya/myTracks`,);
+            setCurrentPlaylist(response.data)
+            setIsLoading(false)
+        } catch (err) {   
+          console.error('Ошибка при получении списка треков:', err);
+        }
+    };
+
+    
     useEffect(()=>{
         fetchLikedSongs()
+        fetchYaMudicSongs()
     },[])
 
     useEffect(()=>{
@@ -58,10 +71,10 @@ const Main = () => {
     },[playerFolded])
 
     useEffect(()=>{
-      document.body.style.backgroundColor=data.darkVibrant
+      !isLoading ? document.body.style.backgroundColor=data.darkVibrant : document.body.style.backgroundColor="rgb(16, 16, 15)"
     },[data])
 
-    if (isLoading) return <Loader></Loader>
+    if (isLoading) return <div><div style={{width:"100%",display:"flex",justifyContent:"center",padding:"40px",color:"white",fontSize:"50px",fontWeight:"600"}}>YA CLOWN MUSIC</div><Loader></Loader></div>
 
     return (
         <div className="page-content">
