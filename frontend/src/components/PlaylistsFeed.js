@@ -20,7 +20,6 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
             console.log(err)
           }
       };
-    
       useEffect(()=>{
         fetchFeedPlaylists()
       },[])

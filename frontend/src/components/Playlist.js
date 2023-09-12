@@ -17,7 +17,6 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
               `${link}/ya/playlist/tracks/${userId}/${kind}`,);
               setCurrentSongs(response.data)
               setIsTracksLoading(false)
-              console.log(response)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)

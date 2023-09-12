@@ -2,10 +2,11 @@ import React, { Children, useEffect, useRef, useState } from 'react';
 import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
 import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine} from 'react-icons/ri'
 import Artist from './Artist';
+import { usePalette } from 'react-palette'
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setDominantColor, dominantColor})=> {
+const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -195,13 +196,14 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
   return (
     <div>
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
+
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info`}>
         <div className='player-track-title'>{currentSong.title} </div>
-        <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists");setPlayerFolded(true)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
       </div>
             <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
@@ -217,9 +219,9 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
       </div>
       <div className={`player-track-info-folded`}>
         <div className='player-track-title-folded'>{currentSong.title} </div>
-        <div className='player-track-artists-folded'>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
-      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}></div>
+      <div className='player-show-full' onClick={()=>{setPlayerFolded(false);setCurrentPage("artists")}}></div>
       </div>
         
       <div className='playing-controls'>
@@ -237,13 +239,14 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
           <div className="seek_bar" style={{width: `${currentSong.position+"%"}`}}></div>
           <div className="buffer-bar" style={{width: `${!isSongLoading ? currentSong.buffered+"%" : 0}`}}></div>
       </div>
+      </div>
+      <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}></audio>    
       <div className={`player-song-info-section ${playerFolded ? "folded" : ""}`}>
         {children}
+      </div> 
+      
       </div>
       
-      <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}></audio>     
-      </div>
-      </div>
   )
 }
 

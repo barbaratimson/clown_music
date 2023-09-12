@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const Registration = () => {
 
+
+
     return (
         <div className='auth-wrap'>
         <div className='auth'>

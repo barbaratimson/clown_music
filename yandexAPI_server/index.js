@@ -92,6 +92,18 @@ let getSimilarTracks = async (id) => {
   }
 };
 
+let getChart = async (type) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    let chart = await api.getChart(type);
+    if (chart){
+    return chart
+    }
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
 let likeTracks = async (userId,tracks) => {
   try {
     await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
@@ -134,6 +146,17 @@ let searchArtist = async (artist) => {
     return result
   } catch (e) {
     console.log(`api error ${e}`);
+  }
+};
+
+let getArtist = async (artist) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    const artist1 = await api.searchArtists(artist);
+    const result = await api.getArtist(artist1.artists.results[0].id);
+    return result
+  } catch (e) {
+    console.log(`api error ${e}`);  
   }
 };
 
@@ -208,6 +231,12 @@ app.get('/ya/search/artists/:query', async (req,res)=>{
   res.json(result)
 })
 
+app.get('/ya/artists/:artist', async (req,res)=>{
+  let artist = req.params.artist
+  let result = await getArtist(artist)
+  res.json(result)
+})
+
 app.post('/ya/likeTracks/:userId/:track', async (req,res)=>{
   let tracks = req.params.track
   let userId = req.params.userId
@@ -223,6 +252,12 @@ app.post('/ya/dislikeTracks/:userId/:track', async (req,res)=>{
   let result = await dislikeTracks(userId,tracks)
   res.json(result)
 })
+
+app.get('/ya/chart', async (req,res)=>{
+  let result = await getChart("russia")
+  res.json(result)
+})
+
 
 
 
