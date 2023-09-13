@@ -1362,9 +1362,6 @@ body::-webkit-scrollbar {
         font-size: 20px;
     }
 
-    .playlist-play-button {
-        display: none;
-    }
     .nav-selection {
         width: 100%;
         justify-content: center;
