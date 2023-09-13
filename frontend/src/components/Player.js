@@ -6,7 +6,7 @@ import { usePalette } from 'react-palette'
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
+const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -202,6 +202,7 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info`}>
+      {/* <div className='player-current-playlist'>{currentPlaylist ? currentPlaylist.title : ""}:</div> */}
         <div className='player-track-title'>{currentSong.title} </div>
         <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists");setPlayerFolded(true)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>

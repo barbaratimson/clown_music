@@ -475,7 +475,7 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 20px;
+    padding: 20px 30px 20px 20px;
     background-color: rgb(15, 15, 15,0.5);
     transition: all 1s;
     overflow-y: scroll
@@ -633,6 +633,14 @@ body::-webkit-scrollbar {
     flex-direction: column;
     color: #ddd;
     margin-left: 20px;
+}
+
+.player-current-playlist {
+    width: 100%;
+    padding-top: 30px;
+    height: 100%;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .player-track-title {

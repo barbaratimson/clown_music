@@ -115,6 +115,7 @@ const Main = () => {
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
          playerFolded={playerFolded} setPlayerFolded={setPlayerFolded}
          setArtist={setArtist} setCurrentPage={setCurrentPage}
+         currentPlaylist={currentPlaylist}
          children = {<Playlist 
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs}

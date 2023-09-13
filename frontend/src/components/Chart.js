@@ -8,7 +8,7 @@ import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill } from 'react-icons
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [chartResult,setChartResult] = useState()
     const fetchChart = async () => {
@@ -31,11 +31,11 @@ const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrev
 
     return (
       <div>
-        {console.log(chartResult)}
+        {/* {console.log(chartResult)} */}
            {chartResult? (
                 <div>
                   <div className='artist-info-section'>
-                <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+                <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentPage("currentPlaylist");setPlayerFolded(false)}} loading= "lazy" alt=""></img>
                 <div className='artist-info'>
                 <div className='artist-name'>{chartResult.chart.title}</div>
                 <div className='artist-genres'>{chartResult.chart.description}</div>  
