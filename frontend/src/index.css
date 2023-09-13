@@ -363,6 +363,10 @@ body::-webkit-scrollbar {
     background-color: transparent;
 }
 
+.playlist-card:hover .playlist-play-button {
+    opacity: 1;
+}
+
 .playlist-card-info {
     position: absolute;
     left: 0;
@@ -395,7 +399,7 @@ body::-webkit-scrollbar {
    text-align: center;
    font-size: 15px;
    font-weight: 600;
-   text-shadow: 0px 0px 6px #000000;
+   text-shadow: 0px 0px 2px #000000;
 }
 
 
@@ -1230,9 +1234,6 @@ body::-webkit-scrollbar {
             transition: all .3s;
         }
 
-        .playlist-play-button:hover {
-            opacity: 1;
-        }
 
 
 
