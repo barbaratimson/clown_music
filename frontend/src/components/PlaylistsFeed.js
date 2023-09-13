@@ -2,6 +2,7 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from './Loader';
+import { RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -33,6 +34,7 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
                 {allPlaylists ? (allPlaylists.map((playlist) => playlist.data.available ? (
                   <div className="playlist-card" key={playlist.data.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist.data);setPlayerFolded(false)}}>
                   <div className="playlist-card-image">
+                  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
                   <img src={playlist.data.ogImage ? `http://${playlist.data.ogImage.substring(0, playlist.data.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                   </div>
                   <div className='playlist-card-info'>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
 import { FaCrown } from "react-icons/fa6"
-import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill } from 'react-icons/ri';
+import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -35,7 +35,10 @@ const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPlayli
            {chartResult? (
                 <div>
                   <div className='artist-info-section'>
-                <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentPage("currentPlaylist");setPlayerFolded(false)}} loading= "lazy" alt=""></img>
+                    <div className='main-image-wrapper'>  
+                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentPage("currentPlaylist");setPlayerFolded(false)}}><RiPlayLine/></div>
+                <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+                    </div>
                 <div className='artist-info'>
                 <div className='artist-name'>{chartResult.chart.title}</div>
                 <div className='artist-genres'>{chartResult.chart.description}</div>  
