@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
+import { FaCrown } from "react-icons/fa6"
+import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -39,9 +41,20 @@ const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrev
                 <div className='artist-genres'>{chartResult.chart.description}</div>  
                 </div>              
                   </div>
+                  <div className='chart-songs-wrapper'>
                 {chartResult.chart.tracks.map((song)=>(
-                                    <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-                ))}      
+                                    <div className='chart-song-wrapper'>
+                              {song.chart.position === 1 ? (<div className='chart-song-crown'><FaCrown/></div>) : (null)}
+                              <div className='chart-song-position'>{song.chart.position}</div>
+                              <div className='chart-song-progress-wrapper'>
+                                {song.chart.progress === "up" ? (<div className='chart-song-progress-arrow green'><RiArrowUpSFill/></div>) : (null)}
+                              <div className={`chart-song-progress ${song.chart.progress === "up" ? "green" : song.chart.progress === "down" ? "red" : ""}`}>{song.chart.shift !==0  ? song.chart.progress === "new" ? "NEW" : Math.abs(song.chart.shift)  : "-"}</div>
+                              {song.chart.progress === "down" ? (<div className='chart-song-progress-arrow red'><RiArrowDownSFill/></div>) : (null)}
+                              </div>
+                                    <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                  </div>
+                ))}   
+                </div>   
             </div>
             ):(null)}
            

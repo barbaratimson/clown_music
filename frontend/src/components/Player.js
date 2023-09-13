@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useRef, useState } from 'react';
 import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
-import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine} from 'react-icons/ri'
+import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine} from 'react-icons/ri'
 import Artist from './Artist';
 import { usePalette } from 'react-palette'
 import axios  from 'axios';
@@ -221,7 +221,9 @@ const Player = ({isplaying, setArtist, playerFolded, setPlayerFolded, children,c
         <div className='player-track-title-folded'>{currentSong.title} </div>
         <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
-      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}></div>
+      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
+          <RiArrowUpDoubleLine/>
+      </div>
       </div>
         
       <div className='playing-controls'>

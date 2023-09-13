@@ -36,7 +36,7 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
                 <img className="image" src={artistResult.artist.ogImage ? `http://${artistResult.artist.ogImage.substring(0, artistResult.artist.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
                 <div className='artist-info'>
                 <div className='artist-name'>{artistResult.artist.name}</div>
-                <div className='artist-genres'>{artistResult.artist.genres}</div>  
+                <div className='artist-genres'>{`${artistResult.artist.genres}`}</div>  
                 </div>              
                   </div>
                   <div className='artist-titlebar'>Popular Tracks</div>

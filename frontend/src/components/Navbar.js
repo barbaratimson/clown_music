@@ -2,6 +2,8 @@ import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
+import { HiSearch } from "react-icons/hi";
+import { RiSearch2Line, RiSearchLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -9,7 +11,7 @@ const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIs
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
-    
+    const [searchFolded,setSearchFolded] = useState(true)
     const handleSongClick = async (song) => {
         if (song.id === currentSong.id && isplaying){
             audioElem.current.pause()
@@ -55,17 +57,17 @@ const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIs
         {/* <div className="logo-text">YaClown Music</div> */}
         </div>
         <div className='nav-selection'>               
-        <div className={`nav-selection-button ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>Current playlist</div>
-        <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>Your playlists</div>
-        <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>Chart</div>
-        <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>Artists</div>
+        <div className={`nav-selection-button ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>PLAYER</div>
+        <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>PLAYLISTS</div>
+        <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>CHART</div>
+        <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>ARTIST</div>
         </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
-    <input className='nav-search' type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
-        <div className="nav-search-start">Search</div>
+    <input className={`nav-search ${searchFolded ? "folded" : ""}`} type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
+        <div className="nav-search-start" style={{fontSize:`${searchFolded ? "35px" : "30px"}`}} onClick={()=>{setSearchFolded(!searchFolded)}}><HiSearch/></div>
     </div>
-    <div className={`nav-search-results ${!search ? "hidden" : ""}`}>
+    <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
            <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
            <div className="play-button">
