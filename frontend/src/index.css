@@ -1234,6 +1234,10 @@ body::-webkit-scrollbar {
             transition: all .3s;
         }
 
+        .playlist-play-button:hover {
+            opacity: 1;
+        }
+
 
 
 
