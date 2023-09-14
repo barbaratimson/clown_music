@@ -126,6 +126,7 @@ body::-webkit-scrollbar {
     color: #ddd;
     font-weight: 600;
     user-select: none;
+    letter-spacing: 2px;
 }
 
 
@@ -1106,6 +1107,7 @@ body::-webkit-scrollbar {
             width: 100%;
             padding: 15px;
             font-size: 25px;
+            padding-left: 20px;
             color: #ddd;
             background-color:rgb(15, 15, 15,0.8);
         }

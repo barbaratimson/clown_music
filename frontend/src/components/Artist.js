@@ -19,6 +19,8 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
               setArtistResult(response.data)
               setIsLoading(false)
           } catch (err) {
+            setIsLoading(false)
+            setCurrentPage("currentPlaylist")
             console.error('Ошибка при получении списка треков:', err);
           }
       };
