@@ -9,9 +9,9 @@ const Track = ({currentPlaylist,audioElem,setPrevSong, song, likedSongs, setLike
   const [isLoading,setIsLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
     const handleSongClick = async (song) => {
-        if (song.id === currentSong.id && isplaying){
+        if (Number(song.id) === Number(currentSong.id) && isplaying){
             audioElem.current.pause()
-        } else if (song.id !== currentSong.id) {
+        } else if (Number(song.id) !== Number(currentSong.id)) {
           audioElem.current.currentTime = 0
           currentSong.progress = 0
           setPrevSong(currentSong)
@@ -70,9 +70,9 @@ const dislikeSong = async (song) => {
     }
 
     return (
-              <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
+              <div className={`playlist-song ${Number(song.id) === Number(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
                  <div className="play-button">
-                    <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
+                    <div className='playlist-song-state'>{Number(song.id) !== Number(currentSong.id) ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>
                  <div className='playlist-song-image'>      
                  <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
@@ -81,7 +81,7 @@ const dislikeSong = async (song) => {
                  {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
                  </div>
                  <div className='playlist-song-actions'>
-                  {!likedSongs.find((elem) => elem.id === song.id) ? (
+                  {!likedSongs.find((elem) => Number(elem.id) === Number(song.id)) ? (
                   <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);likedSongs.push({id:song.id})}}>Like</div>
                   ): (
                     <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}>Dislike</div>

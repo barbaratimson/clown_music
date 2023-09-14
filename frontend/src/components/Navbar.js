@@ -4,28 +4,16 @@ import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 import { HiSearch } from "react-icons/hi";
 import { RiSearch2Line, RiSearchLine } from 'react-icons/ri';
+import Track from './Track';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIsSongLoading,audioElem,setisplaying,currentSong,isplaying,setCurrentPlaylist}) => {
+const Navbar = ({currentPage,setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
-    const handleSongClick = async (song) => {
-        if (song.id === currentSong.id && isplaying){
-            audioElem.current.pause()
-        } else if (song.id !== currentSong.id) {
-          setIsSongLoading(true)
-          audioElem.current.currentTime = 0
-          currentSong.progress = 0
-          audioElem.current.src = ' '
-            setCurrentSong(song)
-        } else{
-            audioElem.current.play().catch(err=>console.error(err))
-      }
-    }
-
+    
     const handleSearch = async () => {
         if (search){
           try {
@@ -69,17 +57,7 @@ const Navbar = ({currentPage,setCurrentPage,setCurrentSong,setPlayerFolded,setIs
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
-           <div className={`playlist-song ${song.id === currentSong.id ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available ? handleSongClick(song):alert("Track unavailable")}}>
-           <div className="play-button">
-              <div className='playlist-song-state'>{song.id !== currentSong.id ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
-           </div>
-           <div className='playlist-song-image'>     
-           <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
-           </div>
-           <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
-           {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
-           </div>
-       </div>
+           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
         ))):(<></>)}
 
          {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(

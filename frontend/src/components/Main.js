@@ -78,7 +78,18 @@ const Main = () => {
 
     return (
         <div className="page-content">
-          <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} audioElem={audioElem} setCurrentSong={setCurrentSong} setisplaying={setisplaying} currentSong={currentSong} isplaying={isplaying} setCurrentPlaylist={setCurrentPlaylist}/>
+          <Navbar currentPage={currentPage}
+          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+          setCurrentSongs={setCurrentSongs}
+           currentPlaylist={currentPlaylist} currentSongs={currentSongs}
+             playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
+              currentSong={currentSong} setCurrentSong={setCurrentSong}
+               setisplaying={setisplaying} isplaying={isplaying}
+                setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
+                 prevSong = {prevSong} setPrevSong={setPrevSong}
+                 likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
+                  setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} 
+                  />
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
           {currentPage && currentPage==="userPlaylists" ? (<Playlists setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>) : 
           currentPage === "artists" ? (<Artist 
