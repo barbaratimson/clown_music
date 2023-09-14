@@ -15,7 +15,7 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/artists/${artistName}`);
+              `${link}/ya/artists/${encodeURIComponent(artistName)}`);
               setArtistResult(response.data)
               setIsLoading(false)
           } catch (err) {
@@ -41,9 +41,11 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
                 </div>              
                   </div>
                   <div className='artist-titlebar'>Popular Tracks</div>
+                  <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
                                     <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
                 ))}
+                </div>
                 <div className='artist-titlebar'>Releases</div>
                 <div className="playlists">           
                 {artistResult.albums.map((playlist) => playlist.available ? ( 
