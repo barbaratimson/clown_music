@@ -2,13 +2,13 @@
 
 @keyframes color-pulse {
     0% {
-        background-color: rgb(214, 0, 0.2);
+        background-color: rgb(214, 0, 0);
     }
     50%{
-        background-color:rgb(182, 2, 26,1);
+        background-color: rgb(163, 1, 1);
     }
     100% {  
-        background-color: rgb(214, 0, 0.2);
+        background-color: rgb(214, 0, 0);
     }
 
 }
@@ -308,7 +308,7 @@ body::-webkit-scrollbar {
 }
 
 .playlists-title {
-    background-color: #141010;
+    background-color: rgb(20, 16, 16,0.9);
     width: fit-content;
     padding: 15px 25px;
     border-radius: 20px 20px 0 0;
@@ -325,7 +325,7 @@ body::-webkit-scrollbar {
     justify-content: center;
     gap: 40px;
     padding: 20px;  
-    background-color: #141010;
+    background-color: rgb(20, 16, 16,0.7);
     width: 100%;
 }
 
@@ -927,12 +927,10 @@ body::-webkit-scrollbar {
             color: rgb(226, 226, 226);
             cursor: pointer;
             opacity: 0;
-            animation: opacity .2s ease-in;
         }
         .playlist-song:hover {
             border: none;
-            box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
-            background-color: rgb(107, 107, 107,0.5);
+            background-color: rgb(107, 107, 107,0.25);
             padding-left: 20px;
         }
 
@@ -982,21 +980,25 @@ body::-webkit-scrollbar {
         }
         
         .song-current {
-            background-color:rgb(214, 0, 28,0.2);
+        background-color:rgb(122, 122, 122,0.6);
             font-size:18px;
             color: white;
             border: 0;
-            box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2);
-            animation: color-pulse 2.4s ease-in infinite;
+            /* box-shadow: 10px 10px 10px 2px rgba(34, 60, 80, 0.2); */
+            /* animation: color-pulse 2.4s ease-in infinite; */
         }
 
         .song-current.paused {
-            background-color:#7a7a7a;
-            animation:none;
+            background-color: rgb(221, 221, 221,0.2);
+        }
+
+        .song-current.paused:hover {
+          background-color: rgb(221, 221, 221,0.3);
         }
 
         .song-current:hover{
             border: 0;
+            background-color:rgb(122, 122, 122,0.8);
         }
 
 
@@ -1125,7 +1127,7 @@ body::-webkit-scrollbar {
             font-size: 25px;
             padding-left: 20px;
             color: #ddd;
-            background-color:rgb(15, 15, 15,0.8);
+            background-color:rgb(15, 15, 15,0.9);
         }
         
         .page-content{
@@ -1153,6 +1155,7 @@ body::-webkit-scrollbar {
             width: 100%;
             height: 100%;
             padding: 20px 30px 20px 10px;
+            background-color: rgb(20, 16, 16,0.3);
         }
 
         .chart-song-wrapper:nth-child(-n + 3) .chart-song-position{

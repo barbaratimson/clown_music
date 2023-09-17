@@ -89,9 +89,10 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
 
     return (
               <div className='playlist-songs-container'>
-                        {currentSongs ? (currentSongs.map((song) => (
+                        {currentSongs ? (currentSongs.map((song) => song.available ? (
                           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-            ))):(" ")}
+            ):(null)
+            )):(null)}
         
             </div>
     );
