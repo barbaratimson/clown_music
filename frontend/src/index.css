@@ -299,7 +299,6 @@ body::-webkit-scrollbar {
 }
 
 .playlists-container {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -325,9 +324,9 @@ body::-webkit-scrollbar {
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-    padding: 20px;
+    padding: 20px;  
     background-color: #141010;
-    border-radius: 0 0 20px 20px;
+    width: 100%;
 }
 
 .playlists-container::-webkit-scrollbar{
@@ -543,6 +542,10 @@ body::-webkit-scrollbar {
 /* .player.active .btn_action:hover {
     color: rgb(153, 45, 45);
 } */
+
+.player.active .player-image-section > .image {
+    scale: 1;
+}
 .player-folded{
     position: fixed;
     bottom: 0;
@@ -674,6 +677,7 @@ body::-webkit-scrollbar {
     font-size: 25px;
     color: #ddd;
     cursor: pointer;
+    width: fit-content;
 }
 
 .player-track-artists:hover{
@@ -711,6 +715,8 @@ body::-webkit-scrollbar {
         border-radius: 20px;
         overflow: hidden;
         min-width: 200px;
+        scale: 0.95;
+        transition: scale .4s;
     }
 
     .image-folded {
@@ -945,8 +951,10 @@ body::-webkit-scrollbar {
         }
 
         .playlist-song-duration {
-            padding-right: 10px;
-            padding-left:  20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
             transition: all .2s;
          }
 
@@ -956,13 +964,21 @@ body::-webkit-scrollbar {
         }
 
         .playlist-song-like-button {
-            text-align: center; 
-            padding: 5px;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
             user-select: none;
+            font-size: 20px;
+            padding: 0 10px;
         }
 
-        .playlist-song-like-button:hover {
-            background-color: #525252;
+        .playlist-song-like-button > svg {
+            transition: all .2s ease-in-out;
+        }
+
+        .playlist-song-like-button:hover >svg{
+            scale: 1.5;
         }
         
         .song-current {
@@ -1215,6 +1231,7 @@ body::-webkit-scrollbar {
             color: goldenrod;
         }
 
+
         .main-image-wrapper{
             display: flex;
         }   
@@ -1339,6 +1356,7 @@ body::-webkit-scrollbar {
         margin-top: 3px;
         rotate: -20deg;
     }
+
     .navigation_wrapper.folded{
         bottom: 160px;
     }

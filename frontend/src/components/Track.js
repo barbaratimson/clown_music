@@ -2,6 +2,7 @@ import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
+import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -82,9 +83,9 @@ const dislikeSong = async (song) => {
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => Number(elem.id) === Number(song.id)) ? (
-                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);likedSongs.push({id:song.id})}}>Like</div>
+                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);likedSongs.push({id:song.id})}}><RiHeartLine/></div>
                   ): (
-                    <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}>Dislike</div>
+                    <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}><RiHeartFill/></div>
                   )
                   }
                  </div>

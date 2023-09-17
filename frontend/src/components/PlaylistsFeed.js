@@ -35,7 +35,7 @@ const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
                   <div className="playlist-card" key={playlist.data.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist.data);setPlayerFolded(false)}}>
                   <div className="playlist-card-image">
                   <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
-                  <img src={playlist.data.ogImage ? `http://${playlist.data.ogImage.substring(0, playlist.data.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                  <img src={playlist.data.ogImage ? `http://${playlist.data.ogImage.substring(0, playlist.data.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading = "lazy" alt=""></img>
                   </div>
                   <div className='playlist-card-info'>
                       <div className="playlist-card-desc">{playlist.data.title}</div>
