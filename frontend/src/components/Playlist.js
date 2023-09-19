@@ -70,6 +70,7 @@ const Playlist = ({currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSo
     
 
       useEffect(()=>{
+        console.log(currentPlaylist)
         const handleFeed = async () => {
         if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
           setIsTracksLoading(true)

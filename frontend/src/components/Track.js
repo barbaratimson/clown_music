@@ -70,6 +70,13 @@ const dislikeSong = async (song) => {
       }
     }
 
+    const handleLikeSong = (song) =>  {
+      setLikedSongs(prev => [song,...prev])
+      if (currentPlaylist.kind === 3) {
+        setCurrentSongs(prev => [song,...prev])
+      }
+    }
+
     return (
               <div className={`playlist-song ${Number(song.id) === Number(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
                  <div className="play-button">
@@ -78,12 +85,12 @@ const dislikeSong = async (song) => {
                  <div className='playlist-song-image'>      
                  <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                  </div>
-                 <div className='playlist-song-title' style={{textDecoration:`${song.available ? "none" : "line-through"}`}}>
+                 <div className='playlist-song-title'>
                  {song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => Number(elem.id) === Number(song.id)) ? (
-                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);likedSongs.push({id:song.id})}}><RiHeartLine/></div>
+                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);handleLikeSong(song)}}><RiHeartLine/></div>
                   ): (
                     <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}><RiHeartFill/></div>
                   )

@@ -1,15 +1,12 @@
 import React, { useEffect,useState,useRef } from 'react';
 import Palette, { usePalette } from 'react-palette'
-import { BsMusicNoteBeamed } from 'react-icons/bs';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Player from './Player';
 import Playlist from './Playlist';
-import Router from '../router';
 import Playlists from './Playlists';
-import PlaylistsFeed from './PlaylistsFeed';
-import NavPanel from './NavPanel';
 import Artist from './Artist';
+import MainPage from './MainPage';
 import Chart from './Chart';
 import Loader from './Loader';
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -112,7 +109,17 @@ const Main = () => {
                  setisplaying={setisplaying} isplaying={isplaying}
                   setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs}></Chart>) : (null)}
+                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs}></Chart>):
+                   currentPage=== "mainPage" ? (<MainPage setCurrentPage={setCurrentPage} 
+                    setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+                    setCurrentSongs={setCurrentSongs}
+                     currentPlaylist={currentPlaylist} currentSongs={currentSongs}
+                       playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
+                        currentSong={currentSong} setCurrentSong={setCurrentSong}
+                         setisplaying={setisplaying} isplaying={isplaying}
+                          setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
+                           prevSong = {prevSong} setPrevSong={setPrevSong}
+                           likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>) : (null)}
         
         </div>
             <div className='player-wrapper'> 
