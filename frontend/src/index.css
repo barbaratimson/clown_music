@@ -18,6 +18,11 @@
     100% {opacity: 1;}
   }
 
+  @keyframes scale {
+    0% {scale: 0;}
+    100% {scale: 1;}
+  }
+
 @keyframes spin {
     100% {
         -webkit-transform: rotate(360deg);
@@ -88,11 +93,11 @@ body{
 }
 
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: var(--secondary-color);
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
     background-color: #10100f;
     height: 2px;
 }
@@ -129,11 +134,25 @@ body::-webkit-scrollbar {
     letter-spacing: 2px;
 }
 
+.nav-player {
+    font-size: 25px;
+    background-color: rgb(163, 159, 159,0.3);
+}
+
+.nav-logo {
+    padding: 0 10px;
+}
+
+
 
 .nav-selection-button.active {
     background-color: rgb(163, 159, 159,0.5);
     color: #ddd;
     font-size: 20px;
+}
+
+.nav-selection-button.nav-player.active {
+    font-size: 25px;
 }
 
 .nav-selection-button:not(.active):hover {
@@ -154,15 +173,6 @@ body::-webkit-scrollbar {
     scale: 1.5;
 }
 
-
-.logo-pic{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
 
 .nav-wrapper {
     display: flex;
@@ -606,7 +616,6 @@ body::-webkit-scrollbar {
 .player-image-section-folded {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
     transition: all .6s;
     width: 100%;
@@ -659,10 +668,14 @@ body::-webkit-scrollbar {
 }
 
 .player-current-playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     width: 100%;
     padding-top: 30px;
+    padding-right: 40px;
     height: 100%;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -1238,6 +1251,7 @@ body::-webkit-scrollbar {
 
         .main-image-wrapper{
             display: flex;
+            position: relative;
         }   
 
         .playlist-play-button {
@@ -1259,8 +1273,40 @@ body::-webkit-scrollbar {
         .playlist-play-button:hover {
             opacity: 1;
         }
+        
+        .modal {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 10000;
+            background-color: rgb(15, 15, 15,0.5);
+          }
 
+          .modal-content {
+            position: relative;
+            display: flex;
+            padding: 20px;
+            width: 50%;
+            height: 80%;
+            margin-bottom: 3%;
+            overflow-y: scroll;
+            animation: scale .2s;
+            background-color: rgb(15, 15, 15);
+          }
 
+          .modal-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: white;
+            padding: 10px;
+          }
+          
 
 
 

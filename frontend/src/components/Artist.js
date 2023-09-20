@@ -45,7 +45,7 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
                   <div className='artist-titlebar'>Popular Tracks</div>
                   <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
-                                    <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                                    <Track key={song.id} playlist={artistResult.popularTracks} setCurrentPlaylist={setCurrentPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
                 ))}
                 </div>
                 <div className='artist-titlebar'>Releases</div>

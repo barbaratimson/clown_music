@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 import { HiSearch } from "react-icons/hi";
-import { RiSearch2Line, RiSearchLine } from 'react-icons/ri';
+import { RiPauseFill, RiPauseMiniFill, RiPlayFill, RiPlayMiniFill, RiSearch2Line, RiSearchLine } from 'react-icons/ri';
 import Track from './Track';
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -46,8 +46,8 @@ const Navbar = ({currentPage,setCurrentPage,setPlayerFolded,setCurrentPlaylist,c
         <div className="nav">
                 <div className="nav-wrapper">
         <div className='nav-selection'>               
-        <div className={`nav-selection-button ${currentPage === "mainPage" ? "active" : ""}`} onClick={()=>{setCurrentPage("mainPage");setPlayerFolded(true)}}><div className="logo"><div className="logo-pic">🤡</div>{/* <div className="logo-text">YaClown Music</div> */}</div></div>
-        <div className={`nav-selection-button ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>PLAYER</div>
+        <div className={`nav-selection-button nav-logo ${currentPage === "mainPage" ? "active" : ""}`} onClick={()=>{setCurrentPage("mainPage");setPlayerFolded(true)}}><div className="logo"><div className="logo-pic">🤡</div>{/* <div className="logo-text">YaClown Music</div> */}</div></div>
+        <div className={`nav-selection-button nav-player ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>{isplaying ? <RiPlayFill/> : <RiPauseFill/>}</div>
         <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>PLAYLISTS</div>
         <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>CHART</div>
         <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>ARTIST</div>

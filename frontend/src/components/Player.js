@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useRef, useState } from 'react';
 import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
-import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine} from 'react-icons/ri'
+import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine, RiPlayList2Fill} from 'react-icons/ri'
 import Artist from './Artist';
 import { usePalette } from 'react-palette'
 import axios  from 'axios';
@@ -178,7 +178,6 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
   // handleSimilarTracks(currentSong)
   }, [currentSong.url || currentSong.title])
 
-
   useEffect(() => {
     localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
   },[currentSong])
@@ -202,7 +201,10 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info`}>
-      {/* <div className='player-current-playlist'>{currentPlaylist ? currentPlaylist.title : ""}:</div> */}
+      <div className='player-current-playlist'>
+        <div>Currently playing:</div>
+        <div>{currentPlaylist ? currentPlaylist.title : ""}</div>
+        </div>
         <div className='player-track-title'>{currentSong.title} </div>
         <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists");setPlayerFolded(true)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
@@ -222,12 +224,13 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
         <div className='player-track-title-folded'>{currentSong.title} </div>
         <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
       </div>
-      <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
-          <RiArrowUpDoubleLine/>
-      </div>
+      {/* <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
+          <RiPlayList2Fill/>
+      </div> */}
       </div>
         
       <div className='playing-controls'>
+        {playerFolded ? (<RiPlayList2Fill style={{color:"#ddd",fontSize:"30px"}} onClick={()=>{setPlayerFolded(false)}}/>) : (null) }
         <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
       </div>
@@ -243,7 +246,14 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
           <div className="buffer-bar" style={{width: `${!isSongLoading ? currentSong.buffered+"%" : 0}`}}></div>
       </div>
       </div>
-      <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} src={currentSong.url} ref={audioElem} onLoadStart={()=>{setIsSongLoading(true)}}  onError={(e)=>{setisplaying(false);setIsSongLoading(false)}} onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}} onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}></audio>    
+
+      <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} 
+      src={currentSong.url} ref={audioElem}
+       onLoadStart={()=>{setIsSongLoading(true)}} 
+        onError={(e)=>{setisplaying(false);setIsSongLoading(false)}}
+         onCanPlay={()=>{setIsSongLoading(false)}} onPlay={() =>{setisplaying(true)}}
+          onPause={()=>{setisplaying(false)}} onEnded={(e)=>{skiptoNext(e)}} onTimeUpdate={onPlaying}></audio>   
+
       <div className={`player-song-info-section ${playerFolded ? "folded" : ""}`}>
         {children}
       </div> 

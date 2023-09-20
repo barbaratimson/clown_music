@@ -31,12 +31,12 @@ const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPlayli
 
     return (
       <div>
-        {/* {console.log(chartResult)} */}
+        {console.log(chartResult)}
            {chartResult? (
                 <div>
                   <div className='artist-info-section'>
                     <div className='main-image-wrapper'>  
-                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentPage("currentPlaylist");setPlayerFolded(false)}}><RiPlayLine/></div>
+                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentSong(chartResult.chart.tracks[0].track);setPlayerFolded(false);setCurrentPage("cyu")}}><RiPlayLine/></div>
                 <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
                     </div>
                 <div className='artist-info'>
@@ -54,7 +54,7 @@ const Chart = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPlayli
                               <div className={`chart-song-progress ${song.chart.progress === "up" ? "green" : song.chart.progress === "down" ? "red" : ""}`}>{song.chart.shift !==0  ? song.chart.progress === "new" ? "NEW" : Math.abs(song.chart.shift)  : "-"}</div>
                               {song.chart.progress === "down" ? (<div className='chart-song-progress-arrow red'><RiArrowDownSFill/></div>) : (null)}
                               </div>
-                                    <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} setCurrentPlaylist={setCurrentPlaylist} playlist={chartResult.chart} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
                   </div>
                 ))}   
                 </div>   
