@@ -8,7 +8,7 @@ import Track from './Track';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({currentPage,setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
@@ -63,16 +63,15 @@ const Navbar = ({currentPage,setCurrentPage,setPlayerFolded,setCurrentPlaylist,c
         ))):(<></>)}
 
          {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
-           <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);console.log(playlist)}}>
-           <div className="playlist-card-image">
-               <img src="https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png" alt=""></img>
-               <div className="playlist-card-desc">{playlist.title}</div>
-               <div className="playlist-card-length">{playlist.trackCount}</div>
-               <div className="playlist-card-play">
-                   
+           <div className="playlist-song" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}}>
+                 <div className='playlist-song-image'>      
+                 <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                 </div>
+                 <div className='playlist-song-title'>
+                 {playlist.title}
+                 </div>
+              
                </div>
-           </div>
-       </div>
         ))):(<></>)}
         
     </div>

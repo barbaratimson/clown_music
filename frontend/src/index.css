@@ -217,8 +217,8 @@ body{
 .nav-search-results {
     position: absolute;
     width: 550px;
-    height: 200px;
-    background-color: var(--primary-color);
+    height: 350px;
+    background-color: rgb(22, 22, 22);
     top: 51px;
     z-index: 100000;
     overflow-y: scroll;
@@ -939,7 +939,6 @@ body{
             padding: 15px;
             color: rgb(226, 226, 226);
             cursor: pointer;
-            opacity: 0;
         }
         .playlist-song:hover {
             border: none;
@@ -1275,7 +1274,7 @@ body{
         }
         
         .modal {
-            position: absolute;
+            position: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1284,19 +1283,19 @@ body{
             left: 0;
             top: 0;
             z-index: 10000;
-            background-color: rgb(15, 15, 15,0.5);
+            background-color: rgba(29, 29, 29, 0.8);
           }
 
           .modal-content {
             position: relative;
-            display: flex;
             padding: 20px;
-            width: 50%;
+            width: 60%;
             height: 80%;
             margin-bottom: 3%;
             overflow-y: scroll;
             animation: scale .2s;
             background-color: rgb(15, 15, 15);
+            
           }
 
           .modal-close {

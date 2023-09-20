@@ -94,7 +94,7 @@ const Main = () => {
 ):(null)}
 
           
-          <Navbar currentPage={currentPage}
+          <Navbar currentPage={currentPage} setActive={setActive} setViewedPlaylist={setViewedPlaylist}
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs}
            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
