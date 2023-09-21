@@ -10,6 +10,7 @@ import MainPage from './MainPage';
 import Chart from './Chart';
 import Loader from './Loader';
 import ViewPlaylist from './ViewPlaylist';
+import MyTracks from './MyTracks';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -138,7 +139,17 @@ const Main = () => {
                          setisplaying={setisplaying} isplaying={isplaying}
                           setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                            prevSong = {prevSong} setPrevSong={setPrevSong}
-                           likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>) : (null)}
+                           likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>) :
+                           currentPage=== "myTracks" ? (<MyTracks setCurrentPage={setCurrentPage} 
+                            setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
+                            setCurrentSongs={setCurrentSongs}
+                             currentPlaylist={currentPlaylist} currentSongs={currentSongs}
+                               playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
+                                currentSong={currentSong} setCurrentSong={setCurrentSong}
+                                 setisplaying={setisplaying} isplaying={isplaying}
+                                  setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
+                                   prevSong = {prevSong} setPrevSong={setPrevSong}
+                                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>) : (null)}
         
         </div>
             <div className='player-wrapper'> 

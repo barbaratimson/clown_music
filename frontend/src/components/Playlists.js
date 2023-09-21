@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PlaylistsFeed from './PlaylistsFeed';
 import Loader from './Loader';
-import { RiPlayLine } from 'react-icons/ri';
+import { RiAddFill, RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -23,21 +23,9 @@ const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist
           }
       };
       
-      const fetchYaMudicSongs = async () => {
-        setIsLoading(true)
-          try {
-            const response = await axios.get(
-              `${link}/ya/myTracks`,);
-              setAllPlaylists(prev =>[...prev,response.data])
-              setIsLoading(false)
-          } catch (err) {   
-            console.error('Ошибка при получении списка треков:', err);
-          }
-      };
 
       useEffect(()=>{
         fetchSongs()
-        fetchYaMudicSongs()
       },[])
 
       if (isLoading) return <Loader></Loader>
@@ -59,6 +47,15 @@ const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist
                   </div>
               </div>
             ):(null))}  
+                              <div className="playlist-card" key={"addPlaylist"} onClick={()=>{}}>
+                  <div className="playlist-card-image">
+                  <div className='playlist-add-button' onClick={()=>{}}><RiAddFill/></div>
+                  </div>
+                  <div className='playlist-card-info add'>
+                      <div className="playlist-card-desc">Добавить плейлист</div>
+                      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+                  </div>
+              </div>
             </div>
             ): (
                <></>

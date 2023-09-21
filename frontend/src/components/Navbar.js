@@ -48,6 +48,7 @@ const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPla
         <div className='nav-selection'>               
         <div className={`nav-selection-button nav-logo ${currentPage === "mainPage" ? "active" : ""}`} onClick={()=>{setCurrentPage("mainPage");setPlayerFolded(true)}}><div className="logo"><div className="logo-pic">🤡</div>{/* <div className="logo-text">YaClown Music</div> */}</div></div>
         <div className={`nav-selection-button nav-player ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>{isplaying ? <RiPlayFill/> : <RiPauseFill/>}</div>
+        <div className={`nav-selection-button ${currentPage === "myTracks" ? "active" : ""}`} onClick={()=>{setCurrentPage("myTracks");setPlayerFolded(true)}}>MyTRACKS</div>
         <div className={`nav-selection-button ${currentPage === "userPlaylists" ? "active" : ""}`} onClick={()=>{setCurrentPage("userPlaylists");setPlayerFolded(true)}}>PLAYLISTS</div>
         <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>CHART</div>
         <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>ARTIST</div>
