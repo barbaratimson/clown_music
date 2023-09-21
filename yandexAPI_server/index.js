@@ -180,11 +180,10 @@ app.get('/ya/likedTracks', async (req,res)=>{
 })
 
 
-app.get('/ya/playlist/tracks/:userId/:kind', async (req,res)=>{
+app.get('/ya/playlist/tracks/:kind/:userId', async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
   let tracks = await getPlaylistTracks(kind,userId)
-  console.log(tracks)
   if (tracks){
   tracks = tracks.tracks.map((song)=>song.track)
   }

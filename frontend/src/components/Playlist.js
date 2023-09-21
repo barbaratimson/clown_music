@@ -7,7 +7,7 @@ import Loader from './Loader';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({currentPlaylist, audioElem,setPrevSong,setCurrentPlaylist, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Playlist = ({currentPlaylist,audioElem,setPrevSong,setCurrentPlaylist, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
   const [isTracksLoading,setIsTracksLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
 
@@ -79,8 +79,8 @@ const Playlist = ({currentPlaylist, audioElem,setPrevSong,setCurrentPlaylist, li
         setCurrentSongs(result)
         setIsTracksLoading(false)
         } else if (currentPlaylist.owner) {
-          fetchPlaylistSongs(currentPlaylist.owner.uid,currentPlaylist.kind)
-        }
+          fetchPlaylistSongs(currentPlaylist.kind,currentPlaylist.owner.uid)
+        } 
       }
       handleFeed()
       },[currentPlaylist])

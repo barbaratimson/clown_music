@@ -48,7 +48,7 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
         setViewedPlaylist((prev)=>({...prev,tracks:result}))
         setIsLoading(false)
         } else if (viewedPlaylist.owner) {
-          fetchPlaylistSongs(viewedPlaylist.owner.uid,viewedPlaylist.kind)
+          fetchPlaylistSongs(viewedPlaylist.kind,viewedPlaylist.owner.uid)
         }
       }
       handleFeed()

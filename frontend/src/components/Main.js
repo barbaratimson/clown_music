@@ -109,7 +109,7 @@ const Main = () => {
                   />
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
           {currentPage && currentPage==="userPlaylists" ? (<Playlists setActive={setActive} setCurrentPage={setCurrentPage} setViewedPlaylist={setViewedPlaylist} setPlayerFolded={setPlayerFolded} setCurrentPlaylist={setCurrentPlaylist}/>) : 
-          currentPage === "artists" ? (<Artist 
+          currentPage === "artists" ? (<Artist setActive={setActive}  setViewedPlaylist={setViewedPlaylist}
             artist={artist} setArtist={setArtist} setCurrentPage={setCurrentPage} 
             setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
             setCurrentSongs={setCurrentSongs}

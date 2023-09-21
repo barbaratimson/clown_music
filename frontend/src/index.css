@@ -354,22 +354,9 @@ body{
 }
 
 .playlist-card:hover{
-    scale: 1.1;
+    scale: 1.06;
 }
 
-.playlist-card:hover .playlist-card-desc {
-    position: relative;
-    z-index: 1000;
-}
-
-
-.playlist-card:hover .playlist-card-info {
-    background-color: transparent;
-}
-
-.playlist-card:hover .playlist-play-button {
-    opacity: 1;
-}
 
 .playlist-card-info {
     position: absolute;
@@ -1258,7 +1245,7 @@ body{
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 10;
             width: 200px;
             height: 200px;
             font-size: 60px;

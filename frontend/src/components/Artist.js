@@ -8,7 +8,7 @@ import { RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
     const fetchArtist = async (artistName) => {
@@ -51,9 +51,8 @@ const Artist = ({artist,setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFo
                 <div className='artist-titlebar'>Releases</div>
                 <div className="playlists">           
                 {artistResult.albums.map((playlist) => playlist.available ? ( 
-                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}} >
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}} >
                   <div className="playlist-card-image">
-                  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
                   <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                   </div>
                   <div className='playlist-card-info'>
