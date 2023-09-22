@@ -4,7 +4,7 @@ import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
 import { FaCrown } from "react-icons/fa6"
-import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
+import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiCloseFill, RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -35,7 +35,17 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
             console.log(err)
           }
       };
-  
+      
+      function msToTime(duration) {
+        var seconds = Math.floor((duration / 1000) % 60),
+        minutes = Math.floor((duration / (1000 * 60)) % 60),
+        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+      hours = (hours < 10) ? "0" + hours : hours;
+      minutes = (minutes < 10) ? "0" + minutes : minutes;
+      seconds = (seconds < 10) ? "0" + seconds : seconds;
+      return hours + "h:" + minutes + "m:" + seconds + "s";
+    }
+
       
 
     useEffect(()=>{
@@ -59,7 +69,7 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
     return (
       <div>
           <div className={"modal"} onClick={()=>setActive(false)}>
-            <div className='modal-close'>CLOSE</div>
+            <div className='modal-close'><RiCloseFill/></div>
             <div className={"modal-content"} onClick={(e)=>e.stopPropagation()}>
                 {/* {console.log(viewedPlaylist)} */}
            {viewedPlaylist? (
@@ -67,7 +77,7 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
                   <div className='artist-info-section'>
                     <div className='main-image-wrapper'>  
                     <div className='playlist-play-button' style={{pointerEvents:`${isLoading ? "none" : "all"}`}} onClick={()=>{setCurrentPlaylist(viewedPlaylist);setCurrentSong(viewedPlaylist.tracks[0]);setActive(false);setPlayerFolded(false)}}><RiPlayLine/></div>
-                <img className="image" src={viewedPlaylist.ogImage ? `http://${viewedPlaylist.ogImage.substring(0, viewedPlaylist.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+                <img className="image" src={viewedPlaylist.ogImage ? `http://${viewedPlaylist.ogImage.substring(0, viewedPlaylist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                     </div>
                 <div className='artist-info'>
                 <div className='artist-name'>{viewedPlaylist.title}</div>

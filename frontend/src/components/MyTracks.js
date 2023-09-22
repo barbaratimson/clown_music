@@ -26,6 +26,16 @@ const MyTracks = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPla
             console.error('Ошибка при получении списка треков:', err);
           }
       };
+
+      function msToTime(duration) {
+          var seconds = Math.floor((duration / 1000) % 60),
+          minutes = Math.floor((duration / (1000 * 60)) % 60),
+          hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+        return hours + "h:" + minutes + "m:" + seconds + "s";
+      }
   
       useEffect(()=>{
         fetchYaMudicSongs()
@@ -44,14 +54,16 @@ const MyTracks = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPla
                 <div>
                   <div className='artist-info-section'>
                     <div className='main-image-wrapper'>  
-                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult);setCurrentSong(chartResult.tracks[0].track);setPlayerFolded(false);setCurrentPage("currentPlaylist")}}><RiPlayLine/></div>
-                <img className="image" src={chartResult.ogImage ? `http://${chartResult.ogImage.substring(0, chartResult.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+                    <div className='playlist-play-button heart' onClick={()=>{setCurrentPlaylist(chartResult);setCurrentSong(chartResult.tracks[0].track);setPlayerFolded(false);setCurrentPage("currentPlaylist")}}><RiPlayLine/></div>
+                <img className="image heart" src={chartResult.ogImage ? `http://${chartResult.ogImage.substring(0, chartResult.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
                     </div>
                 <div className='artist-info'>
                 <div className='artist-name'>{chartResult.title}</div>
+                <div className='artist-genres'>Tracks:{chartResult.trackCount}</div>  
+                <div className='artist-genres'>Duration {msToTime(chartResult.durationMs)}</div>  
                 </div>              
                   </div>
-                  <div className='chart-songs-wrapper'>
+                  <div className='chart-songs-wrapper my-tracks'>
                 {chartResult.tracks.map((song)=> song.track.available ? (
                                     <Track key={song.id} setCurrentPlaylist={setCurrentPlaylist} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
                 ):(null))}   

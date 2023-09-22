@@ -6,8 +6,9 @@ import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({currentPlaylist,audioElem,setCurrentPlaylist, playlist,setPrevSong, song, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audioElem,setCurrentPlaylist, playlist,setPrevSong, song, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
   const [likeButtonHover,setLikeButtonHover] = useState(false)
+  const [artistHover,setArtistHover] = useState(false)
     const handleSongClick = async (song) => {
         if (String(song.id) === String(currentSong.id) && isplaying){
             audioElem.current.pause()
@@ -80,7 +81,7 @@ const dislikeSong = async (song) => {
     }
 
     return (
-              <div className={`playlist-song ${String(song.id) === String(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover ? handleSongClick(song) : console.log()}}>
+              <div className={`playlist-song ${String(song.id) === String(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover && !artistHover ? handleSongClick(song) : console.log()}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{String(song.id) !== String(currentSong.id) ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>
@@ -88,7 +89,14 @@ const dislikeSong = async (song) => {
                  <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                  </div>
                  <div className='playlist-song-title'>
-                 {song.artists && song.artists.length !== 0 ? song.artists[0].name + " - " + song.title : song.title}
+                  <div className='playlist-song-title-title'>{song.title}</div>
+                  
+                  <div className='player-track-artists'>
+        {song.artists ? song.artists.map(artist=>(
+           <div className='playlist-song-title-artist' onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
+        )):(null)}
+                </div>
+                  {/* <div className='playlist-song-title-artist' onClick={()=>{setArtist(song.artists[0].name)}} onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{song.artists && song.artists.length !== 0 ? song.artists[0].name : ""}</div> */}
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => String(elem.id) === String(song.id)) ? (

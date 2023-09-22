@@ -6,7 +6,7 @@ import { usePalette } from 'react-palette'
 import axios  from 'axios';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
+const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -195,7 +195,6 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
   return (
     <div>
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
-
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
@@ -203,11 +202,15 @@ const Player = ({isplaying, setArtist, currentPlaylist, playerFolded, setPlayerF
       <div className={`player-track-info`}>
       <div className='player-current-playlist'>
         <div>Currently playing:</div>
-        <div>{currentPlaylist ? currentPlaylist.title : ""}</div>
+        <div className='player-current-playlist-title' onClick={()=>{setViewedPlaylist(currentPlaylist);setActive(true)}}>{currentPlaylist.title}</div>
         </div>
         <div className='player-track-title'>{currentSong.title} </div>
-        <div className='player-track-artists' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists");setPlayerFolded(true)}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists'>
+        {currentSong.artists ? currentSong.artists.map(artist=>(
+           <div className='player-track-artist' onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
+        )):(null)}
       </div>
+        </div>
       </div>
             <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
       <div className={`controls ${playerFolded ? "folded" : ""}`}>

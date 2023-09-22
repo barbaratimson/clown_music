@@ -10,7 +10,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist,setCurrentPlaylist}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const fetchSongs = async () => {
         setIsLoading(true)
           try {

@@ -129,7 +129,7 @@ const Main = () => {
                  setisplaying={setisplaying} isplaying={isplaying}
                   setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs}></Chart>):
+                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs} setArtist={setArtist}></Chart>):
                    currentPage=== "mainPage" ? (<MainPage setActive={setActive}  setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
                     setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
                     setCurrentSongs={setCurrentSongs}
@@ -153,7 +153,7 @@ const Main = () => {
         
         </div>
             <div className='player-wrapper'> 
-       <Player 
+       <Player setActive={setActive}  setViewedPlaylist={setViewedPlaylist}
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          currentSong={currentSong} setCurrentSong={setCurrentSong} 
@@ -164,9 +164,9 @@ const Main = () => {
          playerFolded={playerFolded} setPlayerFolded={setPlayerFolded}
          setArtist={setArtist} setCurrentPage={setCurrentPage}
          currentPlaylist={currentPlaylist}
-         children = {<Playlist
+         children = {<Playlist setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded}
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-          setCurrentSongs={setCurrentSongs}
+          setCurrentSongs={setCurrentSongs} setArtist={setArtist}
            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
               currentSong={currentSong} setCurrentSong={setCurrentSong}

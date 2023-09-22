@@ -666,6 +666,11 @@ body{
     font-weight: 600;
 }
 
+.player-current-playlist-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .player-track-title {
     margin-bottom: 15px;
     font-size: 30px;
@@ -680,15 +685,44 @@ body{
     width: fit-content;
 }
 
-.player-track-artists:hover{
-    text-decoration: underline;
+.player-track-artists .player-track-artist:not(:last-child)::after { 
+    content: ",";
+
+}
+
+.player-track-artist{
+    font-size: 25px;
+    color: #ddd;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.player-track-artists{
+    display: flex;
+    flex-direction: row;
 }
 
 
 
+.player-track-artist:hover{
+    text-decoration: underline;
+}
+
+
+.loop-track {
+    transition: color .2s;
+}
 
 .loop-track.active, .play-random.active {
+    color: #e4e4e4;
+}
+
+.loop-track.active:hover, .play-random.active:hover {
     color: white;
+}
+
+.loop-track:hover, .play-random:hover {
+    color: rgb(153, 153, 153);
     transition: color .2s; 
 }
 
@@ -717,6 +751,14 @@ body{
         min-width: 200px;
         scale: 0.95;
         transition: scale .4s;
+    } 
+    
+    .heart {
+        object-fit: cover;
+        --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
+        -webkit-mask-box-image: var(--_m);
+                   mask-border: var(--_m);
+        clip-path: polygon(-41% 0,50% 91%, 141% 0);
     }
 
     .image-folded {
@@ -939,6 +981,9 @@ body{
         }
 
         .playlist-song-title {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
            user-select: none;
            white-space: nowrap;
            overflow: hidden;
@@ -946,6 +991,26 @@ body{
            padding-left: 20px;
            flex-grow: 1;
         }
+
+        .playlist-song-title .playlist-song-title-artist:not(:last-child)::after { 
+            content: ",";
+        }
+
+        .playlist-song-title-title{
+            width: fit-content;
+            font-weight: 600;
+        }
+
+        .playlist-song-title-artist{
+            width: fit-content;
+            font-size: 15px;
+            color: #ebebeb;
+        }
+
+        .playlist-song-title-artist:hover{
+            text-decoration: underline;
+        }
+
 
         .playlist-song-duration {
             display: flex;
@@ -1158,6 +1223,10 @@ body{
             background-color: rgb(20, 16, 16,0.3);
         }
 
+        .chart-songs-wrapper.my-tracks{
+            padding: 20px 3 0px 20px 20px;
+        }
+
         .chart-song-wrapper:nth-child(-n + 3) .chart-song-position{
             font-size: 30px;
             text-shadow:rgb(255, 255, 255) -1px 0px 10px;
@@ -1238,6 +1307,7 @@ body{
         .main-image-wrapper{
             display: flex;
             position: relative;
+            min-height: 200px;
         }   
 
         .playlist-play-button {
@@ -1254,6 +1324,10 @@ body{
             background-color: rgb(15, 15, 15,0.4);
             transition: all .3s;
             cursor: pointer;
+        }
+
+        .playlist-play-button.heart {
+            padding-bottom: 40px;
         }
 
         .playlist-add-button{
@@ -1284,7 +1358,7 @@ body{
             left: 0;
             top: 0;
             z-index: 10000;
-            background-color: rgba(29, 29, 29, 0.8);
+            background-color: rgba(29, 29, 29, 0.95);
           }
 
           .modal-content {
@@ -1305,6 +1379,7 @@ body{
             right: 0;
             color: white;
             padding: 10px;
+            font-size: 40px;
           }
           
 
