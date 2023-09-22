@@ -55,8 +55,8 @@ const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPla
         </div>
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
-    <input ref={input} className={`nav-search ${searchFolded ? "folded" : ""}`} type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
-        <div className="nav-search-start" style={{fontSize:`${searchFolded ? "35px" : "30px"}`}} onClick={()=>{setSearchFolded(!searchFolded)}}><HiSearch/></div>
+    <input ref={input} value={search} className={`nav-search ${searchFolded ? "folded" : ""}`} type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
+        <div className="nav-search-start" style={{fontSize:`${searchFolded ? "35px" : "30px"}`}} onClick={()=>{setSearchFolded(!searchFolded);setSearch("")}}><HiSearch/></div>
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
