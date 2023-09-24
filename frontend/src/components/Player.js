@@ -207,7 +207,7 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
         <div className='player-track-title'>{currentSong.title} </div>
         <div className='player-track-artists'>
         {currentSong.artists ? currentSong.artists.map(artist=>(
-           <div className='player-track-artist' onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
+           <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
         )):(null)}
       </div>
         </div>
@@ -225,7 +225,12 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
       </div>
       <div className={`player-track-info-folded`}>
         <div className='player-track-title-folded'>{currentSong.title} </div>
-        <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div>
+        <div className='player-track-artists'>
+        {currentSong.artists ? currentSong.artists.map(artist=>(
+           <div className='player-track-artists-folded' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
+        )):(null)}
+      </div>
+        {/* <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div> */}
       </div>
       {/* <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
           <RiPlayList2Fill/>
@@ -250,7 +255,7 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
       </div>
       </div>
 
-      <audio preload={"auto"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} 
+      <audio preload={"auto"} autobuffer={"true"} crossOrigin="anonymous" onSeeked = {(e)=>{console.log(e)}} 
       src={currentSong.url} ref={audioElem}
        onLoadStart={()=>{setIsSongLoading(true)}} 
         onError={(e)=>{setisplaying(false);setIsSongLoading(false)}}

@@ -590,6 +590,10 @@ body{
     cursor: pointer;
 }
 
+.player-track-artists-folded:not(:last-child)::after {
+    content: ",";
+}
+
 .player-track-title-folded {
     font-size: 20px;
     margin-bottom: 5px;
@@ -685,7 +689,7 @@ body{
     width: fit-content;
 }
 
-.player-track-artists .player-track-artist:not(:last-child)::after { 
+.player-track-artist:not(:last-child)::after { 
     content: ",";
 
 }
@@ -992,7 +996,7 @@ body{
            flex-grow: 1;
         }
 
-        .playlist-song-title .playlist-song-title-artist:not(:last-child)::after { 
+        .playlist-song-title-artist:not(:last-child)::after { 
             content: ",";
         }
 

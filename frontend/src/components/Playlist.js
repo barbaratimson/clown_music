@@ -1,5 +1,5 @@
 import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
 import Track from './Track';
@@ -70,6 +70,7 @@ const Playlist = ({currentPlaylist,audioElem, setCurrentPage, setPlayerFolded, s
     
 
       useEffect(()=>{
+        localStorage.setItem("prevPlaylist",JSON.stringify(currentPlaylist))
         const handleFeed = async () => {
         if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.generatedPlaylistType){
           setIsTracksLoading(true)

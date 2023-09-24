@@ -16,12 +16,13 @@ const link = process.env.REACT_APP_YMAPI_LINK
 const Main = () => {
 
     let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))  
+    let prevPlaylist = JSON.parse(localStorage.getItem("prevPlaylist"))  
     let volume = localStorage.getItem("player_volume")
     const [playlistData,setPlaylistData] = useState([])
     const [playlistDataYa,setPlaylistDataYa] = useState([])
     const [isLoading, setIsLoading] = useState(false);
-    const [currentPlaylist, setCurrentPlaylist] = useState([]);
-    const [viewedPlaylist, setViewedPlaylist] = useState([]);
+    const [currentPlaylist, setCurrentPlaylist] = useState(prevPlaylist ? prevPlaylist : {title:""});
+    const [viewedPlaylist, setViewedPlaylist] = useState(prevPlaylist);
     const [isplaying, setisplaying] = useState(false);
     const [currentSong, setCurrentSong] = useState(savedSong ? savedSong : {title:"",url:"",artists:[{name:""}]});
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
@@ -31,7 +32,7 @@ const Main = () => {
     const [playerFolded,setPlayerFolded] = useState(true)
     const [likedSongs,setLikedSongs] = useState([])
     const [active,setActive] = useState(false)
-    const [currentPage,setCurrentPage] = useState("userPlaylists")
+    const [currentPage,setCurrentPage] = useState("myTracks")
     const [artist,setArtist] = useState(currentSong && currentSong.artists.length !== 0 ? currentSong.artists[0].name : "")
 
     const audioElem = useRef();
@@ -63,7 +64,9 @@ const Main = () => {
     
     useEffect(()=>{
         fetchLikedSongs()
+        if(!prevPlaylist){
         fetchYaMudicSongs()
+        }
     },[])
 
     useEffect(()=>{
@@ -80,7 +83,6 @@ const Main = () => {
 
     return (
         <div className="page-content">
-
           {active ? (<ViewPlaylist  active={active} setActive={setActive} setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
                             viewedPlaylist={viewedPlaylist}
                             setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
@@ -177,7 +179,8 @@ const Main = () => {
          setArtist={setArtist} setCurrentPage={setCurrentPage}
          currentPlaylist={currentPlaylist}
          children = {
-         <Playlist setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded}
+         <Playlist
+         setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded}
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
           setCurrentSongs={setCurrentSongs} setArtist={setArtist}
            currentPlaylist={currentPlaylist} currentSongs={currentSongs}

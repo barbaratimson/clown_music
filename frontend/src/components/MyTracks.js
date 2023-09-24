@@ -49,7 +49,6 @@ const MyTracks = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPla
 
     return (
       <div>
-        {console.log(chartResult)}
            {chartResult? (
                 <div>
                   <div className='artist-info-section'>
