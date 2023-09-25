@@ -749,10 +749,11 @@ body{
         display: flex;
         z-index: 0;
         user-select: none;
+        min-width: 200px;
+        max-height: 200px;
         cursor: pointer;
         border-radius: 20px;
         overflow: hidden;
-        min-width: 200px;
         scale: 0.95;
         transition: scale .4s;
     } 
@@ -779,12 +780,6 @@ body{
     .image-folded >img {
         width: 80px;
         height: 80px;
-    }
-
-
-    .image > img{
-        min-width: 200px;
-        min-height: 200px;
     }
 
 
@@ -1312,6 +1307,7 @@ body{
             display: flex;
             position: relative;
             min-height: 200px;
+            aspect-ratio: 1;
         }   
 
         .playlist-play-button {

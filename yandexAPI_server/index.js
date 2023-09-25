@@ -160,6 +160,17 @@ let getArtist = async (artist) => {
   }
 };
 
+let getAlbumTracks = async (album) => {
+  try {
+    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    const album1 = await api.getAlbumWithTracks(album);
+    console.log(album1)
+    return album1
+  } catch (e) {
+    console.log(`api error ${e}`);  
+  }
+};
+
 
 app.get('/ya/trackinfo/:id', async (req,res) =>{
   let id = req.params.id
@@ -236,6 +247,13 @@ app.get('/ya/artists/:artist', async (req,res)=>{
   let result = await getArtist(artist)
   res.json(result)
 })
+
+app.get('/ya/album/:albumId', async (req,res)=>{
+  let album = req.params.albumId
+  let result = await getAlbumTracks(album)
+  res.json(result)
+})
+
 
 app.post('/ya/likeTracks/:userId/:track', async (req,res)=>{
   let tracks = req.params.track
