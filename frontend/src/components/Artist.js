@@ -50,8 +50,8 @@ const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArt
                 </div>
                 <div className='artist-titlebar'>Releases</div>
                 <div className="playlists">           
-                {artistResult.albums.map((playlist) => playlist.available ? ( 
-                  <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}} >
+                {artistResult.albums.map((playlist) => playlist.available && !playlist.type === 'single' ? ( 
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={async ()=>{setViewedPlaylist(playlist);setActive(true)}} >
                   <div className="playlist-card-image">
                   <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                   </div>
