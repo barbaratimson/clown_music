@@ -44,7 +44,7 @@ const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPla
     },[searchFolded])
     return (
         <div className="nav">
-                <div className="nav-wrapper">
+        <div className="nav-wrapper">
         <div className='nav-selection'>               
         <div className={`nav-selection-button nav-logo ${currentPage === "mainPage" ? "active" : ""}`} onClick={()=>{setCurrentPage("mainPage");setPlayerFolded(true)}}><div className="logo"><div className="logo-pic">🤡</div>{/* <div className="logo-text">YaClown Music</div> */}</div></div>
         <div className={`nav-selection-button nav-player ${currentPage === "currentPlaylist" ? "active" : ""}`} onClick={()=>{setCurrentPage("currentPlaylist");setPlayerFolded(false)}}>{isplaying ? <RiPlayFill/> : <RiPauseFill/>}</div>

@@ -3,12 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentSong } from '../store/trackSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audioElem,setCurrentPlaylist, playlist,setPrevSong, song, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audioElem,setCurrentPlaylist, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+
   const [likeButtonHover,setLikeButtonHover] = useState(false)
   const [artistHover,setArtistHover] = useState(false)
+
+  const currentSong = useSelector(state => state.currentSong.currentSong) 
+  const dispatch = useDispatch();
+  const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+
     const handleSongClick = async (song) => {
         if (String(song.id) === String(currentSong.id) && isplaying){
             audioElem.current.pause()
@@ -17,7 +25,7 @@ const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audio
           setCurrentPlaylist(playlist)
           }
           audioElem.current.currentTime = 0
-          currentSong.progress = 0
+          setCurrentSong({...currentSong, progress:0})
           setPrevSong(currentSong)
           audioElem.current.src = ' '
             setCurrentSong(song)

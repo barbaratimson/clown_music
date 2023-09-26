@@ -1136,7 +1136,7 @@ body{
         }
 
         .scroll-to-top {
-            display: none;
+            display: contents;
             position: fixed;
             bottom: 40px;
             right: 40px;

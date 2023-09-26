@@ -91,7 +91,7 @@ const Playlist = ({currentPlaylist,audioElem, setCurrentPage, setPlayerFolded, s
     return (
               <div className='playlist-songs-container'>
                         {currentSongs ? (currentSongs.map((song) => song.available ? (
-                          <Track setArtist={setArtist} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist} setCurrentPlaylist={setCurrentPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                          <Track setArtist={setArtist} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist} setCurrentPlaylist={setCurrentPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ):(null)
             )):(null)}
         

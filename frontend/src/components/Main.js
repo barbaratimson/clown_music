@@ -11,11 +11,12 @@ import Chart from './Chart';
 import Loader from './Loader';
 import ViewPlaylist from './ViewPlaylist';
 import MyTracks from './MyTracks';
+import {useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
+import {changeCurrentSong} from "../store/trackSlice"
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
-
-    let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))  
     let prevPlaylist = JSON.parse(localStorage.getItem("prevPlaylist"))  
     let volume = localStorage.getItem("player_volume")
     const [playlistData,setPlaylistData] = useState([])
@@ -24,7 +25,11 @@ const Main = () => {
     const [currentPlaylist, setCurrentPlaylist] = useState(prevPlaylist ? prevPlaylist : {title:""});
     const [viewedPlaylist, setViewedPlaylist] = useState(prevPlaylist);
     const [isplaying, setisplaying] = useState(false);
-    const [currentSong, setCurrentSong] = useState(savedSong ? savedSong : {title:"",url:"",artists:[{name:""}]});
+
+    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const dispatch = useDispatch();
+    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})
     const [currentSongs,setCurrentSongs] = useState([]);
@@ -33,8 +38,7 @@ const Main = () => {
     const [likedSongs,setLikedSongs] = useState([])
     const [active,setActive] = useState(false)
     const [currentPage,setCurrentPage] = useState("myTracks")
-    const [artist,setArtist] = useState(currentSong && currentSong.artists.length !== 0 ? currentSong.artists[0].name : "")
-
+    const [artist,setArtist] = useState(currentSong && currentSong.artists ? currentSong.artists[0].name : "")
     const audioElem = useRef();
     const { data, loading, error } = usePalette(currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
     const fetchLikedSongs = async (id) => {
@@ -47,7 +51,7 @@ const Main = () => {
           console.log(err)
         }
     };
-
+    
     const fetchYaMudicSongs = async () => {
       setIsLoading(true)
         try {
@@ -83,6 +87,7 @@ const Main = () => {
 
     return (
         <div className="page-content">
+          {console.log(currentPlaylist)}
           {active ? (<ViewPlaylist  active={active} setActive={setActive} setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
                             viewedPlaylist={viewedPlaylist}
                             setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
