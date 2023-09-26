@@ -5,12 +5,19 @@ import PlaylistsFeed from './PlaylistsFeed';
 import Track from './Track';
 import Loader from './Loader';
 import { RiPlayLine } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentSong } from '../store/trackSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
+
+    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const dispatch = useDispatch();
+    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+
     const fetchArtist = async (artistName) => {
         setIsLoading(true)
           try {

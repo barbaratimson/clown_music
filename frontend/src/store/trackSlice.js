@@ -9,6 +9,7 @@ const trackSlice = createSlice({
     },
     reducers:{
         changeCurrentSong(state, action) {
+            console.log(action)
             state.currentSong = action.payload
         },
     }

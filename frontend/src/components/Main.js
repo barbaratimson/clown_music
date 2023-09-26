@@ -1,5 +1,5 @@
 import React, { useEffect,useState,useRef } from 'react';
-import Palette, { usePalette } from 'react-palette'
+import { usePalette } from 'react-palette'
 import axios from 'axios';
 import Navbar from './Navbar';
 import Player from './Player';
@@ -27,8 +27,6 @@ const Main = () => {
     const [isplaying, setisplaying] = useState(false);
 
     const currentSong = useSelector(state => state.currentSong.currentSong) 
-    const dispatch = useDispatch();
-    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
 
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})
@@ -87,14 +85,12 @@ const Main = () => {
 
     return (
         <div className="page-content">
-          {console.log(currentPlaylist)}
           {active ? (<ViewPlaylist  active={active} setActive={setActive} setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
                             viewedPlaylist={viewedPlaylist}
                             setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
                             setCurrentSongs={setCurrentSongs}
                              currentPlaylist={currentPlaylist} currentSongs={currentSongs}
                                playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-                                currentSong={currentSong} setCurrentSong={setCurrentSong}
                                  setisplaying={setisplaying} isplaying={isplaying}
                                   setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                                    prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -107,7 +103,6 @@ const Main = () => {
           setCurrentSongs={setCurrentSongs}
            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-              currentSong={currentSong} setCurrentSong={setCurrentSong}
                setisplaying={setisplaying} isplaying={isplaying}
                 setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -128,7 +123,6 @@ const Main = () => {
               setCurrentSongs={setCurrentSongs}
               currentPlaylist={currentPlaylist} currentSongs={currentSongs}
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-                  currentSong={currentSong} setCurrentSong={setCurrentSong}
                   setisplaying={setisplaying} isplaying={isplaying}
                     setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                     prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -140,7 +134,6 @@ const Main = () => {
               setCurrentSongs={setCurrentSongs}
               currentPlaylist={currentPlaylist} currentSongs={currentSongs}
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-                  currentSong={currentSong} setCurrentSong={setCurrentSong}
                   setisplaying={setisplaying} isplaying={isplaying}
                     setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                     prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -152,7 +145,6 @@ const Main = () => {
                       setCurrentSongs={setCurrentSongs}
                       currentPlaylist={currentPlaylist} currentSongs={currentSongs}
                         playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-                          currentSong={currentSong} setCurrentSong={setCurrentSong}
                           setisplaying={setisplaying} isplaying={isplaying}
                             setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                             prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -163,7 +155,6 @@ const Main = () => {
                               setCurrentSongs={setCurrentSongs}
                               currentPlaylist={currentPlaylist} currentSongs={currentSongs}
                                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-                                  currentSong={currentSong} setCurrentSong={setCurrentSong}
                                   setisplaying={setisplaying} isplaying={isplaying}
                                     setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                                     prevSong = {prevSong} setPrevSong={setPrevSong}
@@ -175,7 +166,6 @@ const Main = () => {
        <Player setActive={setActive}  setViewedPlaylist={setViewedPlaylist}
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
-         currentSong={currentSong} setCurrentSong={setCurrentSong} 
          setPrevSong={setPrevSong} prevSong={prevSong}
          currentSongs = {currentSongs} audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
@@ -190,7 +180,6 @@ const Main = () => {
           setCurrentSongs={setCurrentSongs} setArtist={setArtist}
            currentPlaylist={currentPlaylist} currentSongs={currentSongs}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
-              currentSong={currentSong} setCurrentSong={setCurrentSong}
                setisplaying={setisplaying} isplaying={isplaying}
                 setCurrentPlaylist={setCurrentPlaylist} audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}

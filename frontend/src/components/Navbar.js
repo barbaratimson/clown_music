@@ -5,14 +5,21 @@ import { BsFillPauseFill, BsMusicNote, BsPlayFill } from 'react-icons/bs';
 import { HiSearch } from "react-icons/hi";
 import { RiPauseFill, RiPauseMiniFill, RiPlayFill, RiPlayMiniFill, RiSearch2Line, RiSearchLine } from 'react-icons/ri';
 import Track from './Track';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentSong } from '../store/trackSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
+
+    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const dispatch = useDispatch();
+    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+
     const input = useRef(null) 
     const handleSearch = async () => {
         if (search){

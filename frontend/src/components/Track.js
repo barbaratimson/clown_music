@@ -25,7 +25,6 @@ const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audio
           setCurrentPlaylist(playlist)
           }
           audioElem.current.currentTime = 0
-          setCurrentSong({...currentSong, progress:0})
           setPrevSong(currentSong)
           audioElem.current.src = ' '
             setCurrentSong(song)

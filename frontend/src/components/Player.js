@@ -4,13 +4,23 @@ import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDou
 import Artist from './Artist';
 import { usePalette } from 'react-palette'
 import axios  from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentSong } from '../store/trackSlice';
+
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
-const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume, currentSong,isSongLoading, setIsSongLoading, audioElem, setCurrentSong,setPrevSong, setCurrentPage})=> {
+
+const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong, setCurrentPage})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
   const [similarTracks, setSimilarTracks] = useState("");
+  const [buffered,setBuffered] = useState(0)
+  const [position,setPosition] = useState(0)
+  
+  const currentSong = useSelector(state => state.currentSong.currentSong) 
+  const dispatch = useDispatch();
+  const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
 
 
   const clickRef = useRef();
@@ -26,7 +36,7 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
     const offset = e.nativeEvent.offsetX;
 
     const divprogress = offset / width * 100;
-    let currentTime = divprogress / 100 * currentSong.duration
+    let currentTime = divprogress / 100 * audioElem.current.duration
 
     if (audioElem.current.currentTime !== 0) {
         audioElem.current.currentTime=currentTime
@@ -94,8 +104,8 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
   const onPlaying = (e) => {
     const duration = audioElem.current.duration;
     const ct = audioElem.current.currentTime;
-    const buffered = getBuffered()
-    setCurrentSong({ ...currentSong, "position": ct / duration * 100, "duration": duration,"buffered":buffered})
+    setPosition(ct / duration * 100)
+    setBuffered(getBuffered())
   }
   
 
@@ -250,8 +260,8 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
         </div> 
       </div>
       <div className={`navigation_wrapper ${isSongLoading ? "loading" : ""} ${playerFolded ? "folded" : ""}`} onClick={checkWidth} ref={clickRef}>
-          <div className="seek_bar" style={{width: `${currentSong.position+"%"}`}}></div>
-          <div className="buffer-bar" style={{width: `${!isSongLoading ? currentSong.buffered+"%" : 0}`}}></div>
+          <div className="seek_bar" style={{width: `${position+"%"}`}}></div>
+          <div className="buffer-bar" style={{width: `${!isSongLoading ? buffered+"%" : 0}`}}></div>
       </div>
       </div>
 
