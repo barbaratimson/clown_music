@@ -11,6 +11,7 @@ const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(true);
+    
     const fetchSongs = async () => {
         setIsLoading(true)
           try {

@@ -14,12 +14,10 @@ const currentPlaylistSlice = createSlice({
             console.log(action)
             state.currentPlaylist.push(action)
         },
-
         removeTrackFromCurrentPlaylist(state,action) {
             console.log(action)
             state.currentPlaylist = state.currentPlaylist.filter(track => track.id !== action.payload.id)
         },
-        
         changeSongPosition(state,action){
             state.currentPlaylist.move = function(from = action.payload.from, to = action.payload.to) {
                 this.splice(to, 0, this.splice(from, 1)[0]);

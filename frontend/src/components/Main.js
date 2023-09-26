@@ -12,8 +12,6 @@ import Loader from './Loader';
 import ViewPlaylist from './ViewPlaylist';
 import MyTracks from './MyTracks';
 import {useSelector} from "react-redux"
-import {useDispatch} from "react-redux"
-import {changeCurrentSong} from "../store/trackSlice"
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -26,7 +24,7 @@ const Main = () => {
     const [viewedPlaylist, setViewedPlaylist] = useState(prevPlaylist);
     const [isplaying, setisplaying] = useState(false);
 
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const currentSong = useSelector(state => state.currentSong.currentSong)   
 
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})

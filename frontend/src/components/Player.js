@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useRef, useState } from 'react';
 import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
-import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine, RiPlayList2Fill} from 'react-icons/ri'
+import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine, RiPlayList2Fill, RiHeartLine, RiHeartFill} from 'react-icons/ri'
 import Artist from './Artist';
 import { usePalette } from 'react-palette'
 import axios  from 'axios';
@@ -10,7 +10,7 @@ import { changeCurrentSong } from '../store/trackSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
-const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong, setCurrentPage})=> {
+const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive, currentPlaylist, playerFolded, setPlayerFolded, children,children2, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong, setCurrentPage})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -100,6 +100,30 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
     }
 };
 
+const likeSong = async (song) => {
+  try {
+    const response = await axios.post(
+      `${link}/ya/likeTracks/${267472538}/${song.id}`,);
+      return response.data
+  } catch (err) {
+    console.error('Ошибка при получении списка треков:', err);
+    console.log(err)
+  }
+};
+
+const dislikeSong = async (song) => {
+try {
+  const response = await axios.post(
+    `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
+  return response.data
+} catch (err) {
+  console.error('Ошибка при получении списка треков:', err);
+  console.log(err)
+}
+};
+
+
+
 
   const onPlaying = (e) => {
     const duration = audioElem.current.duration;
@@ -125,6 +149,7 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
         }
   }
 }
+
   
 
   useEffect(() => {
@@ -220,6 +245,14 @@ const Player = ({isplaying, setArtist,setViewedPlaylist,setActive, currentPlayli
            <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
         )):(null)}
       </div>
+      <div className='playlist-song-actions'>
+                  {!likedSongs.find((elem) => String(elem.id) === String(currentSong.id)) ? (
+                  <div className='playlist-song-like-button'  onClick={()=>{likeSong(currentSong)}}><RiHeartLine/></div>
+                  ): (
+                    <div className='playlist-song-like-button'  onClick={()=>{dislikeSong(currentSong)}}><RiHeartFill/></div>
+                  )
+                  }
+                 </div>
         </div>
       </div>
             <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 

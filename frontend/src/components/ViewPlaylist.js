@@ -41,6 +41,21 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
             console.log(err)
           }
       };
+
+      const fetchAlbum = async (albumId) => {
+        setIsLoading(true)
+          try {
+            const response = await axios.get(
+              `${link}/ya/album/${albumId}`);
+              setIsLoading(false)
+              response.data.tracks = response.data.volumes[0]
+              return response.data
+          } catch (err) {
+            setIsLoading(false)
+            setCurrentPage("currentPlaylist")
+            console.error('Ошибка при получении списка треков:', err);
+          }
+      };
       
       function msToTime(duration) {
         var seconds = Math.floor((duration / 1000) % 60),
@@ -65,6 +80,9 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
         setIsLoading(false)
         } else if (viewedPlaylist.owner) {
           fetchPlaylistSongs(viewedPlaylist.kind,viewedPlaylist.owner.uid)
+        } else if (viewedPlaylist.type === "album") {
+          setViewedPlaylist(await fetchAlbum(viewedPlaylist.id))
+          setIsLoading(false)
         }
       }
       handleFeed()
@@ -77,7 +95,7 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
           <div className={"modal"} onClick={()=>setActive(false)}>
             <div className='modal-close'><RiCloseFill/></div>
             <div className={"modal-content"} onClick={(e)=>e.stopPropagation()}>
-                {/* {console.log(viewedPlaylist)} */}
+              {console.log(viewedPlaylist)}
            {viewedPlaylist? (
                 <div>
                   <div className='artist-info-section'>
