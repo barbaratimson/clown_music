@@ -8,14 +8,17 @@ import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setCurrentPage,setPlayerFolded, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,isSongLoading,setIsSongLoading}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
     const [chartResult,setChartResult] = useState()
+
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
 
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
@@ -72,7 +75,7 @@ const MyTracks = ({setCurrentPage,setPlayerFolded, audioElem,setPrevSong, likedS
                   </div>
                   <div className='chart-songs-wrapper my-tracks'>
                 {chartResult.tracks.map((song)=> song.track.available ? (
-                                    <Track key={song.id} setCurrentPlaylist={setCurrentPlaylist} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} likedSongs={likedSongs} setLikedSongs={setLikedSongs} isSongLoading={isSongLoading}/>
                 ):(null))}   
                 </div>   
             </div>

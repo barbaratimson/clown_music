@@ -6,11 +6,12 @@ import { usePalette } from 'react-palette'
 import axios  from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
-const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, currentSongs, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong, setCurrentPage})=> {
+const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -18,7 +19,10 @@ const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive, 
   const [buffered,setBuffered] = useState(0)
   const [position,setPosition] = useState(0)
   
-  
+  const currentSongs = useSelector(state => state.currentSongs.currentSongs)
+
+  const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
+
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();

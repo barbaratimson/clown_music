@@ -11,7 +11,7 @@ import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setActive,setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [feed,setFeed] = useState()
     
@@ -63,7 +63,7 @@ const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist, audi
          </div>
          <div className='playlist-songs-container'>
                         {feed ? (feed.days[0].tracksToPlay.map((song) => song.available ? (
-                          <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                          <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ):(null)
             )):(null)}
         

@@ -7,21 +7,19 @@ const currentSongslice = createSlice({
     },
     reducers:{
         changeCurrentSongs(state, action) {
-            console.log(action)
-            state.currentPlaylist = action.payload
+            state.currentSongs = action.payload
         },
         addTrackToCurrentSongs(state,action) {
-            state.currentPlaylist = {...state.currentPlaylist, tracks:[action.payload,...state.currentPlaylist.tracks]}
-            console.log(action,current(state))
+            state.currentSongs = [action.payload,...state.currentSongs]
         },
         removeTrackFromCurrentSongs(state,action) {
-            state.currentPlaylist.tracks = state.currentPlaylist.tracks.filter(track => track.id !== action.payload.id)
-            console.log(action,current(state))
+            state.currentSongs = state.currentSongs.filter(track => track.id !== action.payload.id)
         },
         changeSongPosition(state,action){
-            state.currentPlaylist.move = function(from = action.payload.from, to = action.payload.to) {
+            state.currentSongs.move = function(from = action.payload.from, to = action.payload.to) {
                 this.splice(to, 0, this.splice(from, 1)[0]);
             };
+            console.log(action,current(state))
         }
     }
 })

@@ -13,6 +13,8 @@ import ViewPlaylist from './ViewPlaylist';
 import MyTracks from './MyTracks';
 import {useDispatch, useSelector} from "react-redux"
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentSongs } from '../store/currentSongsSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -21,9 +23,7 @@ const Main = () => {
     const [playlistData,setPlaylistData] = useState([])
     const [playlistDataYa,setPlaylistDataYa] = useState([])
     const [isLoading, setIsLoading] = useState(false);
-    // const [currentPlaylist, setCurrentPlaylist] = useState(prevPlaylist ? prevPlaylist : {title:""});
 
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
     const dispatch = useDispatch();
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
@@ -31,15 +31,17 @@ const Main = () => {
     const [isplaying, setisplaying] = useState(false);
 
     const currentSong = useSelector(state => state.currentSong.currentSong)   
+ 
+    const currentPage = useSelector(state => state.currentPage.currentPage)   
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
 
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})
-    const [currentSongs,setCurrentSongs] = useState([]);
     const [isSongLoading,setIsSongLoading]= useState(false)
     const [playerFolded,setPlayerFolded] = useState(false )
     const [likedSongs,setLikedSongs] = useState([])
     const [active,setActive] = useState(false)
-    const [currentPage,setCurrentPage] = useState(prevPlaylist ? "currentPlaylist" : "myTracks")
+    // const [currentPage,setCurrentPage] = useState(prevPlaylist ? "currentPlaylist" : "myTracks")
     const [artist,setArtist] = useState(currentSong && currentSong.artists ? currentSong.artists[0].name : "")
     const audioElem = useRef();
     const { data, loading, error } = usePalette(currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
@@ -89,11 +91,9 @@ const Main = () => {
 
     return (
         <div className="page-content">
-          {active ? (<ViewPlaylist  active={active} setActive={setActive} setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
+          {active ? (<ViewPlaylist  active={active} setActive={setActive} setViewedPlaylist={setViewedPlaylist}
                             viewedPlaylist={viewedPlaylist}
                             setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-                            setCurrentSongs={setCurrentSongs}
-                             currentSongs={currentSongs}
                                playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                                  setisplaying={setisplaying} isplaying={isplaying}
                                    audioElem={audioElem}
@@ -102,30 +102,26 @@ const Main = () => {
 ):(null)}
 
           
-          <Navbar currentPage={currentPage} setActive={setActive} setViewedPlaylist={setViewedPlaylist}
+          <Navbar  setActive={setActive} setViewedPlaylist={setViewedPlaylist}
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-          setCurrentSongs={setCurrentSongs}
-            currentSongs={currentSongs}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                setisplaying={setisplaying} isplaying={isplaying}
                  audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
                  likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
-                  setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} 
+                   setPlayerFolded={setPlayerFolded} 
                   />
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
           {currentPage && 
           currentPage==="userPlaylists" ? (
-            <Playlists setActive={setActive} setCurrentPage={setCurrentPage} 
+            <Playlists setActive={setActive} 
               setViewedPlaylist={setViewedPlaylist} setPlayerFolded={setPlayerFolded} 
               />
             ) : 
           currentPage === "artists" ? (
             <Artist setActive={setActive}  setViewedPlaylist={setViewedPlaylist}
-              artist={artist} setArtist={setArtist} setCurrentPage={setCurrentPage} 
+              artist={artist} setArtist={setArtist} 
               setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-              setCurrentSongs={setCurrentSongs}
-               currentSongs={currentSongs}
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                   setisplaying={setisplaying} isplaying={isplaying}
                     audioElem={audioElem}
@@ -133,10 +129,8 @@ const Main = () => {
                     likedSongs = {likedSongs} setLikedSongs={setLikedSongs} />
                    ) : 
           currentPage === "chart" ? (
-            <Chart setCurrentPage={setCurrentPage} 
+            <Chart 
               setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-              setCurrentSongs={setCurrentSongs}
-               currentSongs={currentSongs}
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                   setisplaying={setisplaying} isplaying={isplaying}
                      audioElem={audioElem}
@@ -144,20 +138,16 @@ const Main = () => {
                     likedSongs = {likedSongs} setLikedSongs={setLikedSongs} setArtist={setArtist}/>
                    ) :
                    currentPage=== "mainPage" ? (
-                    <MainPage setActive={setActive}  setViewedPlaylist={setViewedPlaylist} setCurrentPage={setCurrentPage} 
+                    <MainPage setActive={setActive}  setViewedPlaylist={setViewedPlaylist} 
                       setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-                      setCurrentSongs={setCurrentSongs}
-                       currentSongs={currentSongs}
                         playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                           setisplaying={setisplaying} isplaying={isplaying}
                              audioElem={audioElem}
                             prevSong = {prevSong} setPrevSong={setPrevSong}
                             likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>
                            ) : currentPage=== "myTracks" ? (
-                            <MyTracks setCurrentPage={setCurrentPage} 
+                            <MyTracks 
                               setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-                              setCurrentSongs={setCurrentSongs}
-                               currentSongs={currentSongs}
                                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                                   setisplaying={setisplaying} isplaying={isplaying}
                                      audioElem={audioElem}
@@ -171,17 +161,15 @@ const Main = () => {
        isplaying={isplaying} setisplaying={setisplaying}
         audioVolume={audioVolume} setAudioVolume={setAudioVolume}
          setPrevSong={setPrevSong} prevSong={prevSong}
-         currentSongs = {currentSongs} audioElem = {audioElem}
+          audioElem = {audioElem}
          isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
          likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
          playerFolded={playerFolded} setPlayerFolded={setPlayerFolded}
-         setArtist={setArtist} setCurrentPage={setCurrentPage}
+         setArtist={setArtist}
          children = {
-         <Playlist
-         setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded}
+         <Playlist setPlayerFolded={setPlayerFolded}
           isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
-          setCurrentSongs={setCurrentSongs} setArtist={setArtist}
-            currentSongs={currentSongs}
+           setArtist={setArtist}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                setisplaying={setisplaying} isplaying={isplaying}
                  audioElem={audioElem}

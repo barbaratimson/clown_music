@@ -8,16 +8,17 @@ import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiCloseFill, RiPla
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const ViewPlaylist = ({active, setActive,setPlayerFolded,viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
-    
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 

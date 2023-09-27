@@ -7,19 +7,19 @@ import { RiPauseFill, RiPauseMiniFill, RiPlayFill, RiPlayMiniFill, RiSearch2Line
 import Track from './Track';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
     
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
-    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+    const currentPage = useSelector(state => state.currentPage.currentPage)   
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
 
     const input = useRef(null) 
     const handleSearch = async () => {
@@ -68,7 +68,7 @@ const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPla
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
-           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
         ))):(<></>)}
 
          {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(

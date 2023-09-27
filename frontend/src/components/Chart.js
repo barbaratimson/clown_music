@@ -8,18 +8,17 @@ import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setCurrentPage,setPlayerFolded,setArtist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setPlayerFolded,setArtist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,isSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [chartResult,setChartResult] = useState()
 
-    
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
 
@@ -43,7 +42,6 @@ const Chart = ({setCurrentPage,setPlayerFolded,setArtist, audioElem,setPrevSong,
 
     return (
       <div>
-        {console.log(chartResult)}
            {chartResult? (
                 <div>
                   <div className='artist-info-section'>
@@ -66,7 +64,7 @@ const Chart = ({setCurrentPage,setPlayerFolded,setArtist, audioElem,setPrevSong,
                               <div className={`chart-song-progress ${song.chart.progress === "up" ? "green" : song.chart.progress === "down" ? "red" : ""}`}>{song.chart.shift !==0  ? song.chart.progress === "new" ? "NEW" : Math.abs(song.chart.shift)  : "-"}</div>
                               {song.chart.progress === "down" ? (<div className='chart-song-progress-arrow red'><RiArrowDownSFill/></div>) : (null)}
                               </div>
-                                    <Track key={song.id} setArtist={setArtist} setCurrentPlaylist={setCurrentPlaylist} playlist={chartResult.chart} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} setArtist={setArtist} playlist={chartResult.chart} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} likedSongs={likedSongs} setLikedSongs={setLikedSongs} isSongLoading={isSongLoading}/>
                   </div>
                 ))}   
                 </div>   

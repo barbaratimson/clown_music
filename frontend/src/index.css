@@ -1224,7 +1224,7 @@ body{
         }
 
         .chart-songs-wrapper.my-tracks{
-            padding: 20px 3 0px 20px 20px;
+            padding: 20px 30px 20px 20px;
         }
 
         .chart-song-wrapper:nth-child(-n + 3) .chart-song-position{

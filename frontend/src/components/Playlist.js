@@ -6,16 +6,21 @@ import Track from './Track';
 import Loader from './Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentSongs } from '../store/currentSongsSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({audioElem, setCurrentPage, setPlayerFolded, setArtist, setPrevSong,setCurrentPlaylist, likedSongs, setLikedSongs,isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrentPlaylist, likedSongs, setLikedSongs,isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
+  const dispatch = useDispatch();
+
   const [isTracksLoading,setIsTracksLoading] = useState()
   const [likeButtonHover,setLikeButtonHover] = useState(false)
 
+  const currentSongs = useSelector(state => state.currentSongs.currentSongs)   
+  const setCurrentSongs = (playlist) => dispatch(changeCurrentSongs(playlist))
+
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
-  const dispatch = useDispatch();
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
 
     const fetchPlaylistSongs = async (userId,kind) => {
@@ -99,9 +104,8 @@ const Playlist = ({audioElem, setCurrentPage, setPlayerFolded, setArtist, setPre
 
     return (
               <div className='playlist-songs-container'>
-                {console.log(currentPlaylist)}
                         {currentSongs ? (currentSongs.map((song) => song.available ? (
-                          <Track setArtist={setArtist} setCurrentPage={setCurrentPage} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSongs={setCurrentSongs}  likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ):(null)
             )):(null)}
         

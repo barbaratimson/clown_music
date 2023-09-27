@@ -8,19 +8,19 @@ import { RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, setActive, setArtist,setCurrentPage,setPlayerFolded,audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
 
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
+
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
-    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
 
     const fetchArtist = async (artistName) => {
         setIsLoading(true)
@@ -44,7 +44,6 @@ const Artist = ({artist,setViewedPlaylist, setActive, setArtist,setCurrentPage,s
       if (isLoading) return <Loader></Loader>
     return (
       <div>
-        {console.log(artistResult)}
             {artistResult? (
                 <div>
                   <div className='artist-info-section'>
@@ -57,7 +56,7 @@ const Artist = ({artist,setViewedPlaylist, setActive, setArtist,setCurrentPage,s
                   <div className='artist-titlebar'>Popular Tracks</div>
                   <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
-                                    <Track key={song.id} playlist={artistResult.popularTracks} setCurrentPlaylist={setCurrentPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
                 ))}
                 </div>
                 <div className='artist-titlebar'>Releases</div>

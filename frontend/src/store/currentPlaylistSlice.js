@@ -9,7 +9,6 @@ const currentPlaylistSlice = createSlice({
     },
     reducers:{
         changeCurrentPlaylist(state, action) {
-            console.log(action)
             state.currentPlaylist = action.payload
         }
     }

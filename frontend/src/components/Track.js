@@ -6,14 +6,19 @@ import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
+import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({setArtist, setCurrentPage,setPlayerFolded, audioElem, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Track = ({setArtist, setPlayerFolded, audioElem, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,isSongLoading}) => {
 
   const [likeButtonHover,setLikeButtonHover] = useState(false)
   const [artistHover,setArtistHover] = useState(false)
 
+  const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
+  const addTrackToSongs = (song) => dispatch(addTrackToCurrentSongs(song))
+  const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
@@ -77,17 +82,14 @@ const dislikeSong = async (song) => {
         return newSongs
       })
       if (currentPlaylist.kind === 3) {
-        setCurrentSongs(prev => {
-          const newSongs = prev.filter(e => e.id !== song.id);
-          return newSongs
-        })
+       removeTrackFromSongs(song)
       }
     }
 
     const handleLikeSong = (song) =>  {
       setLikedSongs(prev => [song,...prev])
       if (currentPlaylist.kind === 3) {
-        setCurrentSongs(prev => [song,...prev])
+        addTrackToSongs(song)
       }
     }
 
@@ -107,7 +109,6 @@ const dislikeSong = async (song) => {
            <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
         )):(null)}
                 </div>
-                  {/* <div className='playlist-song-title-artist' onClick={()=>{setArtist(song.artists[0].name)}} onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{song.artists && song.artists.length !== 0 ? song.artists[0].name : ""}</div> */}
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => String(elem.id) === String(song.id)) ? (
