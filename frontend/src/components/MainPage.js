@@ -7,16 +7,20 @@ import { FaCrown } from "react-icons/fa6"
 import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist,currentPlaylist, setCurrentPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [feed,setFeed] = useState()
     
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+    
+    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const fetchFeedPlaylists = async () => {
         setIsLoading(true)

@@ -1170,6 +1170,7 @@ body{
             margin-left: 40px;
             margin-top: 20px;
             color: #ddd;
+            height: 100%;
         }
 
         .artist-name {
@@ -1364,7 +1365,7 @@ body{
           .modal-content {
             position: relative;
             padding: 20px;
-            width: 60%;
+            width: 1000px;
             height: 80%;
             margin-bottom: 3%;
             overflow-y: scroll;

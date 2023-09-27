@@ -7,10 +7,11 @@ import { FaCrown } from "react-icons/fa6"
 import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const MyTracks = ({setCurrentPage,setPlayerFolded, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
@@ -19,6 +20,8 @@ const MyTracks = ({setCurrentPage,setPlayerFolded,currentPlaylist, setCurrentPla
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const fetchYaMudicSongs = async () => {
         setIsLoading(true)

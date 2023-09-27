@@ -10,12 +10,13 @@ import { changeCurrentSong } from '../store/trackSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,setCurrentPlaylist,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({currentPage,setViewedPlaylist, setActive, setCurrentPage,setPlayerFolded,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying,setCurrentSongs,currentSongs, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
-
+    
+    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))

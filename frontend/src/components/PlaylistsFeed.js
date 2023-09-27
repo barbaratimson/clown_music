@@ -3,11 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from './Loader';
 import { RiPlayLine } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const PlaylistsFeed = ({setPlayerFolded,setCurrentPlaylist}) => {
+const PlaylistsFeed = ({setPlayerFolded}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
+
+    
+    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const dispatch = useDispatch();
+    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const [isLoading, setIsLoading] = useState(false);
     const fetchFeedPlaylists = async () => {

@@ -5,13 +5,17 @@ import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({currentPlaylist,setArtist, setCurrentPage,setPlayerFolded, audioElem,setCurrentPlaylist, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Track = ({setArtist, setCurrentPage,setPlayerFolded, audioElem, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
 
   const [likeButtonHover,setLikeButtonHover] = useState(false)
   const [artistHover,setArtistHover] = useState(false)
+
+  const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+  const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();

@@ -7,15 +7,19 @@ import { FaCrown } from "react-icons/fa6"
 import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiCloseFill, RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPlaylist, setViewedPlaylist, currentPlaylist, setCurrentPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const currentSong = useSelector(state => state.currentSong.currentSong) 
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+    
+    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const fetchPlaylistSongs = async (userId,kind) => {
         setIsLoading(true)
@@ -81,7 +85,7 @@ const ViewPlaylist = ({active, setActive,setCurrentPage,setPlayerFolded,viewedPl
         } else if (viewedPlaylist.owner) {
           fetchPlaylistSongs(viewedPlaylist.kind,viewedPlaylist.owner.uid)
         } else if (viewedPlaylist.type === "album") {
-          setViewedPlaylist(await fetchAlbum(viewedPlaylist.id))
+          setViewedPlaylist({...await fetchAlbum(viewedPlaylist.id),type:"album"})
           setIsLoading(false)
         }
       }

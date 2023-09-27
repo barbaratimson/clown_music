@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-let savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))  
+const savedSong = JSON.parse(localStorage.getItem("lastPlayedTrack"))  
 
 const trackSlice = createSlice({
     name: 'currentSong',
