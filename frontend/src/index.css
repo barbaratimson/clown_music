@@ -118,6 +118,7 @@ body{
     font-weight: 600;
     user-select: none;
     letter-spacing: 2px;
+    text-wrap: nowrap;
 }
 
 .nav-player {
@@ -631,21 +632,14 @@ body{
 }
 
 
-.player-track-artists {
-    font-size: 25px;
-    color: #ddd;
-    cursor: pointer;
-    width: fit-content;
-}
-
 .player-track-artist:not(:last-child)::after { 
     content: ",";
 
 }
 
 .player-track-artist{
-    font-size: 25px;
-    color: #ddd;
+    font-size: 23px;
+    color: #cacaca;
     cursor: pointer;
     width: fit-content;
 }
@@ -949,7 +943,7 @@ body{
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 70px;
+            padding: 0 10px;
             transition: all .2s;
          }
 
@@ -980,7 +974,8 @@ body{
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 17px;
+            width: fit-content;
             color: #ddd;
         }
 
@@ -1005,7 +1000,7 @@ body{
 
         .song-current:hover{
             border: 0;
-            background-color: rgb(214, 0, 29,0.9);
+            background-color: rgba(199, 0, 27, 0.9);
         }
 
 
