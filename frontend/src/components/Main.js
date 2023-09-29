@@ -12,26 +12,28 @@ import Loader from './Loader';
 import ViewPlaylist from './ViewPlaylist';
 import MyTracks from './MyTracks';
 import {useDispatch, useSelector} from "react-redux"
-import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
-import { changeCurrentSongs } from '../store/currentSongsSlice';
+import currentPlaylistSlice, { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import { changeLikedSongs } from '../store/likedSongsSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     let prevPlaylist = JSON.parse(localStorage.getItem("prevPlaylist"))  
     let volume = localStorage.getItem("player_volume")
+    const dispatch = useDispatch();
     const [playlistData,setPlaylistData] = useState([])
     const [playlistDataYa,setPlaylistDataYa] = useState([])
     const [isLoading, setIsLoading] = useState(false);
 
-    const dispatch = useDispatch();
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
+
+    const setLikedSongs = (playlist) => dispatch(changeLikedSongs(playlist))
+    const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
 
     const [viewedPlaylist, setViewedPlaylist] = useState(prevPlaylist);
     const [isplaying, setisplaying] = useState(false);
 
     const currentSong = useSelector(state => state.currentSong.currentSong)   
- 
     const currentPage = useSelector(state => state.currentPage.currentPage)   
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
 
@@ -39,9 +41,7 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [isSongLoading,setIsSongLoading]= useState(false)
     const [playerFolded,setPlayerFolded] = useState(false )
-    const [likedSongs,setLikedSongs] = useState([])
     const [active,setActive] = useState(false)
-    // const [currentPage,setCurrentPage] = useState(prevPlaylist ? "currentPlaylist" : "myTracks")
     const [artist,setArtist] = useState(currentSong && currentSong.artists ? currentSong.artists[0].name : "")
     const audioElem = useRef();
     const { data, loading, error } = usePalette(currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
@@ -98,7 +98,7 @@ const Main = () => {
                                  setisplaying={setisplaying} isplaying={isplaying}
                                    audioElem={audioElem}
                                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                                   likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>
+                                    />
 ):(null)}
 
           
@@ -108,7 +108,6 @@ const Main = () => {
                setisplaying={setisplaying} isplaying={isplaying}
                  audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
-                 likedSongs = {likedSongs} setLikedSongs={setLikedSongs} 
                    setPlayerFolded={setPlayerFolded} 
                   />
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
@@ -125,8 +124,7 @@ const Main = () => {
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                   setisplaying={setisplaying} isplaying={isplaying}
                     audioElem={audioElem}
-                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                    likedSongs = {likedSongs} setLikedSongs={setLikedSongs} />
+                    prevSong = {prevSong} setPrevSong={setPrevSong}/>
                    ) : 
           currentPage === "chart" ? (
             <Chart 
@@ -134,8 +132,7 @@ const Main = () => {
                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                   setisplaying={setisplaying} isplaying={isplaying}
                      audioElem={audioElem}
-                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                    likedSongs = {likedSongs} setLikedSongs={setLikedSongs} setArtist={setArtist}/>
+                    prevSong = {prevSong} setPrevSong={setPrevSong} setArtist={setArtist}/>
                    ) :
                    currentPage=== "mainPage" ? (
                     <MainPage setActive={setActive}  setViewedPlaylist={setViewedPlaylist} 
@@ -143,16 +140,14 @@ const Main = () => {
                         playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                           setisplaying={setisplaying} isplaying={isplaying}
                              audioElem={audioElem}
-                            prevSong = {prevSong} setPrevSong={setPrevSong}
-                            likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>
+                            prevSong = {prevSong} setPrevSong={setPrevSong}/>
                            ) : currentPage=== "myTracks" ? (
                             <MyTracks 
                               setPlayerFolded={setPlayerFolded}   isSongLoading={isSongLoading} setIsSongLoading={setIsSongLoading}
                                 playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                                   setisplaying={setisplaying} isplaying={isplaying}
                                      audioElem={audioElem}
-                                    prevSong = {prevSong} setPrevSong={setPrevSong}
-                                    likedSongs = {likedSongs} setLikedSongs={setLikedSongs}/>
+                                    prevSong = {prevSong} setPrevSong={setPrevSong}/>
                                    ) : (null)}
         
         </div>

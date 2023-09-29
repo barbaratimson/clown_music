@@ -10,7 +10,7 @@ import { changeCurrentSongs } from '../store/currentSongsSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrentPlaylist, likedSongs, setLikedSongs,isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
+const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrentPlaylist, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
   const dispatch = useDispatch();
 
   const [isTracksLoading,setIsTracksLoading] = useState()
@@ -18,7 +18,6 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrent
 
   const currentSongs = useSelector(state => state.currentSongs.currentSongs)   
   const setCurrentSongs = (playlist) => dispatch(changeCurrentSongs(playlist))
-
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
@@ -105,7 +104,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrent
     return (
               <div className='playlist-songs-container'>
                         {currentSongs ? (currentSongs.map((song) => song.available ? (
-                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ):(null)
             )):(null)}
         

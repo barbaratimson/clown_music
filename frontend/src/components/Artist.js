@@ -12,7 +12,7 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong, likedSongs, setLikedSongs,isplaying,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong,isplaying,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
 
@@ -43,7 +43,7 @@ const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong, lik
 
       if (isLoading) return <Loader></Loader>
     return (
-      <div>
+      <div>   
             {artistResult? (
                 <div>
                   <div className='artist-info-section'>
@@ -56,7 +56,7 @@ const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong, lik
                   <div className='artist-titlebar'>Popular Tracks</div>
                   <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
-                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
                 ))}
                 </div>
                 <div className='artist-titlebar'>Releases</div>

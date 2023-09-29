@@ -11,7 +11,7 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrevSong, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
@@ -68,7 +68,7 @@ const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrev
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
-           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
         ))):(<></>)}
 
          {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
@@ -85,7 +85,6 @@ const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrev
         
     </div>
     </div>
-    {/* <button onClick={()=>{localStorage.clear()}}>LS CLEAR</button> */}
     <div className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
         {/* <div className ="user-username">Barbaratimson</div> */}
         <div className="user-avatar">

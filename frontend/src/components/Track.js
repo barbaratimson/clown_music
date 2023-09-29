@@ -1,27 +1,30 @@
 import React, { useEffect,useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill } from 'react-icons/bs';
+import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedSongsSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({setArtist, setPlayerFolded, audioElem, playlist,setPrevSong, song, likedSongs, setLikedSongs, isplaying,isSongLoading}) => {
+const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPrevSong, song, isplaying,isSongLoading}) => {
 
   const [likeButtonHover,setLikeButtonHover] = useState(false)
   const [artistHover,setArtistHover] = useState(false)
 
+  const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
   const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
+  const removeTrackFromLiked = (song) => dispatch(removeTrackFromLikedSongs(song))
+  const addTrackToLiked = (song) => dispatch(addTrackToLikedSongs(song))
   const addTrackToSongs = (song) => dispatch(addTrackToCurrentSongs(song))
   const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
-
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
@@ -77,17 +80,14 @@ const dislikeSong = async (song) => {
     }
 
     const handleRemoveSong = (song) =>  {
-      setLikedSongs(prev => {
-        const newSongs = prev.filter(e => e.id !== song.id);
-        return newSongs
-      })
+      removeTrackFromLiked(song)
       if (currentPlaylist.kind === 3) {
        removeTrackFromSongs(song)
       }
     }
 
     const handleLikeSong = (song) =>  {
-      setLikedSongs(prev => [song,...prev])
+      addTrackToLiked(song)
       if (currentPlaylist.kind === 3) {
         addTrackToSongs(song)
       }
@@ -109,6 +109,7 @@ const dislikeSong = async (song) => {
            <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
         )):(null)}
                 </div>
+                  {children}
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => String(elem.id) === String(song.id)) ? (
@@ -121,6 +122,9 @@ const dislikeSong = async (song) => {
                  <div className='playlist-song-duration'>
                     {millisToMinutesAndSeconds(song.durationMs)}
                  </div>
+                 <div className='playlist-song-menu-dots'>
+                  <BsThreeDotsVertical/>
+                  </div>
              </div>
         
     );

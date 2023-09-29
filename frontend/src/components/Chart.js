@@ -12,7 +12,7 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setPlayerFolded,setArtist, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,isSongLoading}) => {
+const Chart = ({setPlayerFolded,setArtist, audioElem,setPrevSong,isplaying,isSongLoading}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [chartResult,setChartResult] = useState()
 
@@ -64,7 +64,7 @@ const Chart = ({setPlayerFolded,setArtist, audioElem,setPrevSong, likedSongs, se
                               <div className={`chart-song-progress ${song.chart.progress === "up" ? "green" : song.chart.progress === "down" ? "red" : ""}`}>{song.chart.shift !==0  ? song.chart.progress === "new" ? "NEW" : Math.abs(song.chart.shift)  : "-"}</div>
                               {song.chart.progress === "down" ? (<div className='chart-song-progress-arrow red'><RiArrowDownSFill/></div>) : (null)}
                               </div>
-                                    <Track key={song.id} setArtist={setArtist} playlist={chartResult.chart} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} likedSongs={likedSongs} setLikedSongs={setLikedSongs} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} setArtist={setArtist} playlist={chartResult.chart} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} isSongLoading={isSongLoading}/>
                   </div>
                 ))}   
                 </div>   

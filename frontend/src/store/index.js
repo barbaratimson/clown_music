@@ -3,11 +3,13 @@ import changeCurrentSong from "./trackSlice";
 import changeCurrentPlaylist from "./currentPlaylistSlice";
 import changeCurrentSongs  from "./currentSongsSlice";
 import changeCurrentPage from "./currentPageSlice";
+import changeLikedSongs from "./likedSongsSlice";
 export default configureStore({
     reducer:{
         currentSong:changeCurrentSong,
         currentPlaylist:changeCurrentPlaylist,
         currentSongs:changeCurrentSongs,
-        currentPage:changeCurrentPage
+        currentPage:changeCurrentPage,
+        likedSongs:changeLikedSongs
     }
 });

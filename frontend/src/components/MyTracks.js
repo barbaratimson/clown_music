@@ -12,18 +12,17 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, likedSongs, setLikedSongs, isplaying,isSongLoading,setIsSongLoading}) => {
+const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoading,setIsSongLoading}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
     const [chartResult,setChartResult] = useState()
 
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
-
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
+    
     const dispatch = useDispatch();
-    const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
+    const setCurrentSong = (song) => dispatch(changeCurrentSong(song)) 
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const fetchYaMudicSongs = async () => {
@@ -75,7 +74,7 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, likedSongs, setLikedS
                   </div>
                   <div className='chart-songs-wrapper my-tracks'>
                 {chartResult.tracks.map((song)=> song.track.available ? (
-                                    <Track key={song.id} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} likedSongs={likedSongs} setLikedSongs={setLikedSongs} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} isSongLoading={isSongLoading}/>
                 ):(null))}   
                 </div>   
             </div>

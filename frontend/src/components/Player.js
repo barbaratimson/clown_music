@@ -11,7 +11,7 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
-const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong})=> {
+const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
   const [deviceType, setDeviceType] = useState("");
@@ -22,7 +22,7 @@ const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive, 
   const currentSongs = useSelector(state => state.currentSongs.currentSongs)
 
   const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
-
+  const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();
@@ -52,12 +52,23 @@ const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive, 
   const skipBack = ()=>
   {   
     if (!isSongLoading){
-      if (playerRepeat && audioElem.current.currentTime === currentSong.duration){ 
+      if (audioElem.current.currentTime >= 3) {
+        audioElem.current.currentTime = 0
+      }
+       else if (playerRepeat && audioElem.current.currentTime === currentSong.duration){ 
         audioElem.current.currentTime = 0
         audioElem.current.play()
-      } else {
+      } else if (playerRandom) {
         audioElem.current.src = ""
         setCurrentSong(prevSong)
+      } else {
+        const index = currentSongs.findIndex(x=>String(x.id) === String(currentSong.id));
+       if (index !== 0) {
+        audioElem.current.src = ""
+         setCurrentSong(currentSongs[index - 1])
+       } else {
+        audioElem.current.currentTime = 0
+       }
       }
   }
 }
@@ -79,16 +90,17 @@ const Player = ({isplaying, setArtist, likedSongs, setViewedPlaylist,setActive, 
     } else {
       setCurrentSong(currentSongs[newSongId])
     }
-   }else if (!isSongLoading){
+   }else {
      const index = currentSongs.findIndex(x=>x.title === currentSong.title);
      setPrevSong(currentSong)
-     audioElem.current.src = ""
     if (index === currentSongs.length-1)
     { 
+      audioElem.current.src = ""
       setCurrentSong(currentSongs[0])
     }
     else
     {
+      audioElem.current.src = ""
       setCurrentSong(currentSongs[index + 1])
     }
    }
