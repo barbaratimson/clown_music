@@ -47,7 +47,7 @@ const Main = () => {
     const [playerFolded,setPlayerFolded] = useState(false)
     const [artist,setArtist] = useState(currentSong && currentSong.artists.length !== 0 ? currentSong.artists[0].name : "")
     const audioElem = useRef();
-    const { data, loading, error } = usePalette(currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
+    const { data, loading, error } = usePalette(currentSong && currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
     const fetchLikedSongs = async (id) => {
         try {
           const response = await axios.get(

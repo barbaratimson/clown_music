@@ -82,6 +82,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
 
     const skiptoNext = ()=>
   {  
+    try{
     if (!isSongLoading){
     if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration){ 
       audioElem.current.currentTime = 0
@@ -96,7 +97,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
     } else {
       setCurrentSong(currentSongs[newSongId])
     }
-   }else {
+   } else {
      const index = currentSongs.findIndex(x=>x.title === currentSong.title);
      setPrevSong(currentSong)
     if (index === currentSongs.length-1)
@@ -111,7 +112,10 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
     }
    }
   }
-  }
+} catch (e) {
+  console.log(e)
+}
+}
 
   const fetchSimilarTracks = async (id) => {
     try {
@@ -243,6 +247,7 @@ const handleLikeSong = (song) =>  {
         },
       ]
     })
+    localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
 
       audioElem.current.play()
       .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
@@ -252,12 +257,7 @@ const handleLikeSong = (song) =>  {
   //       console.log(await fetchSimilarTracks(song.id))
   // }
   // handleSimilarTracks(currentSong)
-  }, [currentSong.url || currentSong.title])
-
-  useEffect(() => {
-    localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
-  },[currentSong])
-
+  }, [currentSong])
 
   useEffect(() => {
     localStorage.setItem("playerRandom",playerRandom)
