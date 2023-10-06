@@ -12,7 +12,6 @@ const PlaylistsFeed = ({setPlayerFolded}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
     const dispatch = useDispatch();
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 

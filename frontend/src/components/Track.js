@@ -1,5 +1,4 @@
 import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BsFillPauseFill, BsMusicNote, BsPlay, BsPlayFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
@@ -9,6 +8,7 @@ import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
 import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedSongsSlice';
+import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -28,13 +28,17 @@ const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPre
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+  const setActive = (state) => dispatch(changeModalState(state))
 
     const handleSongClick = async (song) => {
+      console.log(song)
         if (String(song.id) === String(currentSong.id) && isplaying){
             audioElem.current.pause()
         } else if (String(song.id) !== String(currentSong.id)) {
           if (playlist && currentPlaylist.playlistUuid !== playlist.playlistUuid) {
           setCurrentPlaylist(playlist)
+          setPlayerFolded(false)
+          setActive(false)
           }
           audioElem.current.currentTime = 0
           setPrevSong(currentSong)
@@ -50,6 +54,8 @@ const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPre
     try {
       const response = await axios.post(
         `${link}/ya/likeTracks/${267472538}/${song.id}`,);
+        handleLikeSong(song)
+        console.log("Track" ,song.title, "added to Liked." ," Revision: ",response.data)
         return response.data
     } catch (err) {
       console.error('Ошибка при получении списка треков:', err);
@@ -61,6 +67,8 @@ const dislikeSong = async (song) => {
   try {
     const response = await axios.post(
       `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
+      console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
+      handleRemoveSong(song)
     return response.data
   } catch (err) {
     console.error('Ошибка при получении списка треков:', err);
@@ -94,7 +102,7 @@ const dislikeSong = async (song) => {
     }
 
     return (
-              <div className={`playlist-song ${String(song.id) === String(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} style={{opacity:`${song.available ? "1" : "0.8"}`}} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover && !artistHover ? handleSongClick(song) : console.log()}}>
+              <div className={`playlist-song ${String(song.id) === String(currentSong.id) ? `song-current ${isplaying ? "" : "paused"}` : ""}`} key = {song.id} onClick={()=>{song.available && !isSongLoading && !likeButtonHover && !artistHover ? handleSongClick(song) : console.log()}}>
                  <div className="play-button">
                     <div className='playlist-song-state'>{String(song.id) !== String(currentSong.id) ? <div id = "play"><BsPlayFill/></div>: isplaying ? <div id="listening"><BsMusicNote/></div> : <div id = "pause"><BsFillPauseFill/></div>}</div>
                  </div>
@@ -113,9 +121,9 @@ const dislikeSong = async (song) => {
                  </div>
                  <div className='playlist-song-actions'>
                   {!likedSongs.find((elem) => String(elem.id) === String(song.id)) ? (
-                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song);handleLikeSong(song)}}><RiHeartLine/></div>
+                  <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{likeSong(song)}}><RiHeartLine/></div>
                   ): (
-                    <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song);handleRemoveSong(song)}}><RiHeartFill/></div>
+                    <div className='playlist-song-like-button' onMouseEnter={()=>{setLikeButtonHover(true)}} onMouseLeave={()=>{setLikeButtonHover(false)}} onClick={()=>{dislikeSong(song)}}><RiHeartFill/></div>
                   )
                   }
                  </div>

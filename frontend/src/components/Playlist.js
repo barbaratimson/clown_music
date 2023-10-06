@@ -10,11 +10,10 @@ import { changeCurrentSongs } from '../store/currentSongsSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong,setCurrentPlaylist, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
+const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying, isSongLoading,setIsSongLoading}) => {
   const dispatch = useDispatch();
 
   const [isTracksLoading,setIsTracksLoading] = useState()
-  const [likeButtonHover,setLikeButtonHover] = useState(false)
 
   const currentSongs = useSelector(state => state.currentSongs.currentSongs)   
   const setCurrentSongs = (playlist) => dispatch(changeCurrentSongs(playlist))

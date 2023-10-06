@@ -9,17 +9,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const ViewPlaylist = ({active, setActive,setPlayerFolded,viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
     const [isLoading, setIsLoading] = useState(true);
 
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const setActive = (state) => dispatch(changeModalState(state))
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
-    const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
 
     const fetchPlaylistSongs = async (userId,kind) => {
@@ -61,16 +61,6 @@ const ViewPlaylist = ({active, setActive,setPlayerFolded,viewedPlaylist, setView
             console.error('Ошибка при получении списка треков:', err);
           }
       };
-      
-      function msToTime(duration) {
-        var seconds = Math.floor((duration / 1000) % 60),
-        minutes = Math.floor((duration / (1000 * 60)) % 60),
-        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-      hours = (hours < 10) ? "0" + hours : hours;
-      minutes = (minutes < 10) ? "0" + minutes : minutes;
-      seconds = (seconds < 10) ? "0" + seconds : seconds;
-      return hours + "h:" + minutes + "m:" + seconds + "s";
-    }
 
       
 
@@ -97,11 +87,9 @@ const ViewPlaylist = ({active, setActive,setPlayerFolded,viewedPlaylist, setView
       // if (isLoading) return <Loader></Loader>
     return (
       <div>
-                                          {console.log(viewedPlaylist)}
           <div className={"modal"} onClick={()=>setActive(false)}>
             <div className='modal-close'><RiCloseFill/></div>
             <div className={"modal-content"} onClick={(e)=>e.stopPropagation()}>
-              {console.log(viewedPlaylist)}
            {viewedPlaylist? (
                 <div>
                   <div className='artist-info-section'>
@@ -115,7 +103,7 @@ const ViewPlaylist = ({active, setActive,setPlayerFolded,viewedPlaylist, setView
                 </div>              
                   </div>
                   {isLoading ? (<Loader/>) : viewedPlaylist.tracks ? (viewedPlaylist.tracks.map((song)=>(
-                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track ? song.track : song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track ? song.track : song} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
                 ))):(null)}
                
             </div>

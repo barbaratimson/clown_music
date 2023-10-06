@@ -12,9 +12,10 @@ import Loader from './Loader';
 import ViewPlaylist from './ViewPlaylist';
 import MyTracks from './MyTracks';
 import {useDispatch, useSelector} from "react-redux"
-import currentPlaylistSlice, { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
 import { changeLikedSongs } from '../store/likedSongsSlice';
+import { changeModalState} from '../store/modalSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -37,12 +38,14 @@ const Main = () => {
     const currentPage = useSelector(state => state.currentPage.currentPage)   
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
 
+    const active = useSelector(state => state.modalActive.modalActive)
+    const setActive = (state) => dispatch(changeModalState(state))
+
     const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
     const [prevSong,setPrevSong]= useState({})
     const [isSongLoading,setIsSongLoading]= useState(false)
-    const [playerFolded,setPlayerFolded] = useState(false )
-    const [active,setActive] = useState(false)
-    const [artist,setArtist] = useState(currentSong && currentSong.artists ? currentSong.artists[0].name : "")
+    const [playerFolded,setPlayerFolded] = useState(false)
+    const [artist,setArtist] = useState(currentSong && currentSong.artists.length !== 0 ? currentSong.artists[0].name : "")
     const audioElem = useRef();
     const { data, loading, error } = usePalette(currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
     const fetchLikedSongs = async (id) => {

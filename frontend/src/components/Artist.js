@@ -1,26 +1,20 @@
-import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect,useState} from 'react';
 import axios from 'axios';
-import PlaylistsFeed from './PlaylistsFeed';
 import Track from './Track';
 import Loader from './Loader';
-import { RiPlayLine } from 'react-icons/ri';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeCurrentSong } from '../store/trackSlice';
-import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { useDispatch} from 'react-redux';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, setActive, audioElem,setPrevSong,isplaying,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong,isplaying,isSongLoading,setIsSongLoading}) => {
+  const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
 
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
-
-    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
-
-    const dispatch = useDispatch();
+    const setActive = (state) => dispatch(changeModalState(state))
 
     const fetchArtist = async (artistName) => {
         setIsLoading(true)

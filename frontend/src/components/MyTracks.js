@@ -1,10 +1,8 @@
-import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect,useState} from 'react';
 import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
-import { FaCrown } from "react-icons/fa6"
-import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
+import { RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
@@ -12,7 +10,7 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoading,setIsSongLoading}) => {
+const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoading}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
@@ -74,7 +72,7 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoadi
                   </div>
                   <div className='chart-songs-wrapper my-tracks'>
                 {chartResult.tracks.map((song)=> song.track.available ? (
-                                    <Track key={song.id} playlist={chartResult} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} playlist={chartResult} setPlayerFolded={setPlayerFolded} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} isSongLoading={isSongLoading}/>
                 ):(null))}   
                 </div>   
             </div>

@@ -1,12 +1,14 @@
-import React, { Children, useEffect, useRef, useState } from 'react';
-import {BsRepeat1,BsShuffle, BsPlayFill, BsMusicNote, BsFillPauseFill} from 'react-icons/bs';
-import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiArrowUpDoubleLine, RiPlayList2Fill, RiHeartLine, RiHeartFill} from 'react-icons/ri'
-import Artist from './Artist';
-import { usePalette } from 'react-palette'
+import React, { useEffect, useRef, useState } from 'react';
+import {BsRepeat1,BsShuffle} from 'react-icons/bs';
+import {RiPlayLine, RiPauseFill, RiSkipBackLine, RiSkipForwardLine, RiPlayList2Fill, RiHeartLine, RiHeartFill} from 'react-icons/ri'
 import axios  from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import Loader from './Loader';
+import { AiOutlineLoading } from 'react-icons/ai';
+import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedSongsSlice';
+import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
@@ -23,6 +25,10 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
 
   const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
   const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
+  const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
+  const removeTrackFromLiked = (song) => dispatch(removeTrackFromLikedSongs(song))
+  const addTrackToLiked = (song) => dispatch(addTrackToLikedSongs(song))
+  const addTrackToSongs = (song) => dispatch(addTrackToCurrentSongs(song))
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const dispatch = useDispatch();
@@ -77,7 +83,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
     const skiptoNext = ()=>
   {  
     if (!isSongLoading){
-    if (playerRepeat && audioElem.current.currentTime === currentSong.duration){ 
+    if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration){ 
       audioElem.current.currentTime = 0
       audioElem.current.play()
     } else if (playerRandom) {
@@ -122,6 +128,8 @@ const likeSong = async (song) => {
   try {
     const response = await axios.post(
       `${link}/ya/likeTracks/${267472538}/${song.id}`,);
+      handleLikeSong(song)
+      console.log("Track " ,song.title, " added to Liked." ," Revision: ",response.data)
       return response.data
   } catch (err) {
     console.error('Ошибка при получении списка треков:', err);
@@ -133,6 +141,8 @@ const dislikeSong = async (song) => {
 try {
   const response = await axios.post(
     `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
+    handleRemoveSong(song)
+    console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
   return response.data
 } catch (err) {
   console.error('Ошибка при получении списка треков:', err);
@@ -140,6 +150,19 @@ try {
 }
 };
 
+const handleRemoveSong = (song) =>  {
+  removeTrackFromLiked(song)
+  if (currentPlaylist.kind === 3) {
+   removeTrackFromSongs(song)
+  }
+}
+
+const handleLikeSong = (song) =>  {
+  addTrackToLiked(song)
+  if (currentPlaylist.kind === 3) {
+    addTrackToSongs(song)
+  }
+}
 
 
 
@@ -250,7 +273,8 @@ try {
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
+      {isSongLoading ? (<div className='player-loader'><AiOutlineLoading className='spinner'/></div>):(null)}
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info`}>
       <div className='player-current-playlist'>
@@ -263,14 +287,6 @@ try {
            <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
         )):(null)}
       </div>
-      <div className='playlist-song-actions'>
-                  {!likedSongs.find((elem) => String(elem.id) === String(currentSong.id)) ? (
-                  <div className='playlist-song-like-button'  onClick={()=>{likeSong(currentSong)}}><RiHeartLine/></div>
-                  ): (
-                    <div className='playlist-song-like-button'  onClick={()=>{dislikeSong(currentSong)}}><RiHeartFill/></div>
-                  )
-                  }
-                 </div>
         </div>
       </div>
             <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
@@ -282,7 +298,8 @@ try {
       
       <div className={`player-image-section-folded ${!playerFolded ? "not-active" : ""} `}>
       <div className={`image-folded`}>
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/100x100` : ""} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
+      {isSongLoading ? (<div className='player-loader folded'><AiOutlineLoading className='spinner'/></div>):(null)}
+      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/100x100` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info-folded`}>
         <div className='player-track-title-folded'>{currentSong.title} </div>
@@ -298,6 +315,15 @@ try {
       </div> */}
       </div>
         
+      <div className='player-like-button'>
+                  {likedSongs && !likedSongs.find((elem) => String(elem.id) === String(currentSong.id)) ? (
+                  <div className='playlist-song-like-button player-like-button'  onClick={()=>{likeSong(currentSong)}}><RiHeartLine/></div>
+                  ): (
+                    <div className='playlist-song-like-button player-like-button'  onClick={()=>{dislikeSong(currentSong)}}><RiHeartFill/></div>
+                  )
+                  }
+                 </div>
+
       <div className='playing-controls'>
         {playerFolded ? (<RiPlayList2Fill style={{color:"#ddd",fontSize:"30px"}} onClick={()=>{setPlayerFolded(false)}}/>) : (null) }
         <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>

@@ -7,7 +7,7 @@ import { RiAddFill, RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist,}) => {
+const Playlists = ({setActive ,setViewedPlaylist,}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(true);

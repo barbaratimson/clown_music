@@ -6,29 +6,34 @@ import { HiSearch } from "react-icons/hi";
 import { RiPauseFill, RiPauseMiniFill, RiPlayFill, RiPlayMiniFill, RiSearch2Line, RiSearchLine } from 'react-icons/ri';
 import Track from './Track';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import { changeModalState } from '../store/modalSlice';
+import Loader from './Loader';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrevSong, isplaying,setisplaying, isSongLoading,setIsSongLoading, prevSong}) => {
+const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, isplaying,isSongLoading,setIsSongLoading}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
+    const [isLoading,setIsLoading] = useState(false)
     
     const dispatch = useDispatch();
     const currentPage = useSelector(state => state.currentPage.currentPage)   
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
+    const setActive = (state) => dispatch(changeModalState(state))
 
     const input = useRef(null) 
     const handleSearch = async () => {
+        setIsLoading(true)
         if (search){
           try {
             const response = await axios.get(
               `${link}/ya/search/${search}`);
               setSearchResults(response.data)
               console.log(response.data)
+              setIsLoading(false)
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -37,6 +42,9 @@ const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrev
       };
 
     useEffect(() => {
+        if (search === "") {
+            setSearchResults(null)
+        }
         let Debounce = setTimeout(()=>{
             handleSearch()
         },350)
@@ -64,24 +72,29 @@ const Navbar = ({setViewedPlaylist, setActive, setPlayerFolded,audioElem,setPrev
     <div className="nav-search-wrapper">
     <div className="nav-searchbar">
     <input ref={input} value={search} className={`nav-search ${searchFolded ? "folded" : ""}`} type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
-        <div className="nav-search-start" style={{fontSize:`${searchFolded ? "35px" : "30px"}`}} onClick={()=>{setSearchFolded(!searchFolded);setSearch("")}}><HiSearch/></div>
+        <div className="nav-search-start" style={{fontSize:`${searchFolded ? "30px" : "25px"}`}} onClick={()=>{setSearchFolded(!searchFolded);setSearch("")}}><HiSearch/></div>
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
-        {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
-           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-        ))):(<></>)}
+        {!isLoading ? (
+                <>            
+                {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
+                <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                ))):(null)}
+                
+                {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
+                    <div className="playlist-song" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}}>
+                      <div className='playlist-song-image'>      
+                      <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                      </div>
+                      <div className='playlist-song-title'>
+                      {playlist.title}
+                      </div>
+                   
+                    </div>
+             ))):(null)}
+             </>
+             ) : (<Loader></Loader>)}
 
-         {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
-           <div className="playlist-song" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}}>
-                 <div className='playlist-song-image'>      
-                 <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
-                 </div>
-                 <div className='playlist-song-title'>
-                 {playlist.title}
-                 </div>
-              
-               </div>
-        ))):(<></>)}
         
     </div>
     </div>
