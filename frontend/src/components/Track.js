@@ -37,7 +37,6 @@ const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPre
         } else if (String(song.id) !== String(currentSong.id)) {
           if (playlist && currentPlaylist.playlistUuid !== playlist.playlistUuid) {
           setCurrentPlaylist(playlist)
-          setPlayerFolded(false)
           setActive(false)
           }
           audioElem.current.currentTime = 0

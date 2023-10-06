@@ -662,6 +662,11 @@ body{
     transition: color .2s;
 }
 
+.loop-track:active, .play-random:active, .player-unfold:active {
+    scale: 0.9;
+}
+
+
 .loop-track.active, .play-random.active {
     color: #e4e4e4;
 }

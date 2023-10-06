@@ -46,7 +46,7 @@ const Chart = ({setPlayerFolded,setArtist, audioElem,setPrevSong,isplaying,isSon
                 <div>
                   <div className='artist-info-section'>
                     <div className='main-image-wrapper'>  
-                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentSong(chartResult.chart.tracks[0].track);setPlayerFolded(false);setCurrentPage("currentPlaylist")}}><RiPlayLine/></div>
+                    <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(chartResult.chart);setCurrentSong(chartResult.chart.tracks[0].track)}}><RiPlayLine/></div>
                 <img className="image" src={chartResult.chart.ogImage ? `http://${chartResult.chart.ogImage.substring(0, chartResult.chart.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
                     </div>
                 <div className='artist-info'>

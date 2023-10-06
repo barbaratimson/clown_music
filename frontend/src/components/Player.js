@@ -114,6 +114,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
   }
 } catch (e) {
   console.log(e)
+  setCurrentSong(prevSong)
 }
 }
 
@@ -247,7 +248,6 @@ const handleLikeSong = (song) =>  {
         },
       ]
     })
-    localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
 
       audioElem.current.play()
       .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
@@ -260,6 +260,11 @@ const handleLikeSong = (song) =>  {
   }, [currentSong])
 
   useEffect(() => {
+    localStorage.setItem("lastPlayedTrack",JSON.stringify(currentSong))
+  },[currentSong.id])
+
+
+  useEffect(() => {
     localStorage.setItem("playerRandom",playerRandom)
   }, [playerRandom])
 
@@ -270,6 +275,7 @@ const handleLikeSong = (song) =>  {
 
   return (
     <div>
+      {console.log(currentSong)}
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>
@@ -325,7 +331,7 @@ const handleLikeSong = (song) =>  {
                  </div>
 
       <div className='playing-controls'>
-        {playerFolded ? (<RiPlayList2Fill style={{color:"#ddd",fontSize:"30px"}} onClick={()=>{setPlayerFolded(false)}}/>) : (null) }
+        {playerFolded ? (<RiPlayList2Fill className="player-unfold" style={{color:"#ddd",fontSize:"30px"}} onClick={()=>{setPlayerFolded(false)}}/>) : (null) }
         <BsRepeat1  className={`loop-track ${playerRepeat ? "active" : ""}`} onClick={()=>{setPlayerRepeat(!playerRepeat)}}/>
         <BsShuffle className={`play-random ${playerRandom ? "active" : ""}`} onClick={()=>{setPlayerRandom(!playerRandom)}}/>
       </div>
