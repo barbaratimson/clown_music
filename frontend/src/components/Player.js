@@ -114,7 +114,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
   }
 } catch (e) {
   console.log(e)
-  setCurrentSong(prevSong)
+  setCurrentSong(prevSong )
 }
 }
 
@@ -275,7 +275,6 @@ const handleLikeSong = (song) =>  {
 
   return (
     <div>
-      {console.log(currentSong)}
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>

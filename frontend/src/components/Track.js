@@ -113,7 +113,7 @@ const dislikeSong = async (song) => {
                   
                   <div className='player-track-artists'>
         {song.artists ? song.artists.map(artist=>(
-           <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
+           <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true);setActive(false)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
         )):(null)}
                 </div>
                   {children}

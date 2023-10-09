@@ -18,13 +18,14 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
-    
+    const active = useSelector(state => state.modalActive.modalActive)
     const dispatch = useDispatch();
     const currentPage = useSelector(state => state.currentPage.currentPage)   
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setActive = (state) => dispatch(changeModalState(state))
 
     const input = useRef(null) 
+    const searchRef = useRef(null) 
     const handleSearch = async () => {
         setIsLoading(true)
         if (search){
@@ -53,6 +54,19 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
         }
     }, [search]);
     
+        useEffect(() => {
+          function handleClickOutside(event) {
+            if (searchRef.current && !searchRef.current.contains(event.target) && !active) {
+              setSearchFolded(true)
+            }
+          }
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+          };
+        }, [searchRef,active]);
+      
+
     useEffect(()=>{
         if(!searchFolded){
             input.current.focus()
@@ -69,7 +83,7 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
         <div className={`nav-selection-button ${currentPage === "chart" ? "active" : ""}`} onClick={()=>{setCurrentPage("chart");setPlayerFolded(true)}}>CHART</div>
         <div className={`nav-selection-button ${currentPage === "artists" ? "active" : ""}`} onClick={()=>{setCurrentPage("artists");setPlayerFolded(true)}}>ARTIST</div>
         </div>
-    <div className="nav-search-wrapper">
+    <div ref={searchRef} className="nav-search-wrapper">
     <div className="nav-searchbar">
     <input ref={input} value={search} className={`nav-search ${searchFolded ? "folded" : ""}`} type='text' onChange={(e) => {setSearch(`${e.target.value}`)}}/>
         <div className="nav-search-start" style={{fontSize:`${searchFolded ? "30px" : "25px"}`}} onClick={()=>{setSearchFolded(!searchFolded);setSearch("")}}><HiSearch/></div>

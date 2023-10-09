@@ -100,7 +100,7 @@ const Main = () => {
                                playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                                  setisplaying={setisplaying} isplaying={isplaying}
                                    audioElem={audioElem}
-                                   prevSong = {prevSong} setPrevSong={setPrevSong}
+                                   prevSong = {prevSong} setArtist={setArtist} setPrevSong={setPrevSong}
                                     />
 ):(null)}
 
