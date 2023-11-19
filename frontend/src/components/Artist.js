@@ -20,7 +20,7 @@ const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong,isplaying,isSon
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/artists/${encodeURIComponent(artistName)}`);
+              `${link}/ya/artists/${encodeURIComponent(artistName)}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setArtistResult(response.data)
               setIsLoading(false)
           } catch (err) {

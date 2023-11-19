@@ -20,7 +20,7 @@ const PlaylistsFeed = ({setPlayerFolded}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/feed`,);
+              `${link}/ya/feed`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setAllPlaylists(response.data.generatedPlaylists)
               setIsLoading(false)
           } catch (err) {

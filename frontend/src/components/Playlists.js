@@ -16,7 +16,7 @@ const Playlists = ({setActive ,setViewedPlaylist,}) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/playlists`,);
+              `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setAllPlaylists(response.data)
               setIsLoading(false)
           } catch (err) {

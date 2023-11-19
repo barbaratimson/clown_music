@@ -52,7 +52,7 @@ const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPre
   const likeSong = async (song) => {
     try {
       const response = await axios.post(
-        `${link}/ya/likeTracks/${267472538}/${song.id}`,);
+        `${link}/ya/likeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
         handleLikeSong(song)
         console.log("Track" ,song.title, "added to Liked." ," Revision: ",response.data)
         return response.data
@@ -65,7 +65,7 @@ const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPre
 const dislikeSong = async (song) => {
   try {
     const response = await axios.post(
-      `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
+      `${link}/ya/dislikeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
       console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
       handleRemoveSong(song)
     return response.data
@@ -114,7 +114,7 @@ const dislikeSong = async (song) => {
                   <div className='player-track-artists'>
         {song.artists ? song.artists.map(artist=>(
            <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true);setActive(false)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
-        )):(null)}
+        )):null}
                 </div>
                   {children}
                  </div>

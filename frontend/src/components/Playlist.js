@@ -25,7 +25,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
       setIsTracksLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/playlist/tracks/${userId}/${kind}`,);
+              `${link}/ya/playlist/tracks/${userId}/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setCurrentSongs(response.data)
               setIsTracksLoading(false)
           } catch (err) {
@@ -38,7 +38,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
     const fetchYaSongLink = async (id) => {
           try {
             const response = await axios.get(
-              `${link}/ya/tracks/${id}`,);
+              `${link}/ya/tracks/${id}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
                 return response.data
           } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -49,7 +49,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
       const fetchYaSongInfo = async (id) => {
         try {
           const response = await axios.get(
-            `${link}/ya/trackinfo/${id}`,);
+            `${link}/ya/trackinfo/${id}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
           return response.data
         } catch (err) {
           console.error('Ошибка при получении списка треков:', err);
@@ -61,7 +61,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
     const fetchYaSongSupplement = async (id) => {
       try {
         const response = await axios.get(
-          `${link}/ya/tracks/${id}/supplement`,);
+          `${link}/ya/tracks/${id}/supplement`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
         return response.data
       } catch (err) {
         console.error('Ошибка при получении списка треков:', err);
@@ -90,7 +90,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
         setCurrentSongs(result)
         setIsTracksLoading(false)
         } else if (currentPlaylist.owner) {
-          fetchPlaylistSongs(currentPlaylist.kind,currentPlaylist.owner.uid)
+          await fetchPlaylistSongs(currentPlaylist.kind,currentPlaylist.owner.uid)
         } else if (currentPlaylist.type ==="album"){
           setCurrentSongs(currentPlaylist.tracks)
         }
@@ -102,10 +102,10 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
 
     return (
               <div className='playlist-songs-container'>
-                        {currentSongs ? (currentSongs.map((song) => song.available ? (
+                        {currentSongs ? (currentSongs.map((song) => song?.available ? (
                           <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-            ):(null)
-            )):(null)}
+            ):null
+            )):null}
         
             </div>
     );

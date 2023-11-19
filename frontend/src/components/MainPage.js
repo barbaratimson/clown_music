@@ -22,7 +22,7 @@ const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplay
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/feed`,);
+              `${link}/ya/feed`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setFeed(response.data)
               console.log(response.data)
               setIsLoading(false)
@@ -57,32 +57,32 @@ const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplay
 ):(null))
 ):(null)}  
          </div>
-         <div className='playlist-songs-container'>
+         <div className='playlist-songs-container' style={{padding: "20px 30px 20px 20px"}}>
                         {feed ? (feed.days[0].tracksToPlay.map((song) => song.available ? (
                           <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
             ):(null)
             )):(null)}
         
             </div>
-
-            <div className="playlists">           
-{feed ? (feed.days[0].events.map((playlist) =>(
-  <div className="playlist-card" key={playlist.id} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
-  <div className="playlist-card-image">
-  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
-  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading = "lazy" alt=""></img>
-  </div>
-  <div className='playlist-card-info'>
-      <div className="playlist-card-desc">{JSON.stringify(playlist.title)}</div>
-      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
-  </div>
-</div>
-))
-):(null)}  
-         </div>
+          
          </div>
     );
 
 };
+//<div className="playlists">           
+//{feed ? (feed.days[0].events.map((playlist) =>(
+//  <div className="playlist-card" key={playlist.id} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
+//  <div className="playlist-card-image">
+//  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
+//  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading = "lazy" alt=""></img>
+//  </div>
+//  <div className='playlist-card-info'>
+//      <div className="playlist-card-desc">{JSON.stringify(playlist.title)}</div>
+//      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+//  </div>
+//</div>
+//))
+//):(null)}  
+//        </div>
 
 export default Chart;

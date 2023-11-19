@@ -45,13 +45,13 @@ const Main = () => {
     const [prevSong,setPrevSong]= useState({})
     const [isSongLoading,setIsSongLoading]= useState(false)
     const [playerFolded,setPlayerFolded] = useState(false)
-    const [artist,setArtist] = useState(currentSong && currentSong.artists.length !== 0 ? currentSong.artists[0].name : "")
+    const [artist,setArtist] = useState()
     const audioElem = useRef();
     const { data, loading, error } = usePalette(currentSong && currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/800x800` : "")
     const fetchLikedSongs = async (id) => {
         try {
           const response = await axios.get(
-            `${link}/ya/likedTracks`,);
+            `${link}/ya/likedTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
           setLikedSongs(response.data.library.tracks)
         } catch (err) {
           console.error('Ошибка при получении списка треков:', err);
@@ -63,7 +63,7 @@ const Main = () => {
       setIsLoading(true)
         try {
           const response = await axios.get(
-            `${link}/ya/myTracks`,);
+            `${link}/ya/myTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
             setCurrentPlaylist(response.data)
             setViewedPlaylist(response.data)
             setIsLoading(false)
@@ -111,7 +111,7 @@ const Main = () => {
                setisplaying={setisplaying} isplaying={isplaying}
                  audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
-                   setPlayerFolded={setPlayerFolded} 
+                   setPlayerFolded={setPlayerFolded} artist={artist} setArtist={setArtist}
                   />
         <div className={`page-content-wrapper ${playerFolded ? "visible" : ""}`}>
           {currentPage && 
@@ -151,7 +151,7 @@ const Main = () => {
                                   setisplaying={setisplaying} isplaying={isplaying}
                                      audioElem={audioElem}
                                     prevSong = {prevSong} setPrevSong={setPrevSong}/>
-                                   ) : (null)}
+                                   ) : null}
         
         </div>
             <div className='player-wrapper'> 

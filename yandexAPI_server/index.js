@@ -2,7 +2,6 @@ import { YMApi, WrappedYMApi } from "ym-api";
 import express from 'express'
 import cors from 'cors'
 import {} from 'dotenv/config'
-import { timeStamp } from "console";
 
 const app = express()
 
@@ -10,21 +9,41 @@ app.use(cors())
 
 const api = new YMApi();
 
-const wrappedYMApi = new WrappedYMApi();
+const checkToken = (req,res,next) => {
+    const authHeader = req.header('Authorization')
+    if (authHeader) {
+      const [userId, accessToken] = authHeader.split(":")
+      req.userId = userId
+      req.accessToken = accessToken
+    } else {
+      res.status(400).json("Authorization header empty or invalid")
+      return
+    }
+    next()
+}
 
-let getPlaylistTracks= async (kind,userId) => {
+let getPlaylistTracks = async (kind,userId,userId2,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
-    let result = await api.getPlaylist(kind,userId);
-    return result
+    await api.init({ uid:userId2,access_token:accessToken});
+    return await api.getPlaylist(kind,userId);
   } catch (e) {
     console.log(`api error ${e.message}`);
   }
 };
 
-let getFeed = async () => {
+let getUser = async (userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
+    console.log(await api.getAccountStatus())
+    // return await api.getAccountStatus();
+  } catch (e) {
+    console.log(`api error ${e.message}`);
+  }
+};
+
+let getFeed = async (userId,accessToken) => {
+  try {
+    await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getFeed();
     return result
   } catch (e) {
@@ -33,9 +52,9 @@ let getFeed = async () => {
 };
 
 
-let getPlaylists = async (id) => {
+let getPlaylists = async (id,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getUserPlaylists(id);
     return result
   } catch (e) {
@@ -43,9 +62,9 @@ let getPlaylists = async (id) => {
   }
 };
 
-let getLikedTracks = async (userId=process.env.USER_ID) => {
+let getLikedTracks = async (userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getLikedTracks(userId);
     return result
   } catch (e) {
@@ -54,9 +73,9 @@ let getLikedTracks = async (userId=process.env.USER_ID) => {
 };
 
 
-let getTrackLink = async (id) => {
+let getTrackLink = async (id,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
     info = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
     const link = await api.getTrackDirectLink(info.downloadInfoUrl);
@@ -68,9 +87,9 @@ let getTrackLink = async (id) => {
   }
 };
 
-let getTrackSupplement = async (id) => {
+let getTrackSupplement = async (id,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let lyrics = await api.getTrackSupplement(`${id}`);
     if (lyrics){
     return lyrics
@@ -80,9 +99,9 @@ let getTrackSupplement = async (id) => {
   }
 };
 
-let getSimilarTracks = async (id) => {
+let getSimilarTracks = async (id,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let lyrics = await api.getSimilarTracks(`${id}`);
     if (lyrics){
     return lyrics
@@ -92,9 +111,9 @@ let getSimilarTracks = async (id) => {
   }
 };
 
-let getChart = async (type) => {
+let getChart = async (type,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let chart = await api.getChart(type);
     if (chart){
     return chart
@@ -104,9 +123,9 @@ let getChart = async (type) => {
   }
 };
 
-let likeTracks = async (userId,tracks) => {
+let likeTracks = async (tracks,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let response = await api.likeTracks(userId,tracks);
     if (response){
     return response
@@ -116,9 +135,9 @@ let likeTracks = async (userId,tracks) => {
   }
 };
 
-let dislikeTracks = async (userId,tracks) => {
+let dislikeTracks = async (tracks,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     let response = await api.dislikeTracks(userId,tracks);
     if (response){
     return response
@@ -129,9 +148,9 @@ let dislikeTracks = async (userId,tracks) => {
 };
 
 
-let searchTracks = async (query) => {
+let searchTracks = async (query,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     const result = await api.search(query);
     return result
   } catch (e) {
@@ -139,9 +158,9 @@ let searchTracks = async (query) => {
   }
 };
 
-let searchArtist = async (artist) => {
+let searchArtist = async (artist,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     const result = await api.searchArtists(artist);
     return result
   } catch (e) {
@@ -149,9 +168,9 @@ let searchArtist = async (artist) => {
   }
 };
 
-let getArtist = async (artist) => {
+let getArtist = async (artist,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken});
     const artist1 = await api.searchArtists(artist);
     const result = await api.getArtist(artist1.artists.results[0].id);
     return result
@@ -160,9 +179,9 @@ let getArtist = async (artist) => {
   }
 };
 
-let getAlbumTracks = async (album) => {
+let getAlbumTracks = async (album,userId,accessToken) => {
   try {
-    await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+    await api.init({ uid:userId,access_token:accessToken });
     const album1 = await api.getAlbumWithTracks(album);
     console.log(album1)
     return album1
@@ -171,103 +190,107 @@ let getAlbumTracks = async (album) => {
   }
 };
 
-
-app.get('/ya/trackinfo/:id', async (req,res) =>{
+app.get('/ya/user', checkToken ,async (req,res) =>{
+  await api.init({ uid:req.userId,access_token:req.accessToken });
+  let track = await api.getAccountStatus()
+  res.json(track)
+})
+app.get('/ya/trackinfo/:id', checkToken, async (req,res) =>{
   let id = req.params.id
-  await api.init({ uid:process.env.USER_ID,access_token:process.env.ACCSESS_TOKEN });
+  await api.init({ uid:req.userId,access_token:req.accessToken });
   let track = await api.getTrack(id)
-  res.json(track[0])
+  if (track) {
+    res.json(track[0])
+  }
 })
 
-app.get('/ya/myTracks', async (req,res)=>{
-  let tracks = await getPlaylistTracks(3)
-  tracks.title = "Мне нравится"
+app.get('/ya/myTracks',  checkToken, async (req,res)=>{
+  let tracks = await getPlaylistTracks(3,req.userId,req.accessToken)
+  if (tracks) {
+    tracks.title = "Мне нравится"
+  }
   res.json(tracks)
 })
 
-app.get('/ya/likedTracks', async (req,res)=>{
-  let tracks = await getLikedTracks()
+app.get('/ya/likedTracks', checkToken, async (req,res)=>{
+  let tracks = await getLikedTracks(req.userId,req.accessToken)
   res.json(tracks)
 })
 
 
-app.get('/ya/playlist/tracks/:kind/:userId', async (req,res)=>{
+app.get('/ya/playlist/tracks/:kind/:userId', checkToken , async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
-  let tracks = await getPlaylistTracks(kind,userId)
+  let tracks = await getPlaylistTracks(kind,userId,req.userId,req.accessToken)
   if (tracks){
   tracks = tracks.tracks.map((song)=>song.track)
   }
   res.json(tracks)
 })
 
-app.get('/ya/tracks/:id', async (req,res)=>{
+app.get('/ya/tracks/:id', checkToken , async (req,res)=>{
   let id = req.params.id
-  let track = await getTrackLink(id)
+  let track = await getTrackLink(id,req.userId,req.accessToken)
   res.json(track)
 })
 
-app.get('/ya/tracks/:id/similar', async (req,res)=>{
+app.get('/ya/tracks/:id/similar', checkToken , async (req,res)=>{
   let id = req.params.id
-  let track = await getSimilarTracks(id)
+  let track = await getSimilarTracks(id,req.userId,req.accessToken)
   res.json(track)
 })
 
 
-app.get('/ya/tracks/:id/supplement', async (req,res)=>{
+app.get('/ya/tracks/:id/supplement', checkToken , async (req,res)=>{
   let id = req.params.id
-  let track = await getTrackSupplement(id)
+  let track = await getTrackSupplement(id,req.userId,req.accessToken)
   res.json(track)
 })
 
-app.get('/ya/playlists/', async (req,res)=>{
-  let track = await getPlaylists(process.env.USER_ID)
+app.get('/ya/playlists/', checkToken , async (req,res)=>{
+  let track = await getPlaylists(req.userId,req.accessToken)
   res.json(track)
 })
 
-app.get('/ya/feed/', async (req,res)=>{
-  let feed = await getFeed()
+app.get('/ya/feed/', checkToken , async (req,res)=>{
+  let feed = await getFeed(req.userId,req.accessToken)
   res.json(feed)
 })
 
-app.get('/ya/search/:query', async (req,res)=>{
+app.get('/ya/search/:query', checkToken , async (req,res)=>{
   let query = req.params.query
-  let result = await searchTracks(query)
+  let result = await searchTracks(query,req.userId,req.accessToken)
   res.json(result)
 })
 
-app.get('/ya/search/artists/:query', async (req,res)=>{
+app.get('/ya/search/artists/:query', checkToken , async (req,res)=>{
   let query = req.params.query
-  let result = await searchArtist(query)
+  let result = await searchArtist(query,req.userId,req.accessToken)
   res.json(result)
 })
 
-app.get('/ya/artists/:artist', async (req,res)=>{
+app.get('/ya/artists/:artist', checkToken , async (req,res)=>{
   let artist = req.params.artist
-  let result = await getArtist(artist)
+  let result = await getArtist(artist,req.userId,req.accessToken)
   res.json(result)
 })
 
-app.get('/ya/album/:albumId', async (req,res)=>{
+app.get('/ya/album/:albumId', checkToken , async (req,res)=>{
   let album = req.params.albumId
-  let result = await getAlbumTracks(album)
+  let result = await getAlbumTracks(album,req.userId,req.accessToken)
   res.json(result)
 })
 
 
-app.post('/ya/likeTracks/:userId/:track', async (req,res)=>{
+app.post('/ya/likeTracks/:track', checkToken , async (req,res)=>{
   let tracks = req.params.track
-  let userId = req.params.userId
-  console.log(tracks,userId)
-  let result = await likeTracks(userId,tracks)
+  let result = await likeTracks(tracks,req.userId,req.accessToken)
   res.json(result)
 })
 
-app.post('/ya/dislikeTracks/:userId/:track', async (req,res)=>{
+app.post('/ya/dislikeTracks/:track', checkToken , async (req,res)=>{
   let tracks = req.params.track
-  let userId = req.params.userId
-  console.log(tracks,userId)
-  let result = await dislikeTracks(userId,tracks)
+  let result = await dislikeTracks(tracks,req.userId,req.accessToken)
   res.json(result)
 })
 
@@ -275,32 +298,6 @@ app.get('/ya/chart', async (req,res)=>{
   let result = await getChart("russia")
   res.json(result)
 })
-
-
-
-
-
-// 65758301
-
-// const getMusicLinks = async ()=>{
-//   let tracks = await getMyTracks()
-//   let arr = []
-//   tracks = tracks.map((element) => ({id:element.track.id,title:element.track.title}));
-//   for (let i=0;i<tracks.length;i++){
-//     let link = await getTrackLink(tracks[i].id)
-//     if (link){
-//     arr.push({title:tracks[i].title,url:link})
-//     }
-//   }
-//   return arr
-// }
-
-// let links = await getMusicLinks()
-// console.log("Links ready")
-
-// app.get('/', async (req,res)=>{
-//   res.json(links)
-// })
 
 app.listen(process.env.PORT, function() {
   console.log(`[NodeJS] Application Listening on Port ${process.env.PORT}`);

@@ -14,13 +14,13 @@ const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
 const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong})=> {
-  const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true" ? true : false)
-  const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true" ? true : false)
+  const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true")
+  const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true")
   const [deviceType, setDeviceType] = useState("");
   const [similarTracks, setSimilarTracks] = useState("");
   const [buffered,setBuffered] = useState(0)
   const [position,setPosition] = useState(0)
-  
+
   const currentSongs = useSelector(state => state.currentSongs.currentSongs)
 
   const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
@@ -132,7 +132,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
 const likeSong = async (song) => {
   try {
     const response = await axios.post(
-      `${link}/ya/likeTracks/${267472538}/${song.id}`,);
+      `${link}/ya/likeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
       handleLikeSong(song)
       console.log("Track " ,song.title, " added to Liked." ," Revision: ",response.data)
       return response.data
@@ -145,7 +145,7 @@ const likeSong = async (song) => {
 const dislikeSong = async (song) => {
 try {
   const response = await axios.post(
-    `${link}/ya/dislikeTracks/${267472538}/${song.id}`,);
+    `${link}/ya/dislikeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
     handleRemoveSong(song)
     console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
   return response.data
@@ -196,7 +196,7 @@ const handleLikeSong = (song) =>  {
   }
 }
 
-  
+
 
   useEffect(() => {
     if (
@@ -248,7 +248,7 @@ const handleLikeSong = (song) =>  {
         },
       ]
     })
-
+ 
       audioElem.current.play()
       .catch(e=>e.code === 9 ? skiptoNext() : console.warn(e))
 
@@ -278,7 +278,7 @@ const handleLikeSong = (song) =>  {
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
       <div className={`image`}>
-      {isSongLoading ? (<div className='player-loader'><AiOutlineLoading className='spinner'/></div>):(null)}
+      {isSongLoading ? (<div className='player-loader'><AiOutlineLoading className='spinner'/></div>):null}
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
       <div className={`player-track-info`}>
@@ -290,7 +290,7 @@ const handleLikeSong = (song) =>  {
         <div className='player-track-artists'>
         {currentSong.artists ? currentSong.artists.map(artist=>(
            <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
-        )):(null)}
+        )):null}
       </div>
         </div>
       </div>
@@ -311,7 +311,7 @@ const handleLikeSong = (song) =>  {
         <div className='player-track-artists'>
         {currentSong.artists ? currentSong.artists.map(artist=>(
            <div className='player-track-artists-folded' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
-        )):(null)}
+        )):null}
       </div>
         {/* <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div> */}
       </div>

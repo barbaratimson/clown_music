@@ -27,7 +27,7 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoadi
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/myTracks`,);
+              `${link}/ya/myTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setChartResult(response.data)
               setIsLoading(false)
           } catch (err) {   
