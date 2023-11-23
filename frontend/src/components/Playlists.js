@@ -7,15 +7,16 @@ import { RiAddFill, RiPlayLine } from 'react-icons/ri';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlists = ({setPlayerFolded, setActive, setCurrentPage,setViewedPlaylist,setCurrentPlaylist}) => {
+const Playlists = ({setActive ,setViewedPlaylist,}) => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     const [isLoading, setIsLoading] = useState(true);
+    
     const fetchSongs = async () => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/playlists`,);
+              `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setAllPlaylists(response.data)
               setIsLoading(false)
           } catch (err) {

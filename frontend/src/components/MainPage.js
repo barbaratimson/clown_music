@@ -1,22 +1,28 @@
-import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
-import { FaCrown } from "react-icons/fa6"
-import { RiArrowDownSFill, RiArrowDropUpFill, RiArrowUpSFill, RiPlayLine } from 'react-icons/ri';
+import { RiPlayLine } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist,currentPlaylist, setCurrentPlaylist, audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [feed,setFeed] = useState()
+    
+    const dispatch = useDispatch();
+    
+    const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
+    const setActive = (state) => dispatch(changeModalState(state))
 
     const fetchFeedPlaylists = async () => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/feed`,);
+              `${link}/ya/feed`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setFeed(response.data)
               console.log(response.data)
               setIsLoading(false)
@@ -32,12 +38,14 @@ const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist,curre
       if (isLoading) return <Loader></Loader>
 
     return (
-      <div>
-
-         <div className='playlists-title'>Recommended</div>
-
-<div className="playlists">           
-{feed ? (feed.generatedPlaylists.map((playlist) => playlist.data.available ? (
+      <>
+          <div className="main-page-about">
+              <div className="main-page-title">CLOWN MUSIC</div>
+              <div className="main-page-under">music service based on Yandex Music api</div>
+          </div>
+          {feed && feed.generatedPlaylists.length !== 0?
+              (<div className="playlists">
+      {feed.generatedPlaylists.map((playlist) => playlist.data.available ? (
   <div className="playlist-card" key={playlist.data.playlistUuid} onClick={()=>{setViewedPlaylist(playlist.data);setActive(true)}}>
   <div className="playlist-card-image">
   {/* <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist.data);setPlayerFolded(false)}}><RiPlayLine/></div> */}
@@ -48,35 +56,35 @@ const Chart = ({setCurrentPage,setActive,setPlayerFolded,setViewedPlaylist,curre
       {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
   </div>
 </div>
-):(null))
-):(null)}  
-         </div>
-         <div className='playlist-songs-container'>
+):null)}
+</div>
+):null}
+
+         <div className='playlist-songs-container' style={{padding: "20px 30px 20px 20px"}}>
                         {feed ? (feed.days[0].tracksToPlay.map((song) => song.available ? (
-                          <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-            ):(null)
-            )):(null)}
+                          <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
+            ):null)):null}
         
             </div>
-
-            <div className="playlists">           
-{feed ? (feed.days[0].events.map((playlist) =>(
-  <div className="playlist-card" key={playlist.id} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
-  <div className="playlist-card-image">
-  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
-  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading = "lazy" alt=""></img>
-  </div>
-  <div className='playlist-card-info'>
-      <div className="playlist-card-desc">{JSON.stringify(playlist.title)}</div>
-      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
-  </div>
-</div>
-))
-):(null)}  
-         </div>
-         </div>
+          
+         </>
     );
 
 };
+//<div className="playlists">
+//{feed ? (feed.days[0].events.map((playlist) =>(
+//  <div className="playlist-card" key={playlist.id} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
+//  <div className="playlist-card-image">
+//  <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div>
+//  <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading = "lazy" alt=""></img>
+//  </div>
+//  <div className='playlist-card-info'>
+//      <div className="playlist-card-desc">{JSON.stringify(playlist.title)}</div>
+//      {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
+//  </div>
+//</div>
+//))
+//):(null)}
+//        </div>
 
 export default Chart;

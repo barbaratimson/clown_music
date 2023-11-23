@@ -1,21 +1,26 @@
-import React, { useEffect,useState,useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect,useState} from 'react';
 import axios from 'axios';
-import PlaylistsFeed from './PlaylistsFeed';
 import Track from './Track';
 import Loader from './Loader';
-import { RiPlayLine } from 'react-icons/ri';
+import { useDispatch} from 'react-redux';
+import { changeCurrentPage } from '../store/currentPageSlice';
+import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArtist,setCurrentPage,setPlayerFolded,currentPlaylist,audioElem,setPrevSong, likedSongs, setLikedSongs, currentSong, setCurrentSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong}) => {
+  const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
+
+    const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
+    const setActive = (state) => dispatch(changeModalState(state))
+
     const fetchArtist = async (artistName) => {
         setIsLoading(true)
           try {
             const response = await axios.get(
-              `${link}/ya/artists/${encodeURIComponent(artistName)}`);
+              `${link}/ya/artists/${encodeURIComponent(artistName)}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
               setArtistResult(response.data)
               setIsLoading(false)
           } catch (err) {
@@ -25,14 +30,14 @@ const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArt
           }
       };
 
+
       useEffect(()=>{
           fetchArtist(artist)
       },[artist])
 
       if (isLoading) return <Loader></Loader>
     return (
-      <div>
-        {console.log(artistResult)}
+      <div>   
             {artistResult? (
                 <div>
                   <div className='artist-info-section'>
@@ -45,13 +50,13 @@ const Artist = ({artist,setViewedPlaylist, setActive, setCurrentPlaylist, setArt
                   <div className='artist-titlebar'>Popular Tracks</div>
                   <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
-                                    <Track key={song.id} playlist={artistResult.popularTracks} setCurrentPlaylist={setCurrentPlaylist} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setCurrentSong={setCurrentSong} setCurrentSongs={setCurrentSongs} currentPlaylist={currentPlaylist} currentSong={currentSong} likedSongs={likedSongs} setLikedSongs={setLikedSongs} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
                 ))}
                 </div>
                 <div className='artist-titlebar'>Releases</div>
                 <div className="playlists">           
-                {artistResult.albums.map((playlist) => playlist.available && !playlist.type === 'single' ? ( 
-                  <div className="playlist-card" key={playlist.playlistUuid} onClick={async ()=>{setViewedPlaylist(playlist);setActive(true)}} >
+                {artistResult.albums.map((playlist) => playlist.available ? ( 
+                  <div className="playlist-card" key={playlist.playlistUuid} onClick={async ()=>{setViewedPlaylist({...playlist,type:"album"});setActive(true);console.log()}} >
                   <div className="playlist-card-image">
                   <img src={playlist.ogImage ? `http://${playlist.ogImage.substring(0, playlist.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                   </div>
