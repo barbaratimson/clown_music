@@ -9,17 +9,25 @@ import Loader from './Loader';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedSongsSlice';
 import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
+import {changeIsPlaying} from "../store/isSongPlaylingSlice";
+import {changeSongLoading} from "../store/isSongLoadingSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
-const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children, setisplaying, prevSong, audioVolume, setAudioVolume,isSongLoading, setIsSongLoading, audioElem,setPrevSong})=> {
+const Player = ({setArtist, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children,prevSong, audioVolume, setAudioVolume, audioElem,setPrevSong})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true")
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true")
   const [deviceType, setDeviceType] = useState("");
   const [similarTracks, setSimilarTracks] = useState("");
   const [buffered,setBuffered] = useState(0)
   const [position,setPosition] = useState(0)
+
+  const isplaying = useSelector(state => state.isplaying.isplaying)
+  const setisplaying = (state) => dispatch(changeIsPlaying(state))
+
+  const isSongLoading = useSelector(state => state.isSongLoading.isSongLoading)
+  const setIsSongLoading = (state) => dispatch(changeSongLoading(state))
 
   const currentSongs = useSelector(state => state.currentSongs.currentSongs)
 
@@ -57,7 +65,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
   }
   const skipBack = ()=>
   {   
-    if (!isSongLoading){
+    if (!isSongLoading && currentSongs.length !== 0){
       if (audioElem.current.currentTime >= 3) {
         audioElem.current.currentTime = 0
       }
@@ -83,14 +91,14 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
     const skiptoNext = ()=>
   {  
     try{
-    if (!isSongLoading){
+    if (!isSongLoading && currentSongs.length !== 0){
     if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration){ 
       audioElem.current.currentTime = 0
       audioElem.current.play()
     } else if (playerRandom) {
       setPrevSong(currentSong)
       audioElem.current.src = ""
-           let randomSong = ()  => (Math.random() * (currentSongs.length - 0 + 1) ) << 0
+           let randomSong = ()  => (Math.random() * (currentSongs.length + 1) ) << 0
       let newSongId = randomSong()
       if (currentSong.id === currentSongs[newSongId].id) {
         setCurrentSong(currentSongs[randomSong()])
@@ -114,7 +122,7 @@ const Player = ({isplaying, setArtist, setViewedPlaylist,setActive,  playerFolde
   }
 } catch (e) {
   console.log(e)
-  setCurrentSong(prevSong )
+  setCurrentSong(prevSong)
 }
 }
 
@@ -277,7 +285,7 @@ const handleLikeSong = (song) =>  {
     <div>
     <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
       <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
-      <div className={`image`}>
+      <div key={currentSong.id} className={`image`}>
       {isSongLoading ? (<div className='player-loader'><AiOutlineLoading className='spinner'/></div>):null}
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
       </div>
@@ -286,8 +294,8 @@ const handleLikeSong = (song) =>  {
         <div>Currently playing:</div>
         <div className='player-current-playlist-title' onClick={()=>{setViewedPlaylist(currentPlaylist);setActive(true)}}>{currentPlaylist.title}</div>
         </div>
-        <div className='player-track-title'>{currentSong.title} </div>
-        <div className='player-track-artists'>
+        <div key={currentSong.title} className='player-track-title'>{currentSong.title} </div>
+        <div key={currentSong.id} className='player-track-artists animate'>
         {currentSong.artists ? currentSong.artists.map(artist=>(
            <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
         )):null}
@@ -357,7 +365,7 @@ const handleLikeSong = (song) =>  {
       <div className={`player-song-info-section ${playerFolded ? "folded" : ""}`}>
         {children}
       </div> 
-      
+
       </div>
       
   )

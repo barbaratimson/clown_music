@@ -7,10 +7,14 @@ import Loader from './Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentSongs } from '../store/currentSongsSlice';
+import {useTraceUpdate} from "../utils/hooks/useTraceUpdate";
+import {changeSongLoading} from "../store/isSongLoadingSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying, isSongLoading,setIsSongLoading}) => {
+
+
+const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong}) => {
   const dispatch = useDispatch();
 
   const [isTracksLoading,setIsTracksLoading] = useState()
@@ -20,7 +24,9 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
   const currentPlaylist = useSelector(state => state.currentPlaylist.currentPlaylist)   
   const currentSong = useSelector(state => state.currentSong.currentSong) 
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
+  const setIsSongLoading = (state) => dispatch(changeSongLoading(state))
 
+  useTraceUpdate({audioElem, setPlayerFolded, setArtist, setPrevSong,currentSongs,currentPlaylist,currentSong})
     const fetchPlaylistSongs = async (userId,kind) => {
       setIsTracksLoading(true)
           try {
@@ -69,11 +75,12 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
       }
   };
 
+    //TODO: Move this handler to track onClick event to prevent re-rendering
+
     useEffect(()=>{
-        const handleTrackChange = async (song) => {  
+        const handleTrackChange = async (song) => {
           setIsSongLoading(true)
                   setCurrentSong({...song,url:await fetchYaSongLink(song.id)})
-                  console.log(await fetchYaSongSupplement(currentSong.id))
     }
     handleTrackChange(currentSong)
       },[currentSong.id])
@@ -98,15 +105,21 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong, isplaying
       handleFeed()
       },[currentPlaylist])
 
+
       if (isTracksLoading) return <Loader></Loader>
 
     return (
               <div className='playlist-songs-container'>
-                        {currentSongs ? (currentSongs.map((song) => song?.available ? (
-                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} playlist={currentPlaylist}  setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                {console.log("Playlist rendered")}
+                        {currentSongs && currentSongs.length !== 0 ? (currentSongs.map((song) => song?.available ? (
+                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
             ):null
-            )):null}
-        
+            )):(
+                <>
+                <div className="playlist-song-empty">Your current playlist is empty</div>
+                </>
+                        )}
+
             </div>
     );
 

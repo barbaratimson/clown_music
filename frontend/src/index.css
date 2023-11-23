@@ -5,6 +5,11 @@
     100% {opacity: 1;}
   }
 
+@keyframes width {
+    0% {width: 0;}
+    100% {width: 100%;}
+}
+
   @keyframes scale {
     0% {scale: 0;}
     100% {scale: 1;}
@@ -398,6 +403,26 @@ body{
     display: none;
 }
 
+.main-page-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 500px;
+    background-color: rgb(0,0,0,0.3);
+}
+
+.main-page-title {
+    font-size: 150px;
+    color: #dddddd;
+}
+
+.main-page-under {
+    color: #e1e1e1;
+    font-size: 30px;
+}
+
 .footer {
     position: static;
     display: flex;
@@ -457,7 +482,7 @@ body{
     justify-content: center;
     gap: 40px;
     padding: 20px;  
-    background-color: rgb(20, 16, 16,1);
+    background-color: rgb(20, 16, 16,0.5);
     width: 100%;
 }
 
@@ -598,6 +623,7 @@ body{
     margin-bottom: 15px;
     font-size: 30px;
     font-weight: 600;
+    animation: scale .2s;
 }
 
 
@@ -762,12 +788,6 @@ body{
     cursor: pointer;
 }
 
-.player-track-title {
-    margin-bottom: 15px;
-    font-size: 30px;
-    font-weight: 600;
-}
-
 
 .player-track-artist:not(:last-child)::after { 
     content: ",";
@@ -784,6 +804,10 @@ body{
 .player-track-artists{
     display: flex;
     flex-direction: row;
+}
+
+.player-track-artists.animate{
+    animation: scale .3s;
 }
 
 
@@ -841,6 +865,7 @@ body{
         overflow: hidden;
         scale: 0.95;
         transition: scale .4s;
+        animation: scale .3s;
     }
     .player-loader {
         position:absolute;
@@ -1037,6 +1062,14 @@ body{
             flex-direction: column;
             width: 100%;
         }
+        .playlist-song-empty {
+            color: #aaaaaa;
+            font-size: 18px;
+        }
+
+        .user-tracks-secondary {
+            font-size: 20px;
+        }
 
         .playlist-songs-container::-webkit-scrollbar {
             display: none;
@@ -1048,8 +1081,7 @@ body{
             height: 65px;
             width: 100%;
             flex-direction: row;
-            transition: background-color .4s;
-            transition: all .2s;
+            transition: all .4s;
             padding: 15px;
             color: rgb(226, 226, 226);
             cursor: pointer;
@@ -1142,7 +1174,7 @@ body{
         }
         
         .song-current {
-            background-color: rgb(214, 0, 29,0.7);
+            background-color: #93040f;
             font-size:18px;
             color: white;
             border: 0;
@@ -1162,7 +1194,7 @@ body{
 
         .song-current:hover{
             border: 0;
-            background-color: rgba(199, 0, 27, 0.9);
+            background-color: #9d0110;
         }
 
 
@@ -1674,10 +1706,6 @@ body{
         padding-left: 30px;
     }
 
-    .player-track-title{
-        font-size: 20px;
-        text-overflow: ellipsis;
-    }
     .player-controls-section {
         position: relative;
         width: 100%;

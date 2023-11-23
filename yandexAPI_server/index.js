@@ -7,8 +7,6 @@ const app = express()
 
 app.use(cors())
 
-const api = new YMApi();
-
 const checkToken = (req,res,next) => {
     const authHeader = req.header('Authorization')
     if (authHeader) {
@@ -24,6 +22,7 @@ const checkToken = (req,res,next) => {
 
 let getPlaylistTracks = async (kind,userId,userId2,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId2,access_token:accessToken});
     return await api.getPlaylist(kind,userId);
   } catch (e) {
@@ -31,18 +30,9 @@ let getPlaylistTracks = async (kind,userId,userId2,accessToken) => {
   }
 };
 
-let getUser = async (userId,accessToken) => {
-  try {
-    await api.init({ uid:userId,access_token:accessToken});
-    console.log(await api.getAccountStatus())
-    // return await api.getAccountStatus();
-  } catch (e) {
-    console.log(`api error ${e.message}`);
-  }
-};
-
 let getFeed = async (userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getFeed();
     return result
@@ -54,6 +44,7 @@ let getFeed = async (userId,accessToken) => {
 
 let getPlaylists = async (id,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getUserPlaylists(id);
     return result
@@ -64,6 +55,7 @@ let getPlaylists = async (id,userId,accessToken) => {
 
 let getLikedTracks = async (userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let result = await api.getLikedTracks(userId);
     return result
@@ -75,6 +67,7 @@ let getLikedTracks = async (userId,accessToken) => {
 
 let getTrackLink = async (id,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
     info = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
@@ -89,6 +82,7 @@ let getTrackLink = async (id,userId,accessToken) => {
 
 let getTrackSupplement = async (id,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let lyrics = await api.getTrackSupplement(`${id}`);
     if (lyrics){
@@ -101,6 +95,7 @@ let getTrackSupplement = async (id,userId,accessToken) => {
 
 let getSimilarTracks = async (id,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let lyrics = await api.getSimilarTracks(`${id}`);
     if (lyrics){
@@ -113,6 +108,7 @@ let getSimilarTracks = async (id,userId,accessToken) => {
 
 let getChart = async (type,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let chart = await api.getChart(type);
     if (chart){
@@ -125,6 +121,7 @@ let getChart = async (type,userId,accessToken) => {
 
 let likeTracks = async (tracks,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let response = await api.likeTracks(userId,tracks);
     if (response){
@@ -137,6 +134,7 @@ let likeTracks = async (tracks,userId,accessToken) => {
 
 let dislikeTracks = async (tracks,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let response = await api.dislikeTracks(userId,tracks);
     if (response){
@@ -150,6 +148,7 @@ let dislikeTracks = async (tracks,userId,accessToken) => {
 
 let searchTracks = async (query,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     const result = await api.search(query);
     return result
@@ -160,6 +159,7 @@ let searchTracks = async (query,userId,accessToken) => {
 
 let searchArtist = async (artist,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     const result = await api.searchArtists(artist);
     return result
@@ -170,6 +170,7 @@ let searchArtist = async (artist,userId,accessToken) => {
 
 let getArtist = async (artist,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     const artist1 = await api.searchArtists(artist);
     const result = await api.getArtist(artist1.artists.results[0].id);
@@ -181,6 +182,7 @@ let getArtist = async (artist,userId,accessToken) => {
 
 let getAlbumTracks = async (album,userId,accessToken) => {
   try {
+    const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken });
     const album1 = await api.getAlbumWithTracks(album);
     console.log(album1)
@@ -191,11 +193,13 @@ let getAlbumTracks = async (album,userId,accessToken) => {
 };
 
 app.get('/ya/user', checkToken ,async (req,res) =>{
+  const api = new YMApi();
   await api.init({ uid:req.userId,access_token:req.accessToken });
   let track = await api.getAccountStatus()
   res.json(track)
 })
 app.get('/ya/trackinfo/:id', checkToken, async (req,res) =>{
+  const api = new YMApi();
   let id = req.params.id
   await api.init({ uid:req.userId,access_token:req.accessToken });
   let track = await api.getTrack(id)

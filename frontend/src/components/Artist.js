@@ -8,7 +8,7 @@ import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong,isplaying,isSongLoading,setIsSongLoading}) => {
+const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong}) => {
   const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
@@ -50,7 +50,7 @@ const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong,isplaying,isSon
                   <div className='artist-titlebar'>Popular Tracks</div>
                   <div className='chart-songs-wrapper'>
                 {artistResult.popularTracks.map((song)=>(
-                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                                    <Track key={song.id} playlist={artistResult.popularTracks} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
                 ))}
                 </div>
                 <div className='artist-titlebar'>Releases</div>

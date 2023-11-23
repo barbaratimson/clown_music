@@ -13,7 +13,7 @@ import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlaylist, audioElem,setPrevSong,isplaying,setCurrentSongs,isSongLoading,setIsSongLoading}) => {
+const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlaylist, audioElem,setPrevSong,setCurrentSongs}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const setActive = (state) => dispatch(changeModalState(state))
@@ -110,7 +110,7 @@ const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlayl
                 </div>              
                   </div>
                   {isLoading ? (<Loader/>) : viewedPlaylist.tracks ? (viewedPlaylist.tracks.map((song)=>(
-                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} setArtist={setArtist} isplaying = {isplaying} audioElem={audioElem} song = {song.track ? song.track : song} setPlayerFolded={setPlayerFolded} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}/>
+                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track ? song.track : song} setPlayerFolded={setPlayerFolded}/>
                 ))):null}
                
             </div>

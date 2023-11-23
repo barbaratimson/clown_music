@@ -10,11 +10,11 @@ import { changeCurrentPage } from '../store/currentPageSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoading}) => {
+const MyTracks = ({setPlayerFolded, audioElem,setPrevSong}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
-    const [chartResult,setChartResult] = useState()
+    const [userTracks,setUserTracks] = useState()
 
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
@@ -28,7 +28,7 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoadi
           try {
             const response = await axios.get(
               `${link}/ya/myTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-              setChartResult(response.data)
+              setUserTracks(response.data)
               setIsLoading(false)
           } catch (err) {   
             console.error('Ошибка при получении списка треков:', err);
@@ -57,26 +57,30 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong, isplaying,isSongLoadi
 
     return (
       <div>
-           {chartResult? (
+           {userTracks? (
                 <div>
                   <div className='artist-info-section'>
                     <div className='main-image-wrapper'>  
-                    <div className='playlist-play-button heart' onClick={()=>{setCurrentPlaylist(chartResult);setCurrentSong(chartResult.tracks[0].track);setPlayerFolded(false);setCurrentPage("currentPlaylist")}}><RiPlayLine/></div>
-                <img className="image heart" src={chartResult.ogImage ? `http://${chartResult.ogImage.substring(0, chartResult.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
+                    <div className='playlist-play-button heart' onClick={()=>{setCurrentPlaylist(userTracks);setCurrentSong(userTracks.tracks[0].track);setPlayerFolded(false);setCurrentPage("currentPlaylist")}}><RiPlayLine/></div>
+                <img className="image heart" src={userTracks.ogImage ? `http://${userTracks.ogImage.substring(0, userTracks.ogImage.lastIndexOf('/'))}/200x200` : ""} loading= "lazy" alt=""></img>
                     </div>
                 <div className='artist-info'>
-                <div className='artist-name'>{chartResult.title}</div>
-                <div className='artist-genres'>Tracks:{chartResult.trackCount}</div>  
-                <div className='artist-genres'>Duration {msToTime(chartResult.durationMs)}</div>  
+                <div className='artist-name'>{userTracks.title}</div>
+                <div className='user-tracks-secondary'>Tracks: {userTracks.trackCount}</div>
+                <div className='user-tracks-secondary'>Duration {msToTime(userTracks.durationMs)}</div>
                 </div>              
                   </div>
                   <div className='chart-songs-wrapper my-tracks'>
-                {chartResult.tracks.map((song)=> song.track.available ? (
-                                    <Track key={song.id} playlist={chartResult} setPlayerFolded={setPlayerFolded} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song.track} isSongLoading={isSongLoading}/>
-                ):(null))}   
+                {userTracks.tracks.length !== 0 ? userTracks.tracks.map((song)=> song.track.available ? (
+                                    <Track key={song.id} playlist={userTracks} setPlayerFolded={setPlayerFolded} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track}/>
+                ):null):(
+                    <div className="empty-playlist">
+                        <div className="playlist-song-empty">Your current playlist is empty</div>
+                    </div>
+                )}
                 </div>   
             </div>
-            ):(null)}
+            ):null}
            
          </div>
     );

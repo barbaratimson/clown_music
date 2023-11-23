@@ -28,13 +28,13 @@ const header = localStorage.getItem("Authorization")
 
 const [localUserId,localAccessToken] = header ? header.split(":") : []
 
-const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, isplaying,isSongLoading,setIsSongLoading,artist,setArtist}) => {
+const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong,artist,setArtist}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
     const [searchFolded,setSearchFolded] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
-    const [accessToken,setAcessToken] = useState(localAccessToken ?? "")
+    const [accessToken,setAccessToken] = useState(localAccessToken ?? "")
     const [userId,setUserId] = useState(localUserId ?? "")
     const [showToken,setShowToken] = useState(false)
     const [userData,setUserData] = useState({})
@@ -44,6 +44,7 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
     const currentPage = useSelector(state => state.currentPage.currentPage)   
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setActive = (state) => dispatch(changeModalState(state))
+    const isplaying = useSelector(state => state.isplaying.isplaying)
 
     const input = useRef(null) 
     const searchRef = useRef(null) 
@@ -142,7 +143,7 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
         {!isLoading ? (
                 <>            
                 {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
-                <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
+                <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
                 ))):null}
                 
                 {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
@@ -177,7 +178,7 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong, ispla
                 </div>
                 <div className="user-menu-input-wrapper">
                     <div className="user-menu-input-icon" title="Yandex Access token"><FaKey /></div>
-            <input className="user-menu-input" type={!showToken ? "password" : "text"} placeholder='Yandex Access token' onChange={(e)=>{setAcessToken(e.target.value)}} value={accessToken}></input>
+            <input className="user-menu-input" type={!showToken ? "password" : "text"} placeholder='Yandex Access token' onChange={(e)=>{setAccessToken(e.target.value)}} value={accessToken}></input>
                     <div className="user-menu-show-button" onClick={(()=>{setShowToken(!showToken)})}>{showToken? <LuEye /> : <LuEyeOff />}</div>
                 </div>
             </>

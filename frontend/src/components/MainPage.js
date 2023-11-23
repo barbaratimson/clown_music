@@ -9,7 +9,7 @@ import { changeModalState } from '../store/modalSlice';
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplaying,isSongLoading,setIsSongLoading}) => {
+const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [feed,setFeed] = useState()
     
@@ -38,12 +38,14 @@ const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplay
       if (isLoading) return <Loader></Loader>
 
     return (
-      <div>
-
-         <div className='playlists-title'>Recommended</div>
-
-<div className="playlists">           
-{feed ? (feed.generatedPlaylists.map((playlist) => playlist.data.available ? (
+      <>
+          <div className="main-page-about">
+              <div className="main-page-title">CLOWN MUSIC</div>
+              <div className="main-page-under">music service based on Yandex Music api</div>
+          </div>
+          {feed && feed.generatedPlaylists.length !== 0?
+              (<div className="playlists">
+      {feed.generatedPlaylists.map((playlist) => playlist.data.available ? (
   <div className="playlist-card" key={playlist.data.playlistUuid} onClick={()=>{setViewedPlaylist(playlist.data);setActive(true)}}>
   <div className="playlist-card-image">
   {/* <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist.data);setPlayerFolded(false)}}><RiPlayLine/></div> */}
@@ -54,22 +56,22 @@ const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplay
       {/* <div className="playlist-card-length">{playlist.trackCount}</div> */}
   </div>
 </div>
-):(null))
-):(null)}  
-         </div>
+):null)}
+</div>
+):null}
+
          <div className='playlist-songs-container' style={{padding: "20px 30px 20px 20px"}}>
                         {feed ? (feed.days[0].tracksToPlay.map((song) => song.available ? (
-                          <Track key={song.id} setPrevSong={setPrevSong} isplaying = {isplaying} audioElem={audioElem} song = {song} setIsSongLoading={setIsSongLoading} isSongLoading={isSongLoading}></Track>
-            ):(null)
-            )):(null)}
+                          <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
+            ):null)):null}
         
             </div>
           
-         </div>
+         </>
     );
 
 };
-//<div className="playlists">           
+//<div className="playlists">
 //{feed ? (feed.days[0].events.map((playlist) =>(
 //  <div className="playlist-card" key={playlist.id} onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}>
 //  <div className="playlist-card-image">
@@ -82,7 +84,7 @@ const Chart = ({setPlayerFolded,setViewedPlaylist, audioElem,setPrevSong, isplay
 //  </div>
 //</div>
 //))
-//):(null)}  
+//):(null)}
 //        </div>
 
 export default Chart;
