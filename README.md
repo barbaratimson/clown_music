@@ -27,4 +27,5 @@ Music chart:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/24aeed5c-8354-4ef9-a0d1-1f3baa208c3f)
 
 Search: 
-![image](https://github.com/barbaratimson/clown_music/assets/51046717/b597e426-d544-4d36-98f4-a058a587796d)
+![image](https://github.com/barbaratimson/clown_music/assets/51046717/ef3cc2c5-e0e0-437b-95a5-06138cd6dd93)
+
