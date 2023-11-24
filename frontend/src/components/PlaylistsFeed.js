@@ -5,15 +5,17 @@ import Loader from './Loader';
 import { RiPlayLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
+import {changePlayerFolded} from "../store/playerFolded";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const PlaylistsFeed = ({setPlayerFolded}) => {
+const PlaylistsFeed = () => {
     const [allPlaylists,setAllPlaylists] = useState([])
 
     
     const dispatch = useDispatch();
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
+    const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
 
     const [isLoading, setIsLoading] = useState(false);
     const fetchFeedPlaylists = async () => {

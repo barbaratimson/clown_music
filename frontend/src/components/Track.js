@@ -11,15 +11,19 @@ import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedS
 import { changeModalState } from '../store/modalSlice';
 import {changeIsPlaying} from "../store/isSongPlaylingSlice";
 import {changeSongLoading} from "../store/isSongLoadingSlice";
+import {changeArtist} from "../store/artistSlice";
+import {changePlayerFolded} from "../store/playerFolded";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({setArtist, children, setPlayerFolded, audioElem, playlist,setPrevSong, song}) => {
+const Track = ({children, audioElem, playlist,setPrevSong, song}) => {
     // TODO: Fix is playing re-rendering issue
   const [likeButtonHover,setLikeButtonHover] = useState(false)
   const [artistHover,setArtistHover] = useState(false)
     const isplaying = useSelector(state => state.isplaying.isplaying)
   const likedSongs = useSelector(state => state.likedSongs.likedSongs)
+  const setArtist = (state) => dispatch(changeArtist(state))
+  const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
   const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
   const removeTrackFromLiked = (song) => dispatch(removeTrackFromLikedSongs(song))
   const addTrackToLiked = (song) => dispatch(addTrackToLikedSongs(song))

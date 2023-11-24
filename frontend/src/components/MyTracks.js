@@ -7,18 +7,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
+import {changePlayerFolded} from "../store/playerFolded";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const MyTracks = ({setPlayerFolded, audioElem,setPrevSong}) => {
+const MyTracks = ({audioElem,setPrevSong}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     
     const [userTracks,setUserTracks] = useState()
 
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
-    const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
-    
+    const likedSongs = useSelector(state => state.likedSongs.likedSongs)
+    const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
     const dispatch = useDispatch();
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song)) 
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
@@ -72,7 +73,7 @@ const MyTracks = ({setPlayerFolded, audioElem,setPrevSong}) => {
                   </div>
                   <div className='chart-songs-wrapper my-tracks'>
                 {userTracks.tracks.length !== 0 ? userTracks.tracks.map((song)=> song.track.available ? (
-                                    <Track key={song.id} playlist={userTracks} setPlayerFolded={setPlayerFolded} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track}/>
+                                    <Track key={song.id} playlist={userTracks} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track}/>
                 ):null):(
                     <div className="empty-playlist">
                         <div className="playlist-song-empty">Your current playlist is empty</div>
