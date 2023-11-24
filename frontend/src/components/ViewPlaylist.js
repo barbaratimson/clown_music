@@ -10,10 +10,12 @@ import { changeCurrentSong } from '../store/trackSlice';
 import { changeCurrentPlaylist } from '../store/currentPlaylistSlice';
 import { changeCurrentPage } from '../store/currentPageSlice';
 import { changeModalState } from '../store/modalSlice';
+import {changeArtist} from "../store/artistSlice";
+import {changePlayerFolded} from "../store/playerFolded";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlaylist, audioElem,setPrevSong,setCurrentSongs}) => {
+const ViewPlaylist = ({viewedPlaylist, setViewedPlaylist, audioElem,setPrevSong,setCurrentSongs}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const setActive = (state) => dispatch(changeModalState(state))
@@ -21,7 +23,8 @@ const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlayl
     const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
-    const currentSong = useSelector(state => state.currentSong.currentSong) 
+    const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
+
 
     const fetchPlaylistSongs = async (userId,kind) => {
         setIsLoading(true)
@@ -110,7 +113,7 @@ const ViewPlaylist = ({setPlayerFolded,viewedPlaylist, setArtist, setViewedPlayl
                 </div>              
                   </div>
                   {isLoading ? (<Loader/>) : viewedPlaylist.tracks ? (viewedPlaylist.tracks.map((song)=>(
-                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track ? song.track : song} setPlayerFolded={setPlayerFolded}/>
+                                    <Track key={song.id} playlist={viewedPlaylist} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track ? song.track : song}/>
                 ))):null}
                
             </div>

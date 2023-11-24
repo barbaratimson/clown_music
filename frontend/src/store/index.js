@@ -7,6 +7,8 @@ import changeLikedSongs from "./likedSongsSlice";
 import changeModalState from "./modalSlice";
 import changeIsPlaying from "./isSongPlaylingSlice";
 import changeSongLoading from "./isSongLoadingSlice";
+import changeArtist from "./artistSlice";
+import changePlayerFolded from "./playerFolded";
 export default configureStore({
     reducer:{
         currentSong:changeCurrentSong,
@@ -16,6 +18,8 @@ export default configureStore({
         likedSongs:changeLikedSongs,
         modalActive:changeModalState,
         isplaying:changeIsPlaying,
-        isSongLoading:changeSongLoading
+        isSongLoading:changeSongLoading,
+        artist:changeArtist,
+        playerFolded:changePlayerFolded
     }
 });

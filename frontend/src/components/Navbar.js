@@ -21,6 +21,8 @@ import {IoIosWarning} from "react-icons/io";
 import {FaUser} from "react-icons/fa";
 import {FaKey} from "react-icons/fa6";
 import {LuEye, LuEyeOff} from "react-icons/lu";
+import {changePlayerFolded} from "../store/playerFolded";
+import {changeArtist} from "../store/artistSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -28,7 +30,7 @@ const header = localStorage.getItem("Authorization")
 
 const [localUserId,localAccessToken] = header ? header.split(":") : []
 
-const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong,artist,setArtist}) => {
+const Navbar = ({setViewedPlaylist, audioElem,setPrevSong}) => {
     const [search,setSearch] = useState('')
     const [searchResults,setSearchResults] = useState()
     const [showUserMenu,setShowUserMenu] = useState(false)
@@ -41,9 +43,15 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong,artist
     const [userAgreed, setUserAgreed] = useState(false)
     const active = useSelector(state => state.modalActive.modalActive)
     const dispatch = useDispatch();
-    const currentPage = useSelector(state => state.currentPage.currentPage)   
+    const currentPage = useSelector(state => state.currentPage.currentPage)
+
+    const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
+
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setActive = (state) => dispatch(changeModalState(state))
+
+    const setArtist = (state) => dispatch(changeArtist(state))
+    const artist = useSelector(state => state.artist.artist)
     const isplaying = useSelector(state => state.isplaying.isplaying)
 
     const input = useRef(null) 
@@ -141,11 +149,28 @@ const Navbar = ({setViewedPlaylist, setPlayerFolded,audioElem,setPrevSong,artist
     </div>
     <div className={`nav-search-results ${!search || searchFolded ? "hidden" : ""}`}>
         {!isLoading ? (
-                <>            
+                <>
+                    <div className="nav-search-line">Artists</div>
+                    {searchResults && searchResults.artists.results ? (searchResults?.artists.results.map(artist=>(
+                        <div className="playlist-song" key={artist.id} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>
+                            <div className='playlist-song-image'>
+                                <img src={artist.ogImage ? `http://${artist.ogImage.substring(0, artist.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
+                            </div>
+                            <div className='playlist-song-title'>
+                                {artist.name}
+                            </div>
+
+                        </div>
+                    ))):null}
+
+                    <div className="nav-search-line">Tracks</div>
+
                 {searchResults && searchResults.tracks ? (searchResults.tracks.results.map(song=>(
                 <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
                 ))):null}
-                
+
+                    <div className="nav-search-line">Albums</div>
+
                 {searchResults && searchResults.playlists ? (searchResults.playlists.results.map(playlist=>(
                     <div className="playlist-song" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}}>
                       <div className='playlist-song-image'>      

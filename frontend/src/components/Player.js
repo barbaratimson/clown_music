@@ -11,17 +11,20 @@ import { addTrackToLikedSongs, removeTrackFromLikedSongs } from '../store/likedS
 import { addTrackToCurrentSongs, removeTrackFromCurrentSongs } from '../store/currentSongsSlice';
 import {changeIsPlaying} from "../store/isSongPlaylingSlice";
 import {changeSongLoading} from "../store/isSongLoadingSlice";
+import {changeArtist} from "../store/artistSlice";
+import {changePlayerFolded} from "../store/playerFolded";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
 
-const Player = ({setArtist, setViewedPlaylist,setActive,  playerFolded, setPlayerFolded, children,prevSong, audioVolume, setAudioVolume, audioElem,setPrevSong})=> {
+const Player = ({setViewedPlaylist,setActive, children,prevSong, audioVolume, setAudioVolume, audioElem,setPrevSong})=> {
   const [playerRepeat,setPlayerRepeat] = useState(localStorage.getItem("playerRepeat") === "true")
   const [playerRandom,setPlayerRandom] = useState(localStorage.getItem("playerRandom") === "true")
   const [deviceType, setDeviceType] = useState("");
   const [similarTracks, setSimilarTracks] = useState("");
   const [buffered,setBuffered] = useState(0)
   const [position,setPosition] = useState(0)
+  const setArtist = (state) => dispatch(changeArtist(state))
 
   const isplaying = useSelector(state => state.isplaying.isplaying)
   const setisplaying = (state) => dispatch(changeIsPlaying(state))
@@ -34,6 +37,9 @@ const Player = ({setArtist, setViewedPlaylist,setActive,  playerFolded, setPlaye
   const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
   const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
   const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
+
+  const playerFolded = useSelector(state => state.playerFolded.playerFolded)
+  const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
   const removeTrackFromLiked = (song) => dispatch(removeTrackFromLikedSongs(song))
   const addTrackToLiked = (song) => dispatch(addTrackToLikedSongs(song))
   const addTrackToSongs = (song) => dispatch(addTrackToCurrentSongs(song))

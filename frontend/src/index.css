@@ -253,6 +253,18 @@ body{
     transition: all.4s;
     border-bottom: 1px solid white;
 }
+.nav-search-line{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #dddddd;
+    font-weight: 600;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+}
+
+
 
 .nav-search.folded {
     width: 0;

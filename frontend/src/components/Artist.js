@@ -2,17 +2,19 @@ import React, { useEffect,useState} from 'react';
 import axios from 'axios';
 import Track from './Track';
 import Loader from './Loader';
-import { useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { changeCurrentPage } from '../store/currentPageSlice';
 import { changeModalState } from '../store/modalSlice';
+import {changeArtist} from "../store/artistSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Artist = ({artist,setViewedPlaylist, audioElem,setPrevSong}) => {
+const Artist = ({setViewedPlaylist, audioElem,setPrevSong}) => {
   const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [artistResult,setArtistResult] = useState()
 
+  const artist = useSelector(state => state.artist.artist)
     const setCurrentPage = (playlist) => dispatch(changeCurrentPage(playlist))
     const setActive = (state) => dispatch(changeModalState(state))
 

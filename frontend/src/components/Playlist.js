@@ -14,7 +14,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 
 
 
-const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong}) => {
+const Playlist = ({audioElem, setPrevSong}) => {
   const dispatch = useDispatch();
 
   const [isTracksLoading,setIsTracksLoading] = useState()
@@ -26,7 +26,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong}) => {
   const setCurrentSong = (song) => dispatch(changeCurrentSong(song))
   const setIsSongLoading = (state) => dispatch(changeSongLoading(state))
 
-  useTraceUpdate({audioElem, setPlayerFolded, setArtist, setPrevSong,currentSongs,currentPlaylist,currentSong})
+  useTraceUpdate({audioElem, setPrevSong,currentSongs,currentPlaylist,currentSong})
     const fetchPlaylistSongs = async (userId,kind) => {
       setIsTracksLoading(true)
           try {
@@ -112,7 +112,7 @@ const Playlist = ({audioElem, setPlayerFolded, setArtist, setPrevSong}) => {
               <div className='playlist-songs-container'>
                 {console.log("Playlist rendered")}
                         {currentSongs && currentSongs.length !== 0 ? (currentSongs.map((song) => song?.available ? (
-                          <Track setArtist={setArtist} setPlayerFolded={setPlayerFolded} key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
+                          <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
             ):null
             )):(
                 <>
