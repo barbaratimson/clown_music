@@ -1,4 +1,4 @@
-![image](https://github.com/barbaratimson/clown_music/assets/51046717/35abcdea-b40f-4e7a-840c-62b0ee8934a2)There is can be a long desc about this app. But you can clone it and :
+There is can be a long desc about this app. But you can clone it and :
 in ./frintend npm start
 
 and in ./yandex_api_server npm start
