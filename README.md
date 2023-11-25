@@ -20,11 +20,19 @@ Player:
 Playlists:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/2079c7a5-a128-4300-9150-fbf3ad86fffb)
 
+View Playlist: 
+![image](https://github.com/barbaratimson/clown_music/assets/51046717/89c3a506-4e9f-4fb0-a8b0-50311eb0c21d)
+
 Added tracks:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/f1385793-c1c5-4eb1-835e-47578f30b9a8)
 
 Music chart:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/24aeed5c-8354-4ef9-a0d1-1f3baa208c3f)
+
+Artist View:
+![image](https://github.com/barbaratimson/clown_music/assets/51046717/f69b35da-3e03-427a-8fa0-a87eb13eb769)
+![image](https://github.com/barbaratimson/clown_music/assets/51046717/ec2e082e-e84e-488d-9994-9a009460f17c)
+
 
 Search: 
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/187d46b3-3606-470e-8c61-35236275817e)
