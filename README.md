@@ -11,6 +11,8 @@ after all this in top right corner click at the avatar and enter cridentials fro
 
  Some screenshots of tis app:
  
+ (All pages feature color changing background based on vibrant colors of track cover. Made with https://github.com/leonardokl/react-palette) 
+ 
  Main page:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/914f6037-5eea-4502-8da4-952018804aa7)
 
