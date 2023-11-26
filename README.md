@@ -20,7 +20,7 @@ Player:
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/a57ec222-780b-4d45-ad27-2b4f6fe64c9b)
 
 Playlists:
-![image](https://github.com/barbaratimson/clown_music/assets/51046717/2079c7a5-a128-4300-9150-fbf3ad86fffb)
+![image](https://github.com/barbaratimson/clown_music/assets/51046717/fe05b277-54bb-4e42-a796-042cdf517e87)
 
 View Playlist: 
 ![image](https://github.com/barbaratimson/clown_music/assets/51046717/89c3a506-4e9f-4fb0-a8b0-50311eb0c21d)
