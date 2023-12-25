@@ -13,6 +13,7 @@ import {changeIsPlaying} from "../store/isSongPlaylingSlice";
 import {changeSongLoading} from "../store/isSongLoadingSlice";
 import {changeArtist} from "../store/artistSlice";
 import {changePlayerFolded} from "../store/playerFolded";
+import {showMessage} from "../store/messageSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 let volumeMultiplier = 0.5
@@ -25,7 +26,7 @@ const Player = ({setViewedPlaylist,setActive, children,prevSong, audioVolume, se
   const [buffered,setBuffered] = useState(0)
   const [position,setPosition] = useState(0)
   const setArtist = (state) => dispatch(changeArtist(state))
-
+  const showMessageFunc = (message) => dispatch(showMessage(message))
   const isplaying = useSelector(state => state.isplaying.isplaying)
   const setisplaying = (state) => dispatch(changeIsPlaying(state))
 
@@ -148,7 +149,7 @@ const likeSong = async (song) => {
     const response = await axios.post(
       `${link}/ya/likeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
       handleLikeSong(song)
-      console.log("Track " ,song.title, " added to Liked." ," Revision: ",response.data)
+      showMessageFunc(`"${song.title}" added to Liked`)
       return response.data
   } catch (err) {
     console.error('Ошибка при получении списка треков:', err);
@@ -161,7 +162,7 @@ try {
   const response = await axios.post(
     `${link}/ya/dislikeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
     handleRemoveSong(song)
-    console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
+    showMessageFunc(`"${song.title}" removed from Liked`)
   return response.data
 } catch (err) {
   console.error('Ошибка при получении списка треков:', err);
@@ -315,7 +316,7 @@ const handleLikeSong = (song) =>  {
         <RiSkipForwardLine style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
       </div>
       
-      <div className={`player-image-section-folded ${!playerFolded ? "not-active" : ""} `}>
+      <div key={currentSong.id} className={`player-image-section-folded ${!playerFolded ? "not-active" : ""} `}>
       <div className={`image-folded`}>
       {isSongLoading ? (<div className='player-loader folded'><AiOutlineLoading className='spinner'/></div>):(null)}
       <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/100x100` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>

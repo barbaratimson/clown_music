@@ -13,6 +13,7 @@ import {changeIsPlaying} from "../store/isSongPlaylingSlice";
 import {changeSongLoading} from "../store/isSongLoadingSlice";
 import {changeArtist} from "../store/artistSlice";
 import {changePlayerFolded} from "../store/playerFolded";
+import {showMessage} from "../store/messageSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -22,8 +23,10 @@ const Track = ({children, audioElem, playlist,setPrevSong, song}) => {
   const [artistHover,setArtistHover] = useState(false)
     const isplaying = useSelector(state => state.isplaying.isplaying)
   const likedSongs = useSelector(state => state.likedSongs.likedSongs)
+    const [menuActive,setMenuActive] = useState(false)
   const setArtist = (state) => dispatch(changeArtist(state))
   const setPlayerFolded = (state) => dispatch(changePlayerFolded(state))
+    const showMessageFunc = (message) => dispatch(showMessage(message))
   const removeTrackFromSongs = (song) => dispatch(removeTrackFromCurrentSongs(song))
   const removeTrackFromLiked = (song) => dispatch(removeTrackFromLikedSongs(song))
   const addTrackToLiked = (song) => dispatch(addTrackToLikedSongs(song))
@@ -62,7 +65,7 @@ const Track = ({children, audioElem, playlist,setPrevSong, song}) => {
       const response = await axios.post(
         `${link}/ya/likeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
         handleLikeSong(song)
-        console.log("Track" ,song.title, "added to Liked." ," Revision: ",response.data)
+        showMessageFunc(`"${song.title}" added to Liked`)
         return response.data
     } catch (err) {
       console.error('Ошибка при получении списка треков:', err);
@@ -74,7 +77,7 @@ const dislikeSong = async (song) => {
   try {
     const response = await axios.post(
       `${link}/ya/dislikeTracks/${song.id}`,null,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-      console.log("Track" ,song.title, "removed from Liked." ," Revision: ",response.data)
+      showMessageFunc(`"${song.title}" removed from Liked`)
       handleRemoveSong(song)
     return response.data
   } catch (err) {
@@ -140,9 +143,14 @@ const dislikeSong = async (song) => {
                  <div className='playlist-song-duration'>
                     {millisToMinutesAndSeconds(song.durationMs)}
                  </div>
-                 <div className='playlist-song-menu-dots'>
+                 <div className='playlist-song-menu-dots' onMouseEnter={()=>{setMenuActive(true)}} onMouseLeave={()=>{setMenuActive(false)}}>
                   <BsThreeDotsVertical/>
                   </div>
+                  {menuActive ? (
+                  <div className="playlist-song-menu-container">
+                    <div className="playlist-song-menu">{song.title}</div>
+                  </div>
+                  ):null}
              </div>
         
     );

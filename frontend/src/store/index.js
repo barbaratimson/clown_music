@@ -9,6 +9,7 @@ import changeIsPlaying from "./isSongPlaylingSlice";
 import changeSongLoading from "./isSongLoadingSlice";
 import changeArtist from "./artistSlice";
 import changePlayerFolded from "./playerFolded";
+import showMessage from "./messageSlice";
 export default configureStore({
     reducer:{
         currentSong:changeCurrentSong,
@@ -20,6 +21,7 @@ export default configureStore({
         isplaying:changeIsPlaying,
         isSongLoading:changeSongLoading,
         artist:changeArtist,
-        playerFolded:changePlayerFolded
+        playerFolded:changePlayerFolded,
+        message: showMessage
     }
 });

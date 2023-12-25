@@ -20,6 +20,8 @@ import {changeIsPlaying} from "../store/isSongPlaylingSlice";
 import {changeSongLoading} from "../store/isSongLoadingSlice";
 import {changeArtist} from "../store/artistSlice";
 import {changePlayerFolded} from "../store/playerFolded";
+import {showMessage, hideMessage} from "../store/messageSlice";
+
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -30,10 +32,9 @@ const Main = () => {
     const [playlistDataYa,setPlaylistDataYa] = useState([])
     const [isLoading, setIsLoading] = useState(false);
     const setCurrentPlaylist = (playlist) => dispatch(changeCurrentPlaylist(playlist))
-
+    const showMessage = (message) => dispatch(showMessage(message))
     const setLikedSongs = (playlist) => dispatch(changeLikedSongs(playlist))
-    const likedSongs = useSelector(state => state.likedSongs.likedSongs)   
-
+    const likedSongs = useSelector(state => state.likedSongs.likedSongs)
     const [viewedPlaylist, setViewedPlaylist] = useState(prevPlaylist);
 
     const currentSong = useSelector(state => state.currentSong.currentSong)
@@ -165,12 +166,34 @@ const Main = () => {
         </div>
         <div className='second-image-filter'>
       </div>
-    
+            <Message/>
     </div>
 
 
     );
 
 };
+
+const Message = () => {
+    const dispatch = useDispatch();
+    const hideMessageFunc = () => dispatch(hideMessage())
+    const messageActive = useSelector(state => state.message.active)
+    const messageText = useSelector(state => state.message.message)
+
+    useEffect(()=>{
+        const a = setTimeout(()=>{
+            hideMessageFunc()
+        },2000)
+        return ()=>{clearTimeout(a)}
+    },[messageText])
+
+    return (
+        <>
+        {messageActive ? (
+                <div className="message">{messageText}</div>
+            ): null}
+        </>
+    )
+}
 
 export default Main;

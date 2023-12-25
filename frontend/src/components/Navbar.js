@@ -55,7 +55,9 @@ const Navbar = ({setViewedPlaylist, audioElem,setPrevSong}) => {
     const isplaying = useSelector(state => state.isplaying.isplaying)
 
     const input = useRef(null) 
-    const searchRef = useRef(null) 
+    const searchRef = useRef(null)
+    const userMenuRef = useRef(null)
+    const userMenuButton = useRef(null)
     const handleSearch = async () => {
         setIsLoading(true)
         if (search){
@@ -107,6 +109,18 @@ const Navbar = ({setViewedPlaylist, audioElem,setPrevSong}) => {
             document.removeEventListener("mousedown", handleClickOutside);
           };
         }, [searchRef,active]);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target) && !userMenuButton.current.contains(event.target)) {
+                setShowUserMenu(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [userMenuRef]);
 
         const closeArtistTab = (e) => {
             e.stopPropagation();
@@ -188,14 +202,14 @@ const Navbar = ({setViewedPlaylist, audioElem,setPrevSong}) => {
         
     </div>
     </div>
-    <div className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
+    <div ref={userMenuButton} className="nav-user" onClick={()=>{setShowUserMenu(!showUserMenu)}}>
         <div className="user-avatar">
             <img src="https://sun9-36.userapi.com/impg/KBThyRabdLXw6Km0CnJ4gQJKcR7iw5Uu8T6wpg/D0Bh4x-veqY.jpg?size=822x1024&quality=95&sign=8f9825c03df99a8adaa7b94c9d0639d5&type=album" alt=""></img>
         </div>
     </div>
-    <div className={`user-menu ${!showUserMenu? "hidden" : ""}`}>
+    <div ref={userMenuRef} className={`user-menu ${!showUserMenu? "hidden" : ""}`}>
         {userAgreed ? (
-            <>
+            <div>
                 <div className ="user-username">{userData.account?.displayName}</div>
                 <div className="user-menu-input-wrapper">
                     <div className="user-menu-input-icon" title="Yandex user ID"><FaUser /></div>
@@ -206,7 +220,7 @@ const Navbar = ({setViewedPlaylist, audioElem,setPrevSong}) => {
             <input className="user-menu-input" type={!showToken ? "password" : "text"} placeholder='Yandex Access token' onChange={(e)=>{setAccessToken(e.target.value)}} value={accessToken}></input>
                     <div className="user-menu-show-button" onClick={(()=>{setShowToken(!showToken)})}>{showToken? <LuEye /> : <LuEyeOff />}</div>
                 </div>
-            </>
+            </div>
         ):(
             <div className="user-menu-warning">
                 <div className="warning-image"><IoIosWarning/></div>

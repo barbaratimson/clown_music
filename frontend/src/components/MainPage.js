@@ -10,7 +10,7 @@ import { changeModalState } from '../store/modalSlice';
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Chart = ({setViewedPlaylist, audioElem,setPrevSong}) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [feed,setFeed] = useState()
     
     const dispatch = useDispatch();

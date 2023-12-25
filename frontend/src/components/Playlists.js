@@ -36,7 +36,7 @@ const Playlists = ({setActive ,setViewedPlaylist,}) => {
           <div className='playlists-title'>Your Playlists</div>
             {allPlaylists ? (
                 <div className="playlists">           
-                {allPlaylists.map((playlist) => playlist.available ? (
+                {allPlaylists.map((playlist) => playlist.title ? (
                   <div className="playlist-card" key={playlist.playlistUuid} onClick={()=>{setViewedPlaylist(playlist);setActive(true)}}>
                   <div className="playlist-card-image">
                   {/* <div className='playlist-play-button' onClick={()=>{setCurrentPlaylist(playlist);setPlayerFolded(false)}}><RiPlayLine/></div> */}
