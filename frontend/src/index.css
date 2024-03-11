@@ -24,18 +24,18 @@
     }
 }
 
-@keyframes bubble-out {
-    0%{
-        scale: 1;
-    }
-    50%{
-        scale: 0.9;
-    }
-    100%{
-        scale: 1;
-    }
+    @keyframes bubble-out {
+        0%{
+            scale: 1;
+        }
+        50%{
+            scale: 0.9;
+        }
+        100%{
+            scale: 1;
+        }
 
-}
+    }
 
 
 
@@ -889,7 +889,7 @@ body{
         display:flex;
         justify-content:center;
         align-items:center;
-        font-size: 100px;
+        font-size: 60px;
         animation: opacity .4s ease-in-out;
     }
     .player-loader.folded {
@@ -967,7 +967,6 @@ body{
             background-color: rgb(255, 255, 255);
             transition: all .4s;
         }
-
         .buffer-bar{
             width: 0;
             height: 100%;
@@ -1004,6 +1003,7 @@ body{
 
         .pp
         {
+            animation: opacity .2s;
             font-size: 2.5rem;
             
         }
@@ -1569,16 +1569,6 @@ body{
 
 
 
-
-@media screen and (max-width:920px) {
-    .nav-search-wrapper {
-        display: none;
-    }
-
-    .logo {
-        flex-grow: 1;
-    }
-}
 
 @media screen and (max-width:480px) {
     body {

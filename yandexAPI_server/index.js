@@ -53,6 +53,7 @@ let getPlaylists = async (id,userId,accessToken) => {
   }
 };
 
+
 let getLikedTracks = async (userId,accessToken) => {
   try {
     const api = new YMApi();
@@ -226,9 +227,6 @@ app.get('/ya/playlist/tracks/:kind/:userId', checkToken , async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
   let tracks = await getPlaylistTracks(kind,userId,req.userId,req.accessToken)
-  if (tracks){
-  tracks = tracks.tracks.map((song)=>song.track)
-  }
   res.json(tracks)
 })
 

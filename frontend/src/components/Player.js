@@ -323,7 +323,7 @@ const handleLikeSong = (song) =>  {
       </div>
       <div className={`player-track-info-folded`}>
         <div className='player-track-title-folded'>{currentSong.title} </div>
-        <div className='player-track-artists'>
+        <div className='player-track-artists'>ё
         {currentSong.artists ? currentSong.artists.map(artist=>(
            <div className='player-track-artists-folded' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
         )):null}
