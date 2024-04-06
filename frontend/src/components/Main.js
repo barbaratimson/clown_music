@@ -21,6 +21,7 @@ import {changeSongLoading} from "../store/isSongLoadingSlice";
 import {changeArtist} from "../store/artistSlice";
 import {changePlayerFolded} from "../store/playerFolded";
 import {showMessage, hideMessage} from "../store/messageSlice";
+import NavbarNew from "./NavbarNew";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -108,7 +109,7 @@ const Main = () => {
 ):(null)}
 
           
-          <Navbar  setActive={setActive} setViewedPlaylist={setViewedPlaylist}
+          <NavbarNew  setActive={setActive} setViewedPlaylist={setViewedPlaylist}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                  audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
