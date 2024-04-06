@@ -180,6 +180,18 @@ let getArtist = async (artist,userId,accessToken) => {
   }
 };
 
+let getArtistById = async (artistId,userId,accessToken) => {
+  try {
+    const api = new YMApi();
+    await api.init({ uid:userId,access_token:accessToken});
+    console.log(artistId)
+    const result = await api.getArtist(artistId);
+    return result
+  } catch (e) {
+    console.log(`api error ${e}`);
+  }
+};
+
 let getAlbumTracks = async (album,userId,accessToken) => {
   try {
     const api = new YMApi();
@@ -226,9 +238,9 @@ app.get('/ya/playlist/tracks/:kind/:userId', checkToken , async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
   let tracks = await getPlaylistTracks(kind,userId,req.userId,req.accessToken)
-  if (tracks){
-  tracks = tracks.tracks.map((song)=>song.track)
-  }
+  // if (tracks){
+  // tracks = tracks.tracks.map((song)=>song.track)
+  // }
   res.json(tracks)
 })
 
@@ -276,6 +288,13 @@ app.get('/ya/search/artists/:query', checkToken , async (req,res)=>{
 app.get('/ya/artists/:artist', checkToken , async (req,res)=>{
   let artist = req.params.artist
   let result = await getArtist(artist,req.userId,req.accessToken)
+  res.json(result)
+})
+
+app.get('/ya/artist/:artist', checkToken , async (req,res)=>{
+  let artist = req.params.artist
+  console.log(artist)
+  let result = await getArtistById(artist,req.userId,req.accessToken)
   res.json(result)
 })
 

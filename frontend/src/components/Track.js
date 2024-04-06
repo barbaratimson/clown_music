@@ -122,10 +122,10 @@ const dislikeSong = async (song) => {
                  <div className='playlist-song-image'>
                  <img src={song.ogImage ? `http://${song.ogImage.substring(0, song.ogImage.lastIndexOf('/'))}/50x50` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt=""></img>
                  </div>
-                 <div className='playlist-song-title'>
-                  <div className='playlist-song-title-title'>{song.title}</div>
-                  
-                  <div className='player-track-artists'>
+                  <div className='playlist-song-title'>
+                      <div className='playlist-song-title-title'>{song.title}</div>
+
+                      <div className='player-track-artists'>
         {song.artists ? song.artists.map(artist=>(
            <div className='playlist-song-title-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true);setActive(false)}}  onMouseEnter={()=>{setArtistHover(true)}} onMouseLeave={()=>{setArtistHover(false)}}>{artist.name}</div>
         )):null}
