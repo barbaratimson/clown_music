@@ -239,12 +239,6 @@ app.get('/ya/playlist/tracks/:kind/:userId', checkToken , async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
   let tracks = await getPlaylistTracks(kind,userId,req.userId,req.accessToken)
-<<<<<<< HEAD
-  // if (tracks){
-  // tracks = tracks.tracks.map((song)=>song.track)
-  // }
-=======
->>>>>>> 02c59b8b9cd1ec416729dd94cc3eed69eef61483
   res.json(tracks)
 })
 
