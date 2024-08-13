@@ -5,7 +5,7 @@ import {} from 'dotenv/config'
 
 const app = express()
 
-// app.use(cors())
+app.use(cors())
 
 const checkToken = (req,res,next) => {
     const authHeader = req.header('Authorization')
