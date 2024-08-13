@@ -17,6 +17,5 @@
     "express": "^4.18.2",
     "nodemon": "^3.0.1",
     "yandex-music-client": "^0.4.3",
-    //"ym-api": "^1.2.1"
   }
 }
