@@ -32,7 +32,7 @@
             try {
               const response = await axios.get(
                 `${link}/ya/playlist/tracks/${userId}/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-                setCurrentSongs(response.data)
+                setCurrentSongs(response.data.tracks)
                 setIsTracksLoading(false)
             } catch (err) {
               console.error('Ошибка при получении списка треков:', err);
@@ -110,9 +110,8 @@
 
       return (
                 <div className='playlist-songs-container'>
-                  {console.log("Playlist rendered")}
-                          {currentSongs && currentSongs.length !== 0 ? (currentSongs.map((song) => song?.available ? (
-                            <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song}></Track>
+                          {currentSongs && currentSongs.length !== 0 ? (currentSongs.map((song) => song?.track.available ? (
+                            <Track key={song.id} setPrevSong={setPrevSong} audioElem={audioElem} song = {song.track}></Track>
               ):null
               )):(
                   <>

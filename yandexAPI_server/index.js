@@ -71,7 +71,9 @@ let getTrackLink = async (id,userId,accessToken) => {
     const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
+    console.log(info)
     info = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
+
     const link = await api.getTrackDirectLink(info.downloadInfoUrl);
     if (link){
     return link
@@ -205,6 +207,31 @@ let getAlbumTracks = async (album,userId,accessToken) => {
   }
 };
 
+const createPlaylist = async (userId,accessToken,name, visibility) => {
+  const api = new YMApi();
+  await api.init({ uid:userId,access_token:accessToken });
+  return api.createPlaylist(name, {visibility:visibility})
+}
+
+const deletePlaylist = async (userId,accessToken,playlistId) => {
+  const api = new YMApi();
+  await api.init({ uid:userId,access_token:accessToken });
+  return api.removePlaylist(playlistId)
+}
+
+const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks) => {
+  const api = new YMApi();
+  await api.init({ uid:userId,access_token:accessToken });
+  return api.addTracksToPlaylist(playlistId,tracks)
+}
+
+
+
+
+
+
+// -------------------- ROUTES --------------------
+
 app.get('/ya/user', checkToken ,async (req,res) =>{
   const api = new YMApi();
   await api.init({ uid:req.userId,access_token:req.accessToken });
@@ -239,12 +266,6 @@ app.get('/ya/playlist/tracks/:kind/:userId', checkToken , async (req,res)=>{
   let userId = req.params.userId
   let kind = req.params.kind
   let tracks = await getPlaylistTracks(kind,userId,req.userId,req.accessToken)
-<<<<<<< HEAD
-  // if (tracks){
-  // tracks = tracks.tracks.map((song)=>song.track)
-  // }
-=======
->>>>>>> 02c59b8b9cd1ec416729dd94cc3eed69eef61483
   res.json(tracks)
 })
 
@@ -323,6 +344,27 @@ app.post('/ya/dislikeTracks/:track', checkToken , async (req,res)=>{
 
 app.get('/ya/chart', async (req,res)=>{
   let result = await getChart("russia")
+  res.json(result)
+})
+
+app.get('/ya/playlist/create', checkToken , async (req,res)=>{
+  let name = req.query.name
+  let visibility = req.query.visibility
+  console.log(visibility)
+  let result = await createPlaylist(req.userId,req.accessToken, name, visibility)
+  res.json(result)
+})
+
+app.get('/ya/playlist/:playlistId/remove', checkToken , async (req,res)=>{
+  const id = req.params.playlistId
+  let result = await deletePlaylist(req.userId,req.accessToken, id)
+  res.json(result)
+})
+
+app.get('/ya/playlist/:playlistId/add', checkToken , async (req,res)=>{
+  let id = req.params.playlistId
+  let tracks = req.query.tracks
+  let result = await deletePlaylist(req.userId,req.accessToken, id, tracks)
   res.json(result)
 })
 

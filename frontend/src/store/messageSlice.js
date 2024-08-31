@@ -12,7 +12,6 @@ const messageSlice = createSlice({
             state.active = true
         },
         hideMessage(state, action) {
-            state.message = ""
             state.active = false
         }
     }

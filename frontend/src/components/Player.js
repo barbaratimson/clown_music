@@ -71,7 +71,7 @@ const Player = ({
     const ChangeVolume = (e) => {
         let volume = parseFloat(e.target.value / 100)
         setAudioVolume(volume)
-        localStorage.setItem("player_volume", volume)
+        localStorage.setItem("player_volume_old", volume)
     }
 
     const checkWidth = (e) => {
@@ -296,7 +296,6 @@ const Player = ({
     }, [playerRepeat])
 
 
-<<<<<<< HEAD
     return (
         <div>
             <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
@@ -375,51 +374,6 @@ const Player = ({
                             {/* <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div> */}
                         </div>
                         {/* <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
-=======
-  return (
-    <div>
-    <div className={`${playerFolded ? "player-folded" : "player"} ${isplaying ? "active" : ""}`}>
-      <div className={`player-image-section ${playerFolded ? "folded" : ""}`}>
-      <div key={currentSong.id} className={`image`}>
-      {isSongLoading ? (<div className='player-loader'><AiOutlineLoading className='spinner'/></div>):null}
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/200x200` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
-      </div>
-      <div className={`player-track-info`}>
-      <div className='player-current-playlist'>
-        <div>Currently playing:</div>
-        <div className='player-current-playlist-title' onClick={()=>{setViewedPlaylist(currentPlaylist);setActive(true)}}>{currentPlaylist.title}</div>
-        </div>
-        <div key={currentSong.title} className='player-track-title'>{currentSong.title} </div>
-        <div key={currentSong.id} className='player-track-artists animate'>
-        {currentSong.artists ? currentSong.artists.map(artist=>(
-           <div className='player-track-artist' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
-        )):null}
-      </div>
-        </div>
-      </div>
-            <div className={`player-controls-section  ${playerFolded ? "folded" : ""}`}> 
-      <div className={`controls ${playerFolded ? "folded" : ""}`}>
-        <RiSkipBackLine style = {{display:`${currentSongs ? "flex" : "none"}`}} className='btn_action' onClick={skipBack}/>
-        {isplaying ? <RiPauseFill className='btn_action pp' onClick={()=>{audioElem.current.pause()}}/> : <RiPlayLine className='btn_action pp' onClick={()=>{audioElem.current.play()}}/>}
-        <RiSkipForwardLine style = {{display:`${currentSongs  ? "flex" : "none"}`}} className='btn_action' onClick={skiptoNext}/>  
-      </div>
-      
-      <div key={currentSong.id} className={`player-image-section-folded ${!playerFolded ? "not-active" : ""} `}>
-      <div className={`image-folded`}>
-      {isSongLoading ? (<div className='player-loader folded'><AiOutlineLoading className='spinner'/></div>):(null)}
-      <img src={currentSong.ogImage ? `http://${currentSong.ogImage.substring(0, currentSong.ogImage.lastIndexOf('/'))}/100x100` : "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_like.png"} loading= "lazy" alt="" onClick={()=>{!isplaying ? audioElem.current.play() : audioElem.current.pause()}}></img>
-      </div>
-      <div className={`player-track-info-folded`}>
-        <div className='player-track-title-folded'>{currentSong.title} </div>
-        <div className='player-track-artists'>ё
-        {currentSong.artists ? currentSong.artists.map(artist=>(
-           <div className='player-track-artists-folded' key={artist.name} onClick={()=>{setArtist(artist.name);setCurrentPage("artists");setPlayerFolded(true)}}>{artist.name}</div>
-        )):null}
-      </div>
-        {/* <div className='player-track-artists-folded' onClick={()=>{setArtist(currentSong.artists[0].name);setCurrentPage("artists")}}>{currentSong.artists && currentSong.artists.length !== 0 ? currentSong.artists[0].name :  ""}</div> */}
-      </div>
-      {/* <div className='player-show-full' onClick={()=>{setPlayerFolded(false)}}>
->>>>>>> 02c59b8b9cd1ec416729dd94cc3eed69eef61483
           <RiPlayList2Fill/>
       </div> */}
                     </div>

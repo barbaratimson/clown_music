@@ -21,13 +21,12 @@ import {changeSongLoading} from "../store/isSongLoadingSlice";
 import {changeArtist} from "../store/artistSlice";
 import {changePlayerFolded} from "../store/playerFolded";
 import {showMessage, hideMessage} from "../store/messageSlice";
-import NavbarNew from "./NavbarNew";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     let prevPlaylist = JSON.parse(localStorage.getItem("prevPlaylist"))  
-    let volume = localStorage.getItem("player_volume")
+    let volume = localStorage.getItem("player_volume_old")
     const dispatch = useDispatch();
     const [playlistData,setPlaylistData] = useState([])
     const [playlistDataYa,setPlaylistDataYa] = useState([])
@@ -46,7 +45,7 @@ const Main = () => {
     const active = useSelector(state => state.modalActive.modalActive)
     const setActive = (state) => dispatch(changeModalState(state))
 
-    const [audioVolume,setAudioVolume] = useState(volume ? volume : 0.5);
+    const [audioVolume,setAudioVolume] = useState(volume ? volume : 0);
     const [prevSong,setPrevSong]= useState({})
 
     const playerFolded = useSelector(state => state.playerFolded.playerFolded)
@@ -109,7 +108,7 @@ const Main = () => {
 ):(null)}
 
           
-          <NavbarNew  setActive={setActive} setViewedPlaylist={setViewedPlaylist}
+          <Navbar  setActive={setActive} setViewedPlaylist={setViewedPlaylist}
              playlistData = {playlistData} setPlaylistDataYa = {setPlaylistDataYa}
                  audioElem={audioElem}
                  prevSong = {prevSong} setPrevSong={setPrevSong}
