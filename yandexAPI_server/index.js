@@ -219,10 +219,10 @@ const deletePlaylist = async (userId,accessToken,playlistId) => {
   return api.removePlaylist(playlistId)
 }
 
-const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks) => {
+const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks,revision) => {
   const api = new YMApi();
   await api.init({ uid:userId,access_token:accessToken });
-  return api.addTracksToPlaylist(playlistId,tracks)
+  return api.addTracksToPlaylist(playlistId,tracks,revision)
 }
 
 
@@ -364,7 +364,8 @@ app.get('/ya/playlist/:playlistId/remove', checkToken , async (req,res)=>{
 app.get('/ya/playlist/:playlistId/add', checkToken , async (req,res)=>{
   let id = req.params.playlistId
   let tracks = req.query.tracks
-  let result = await deletePlaylist(req.userId,req.accessToken, id, tracks)
+  let revision = req.query.revision
+  let result = await addTrackToPlaylist(req.userId,req.accessToken, id, tracks, revision)
   res.json(result)
 })
 
