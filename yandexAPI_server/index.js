@@ -42,11 +42,12 @@ let getFeed = async (userId,accessToken) => {
 };
 
 
-let getPlaylists = async (id,userId,accessToken) => {
+let getPlaylists = async (userId,accessToken) => {
   try {
     const api = new YMApi();
-    await api.init({ uid:userId,access_token:accessToken});
-    let result = await api.getUserPlaylists(id);
+    await api.init({ uid:userId, access_token:accessToken});
+    console.log({ uid:userId,accessToken:accessToken})
+    let result = await api.getUserPlaylists(userId);
     return result
   } catch (e) {
     console.log(`api error ${e.message}`);
@@ -234,7 +235,7 @@ const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks,revision)
 
 app.get('/ya/user', checkToken ,async (req,res) =>{
   const api = new YMApi();
-  await api.init({ uid:req.userId,access_token:req.accessToken });
+  await api.init({ uid:"xui",access_token:req.accessToken });
   let track = await api.getAccountStatus()
   res.json(track)
 })
