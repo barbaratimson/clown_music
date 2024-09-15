@@ -344,8 +344,8 @@ app.post('/ya/dislikeTracks/:track', checkToken , async (req,res)=>{
   res.json(result)
 })
 
-app.get('/ya/chart', async (req,res)=>{
-  let result = await getChart("russia")
+app.get('/ya/chart', checkToken, async (req,res)=>{
+  let result = await getChart("russia", req.uderId, req.accessToken)
   res.json(result)
 })
 
