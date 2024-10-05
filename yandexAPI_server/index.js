@@ -2,6 +2,18 @@ import { YMApi, WrappedYMApi } from "ym-api";
 import express from 'express'
 import cors from 'cors'
 import {} from 'dotenv/config'
+import https from 'https'
+import http from 'http'
+import fs from 'fs'
+
+
+var options = {
+  key: fs.readFileSync('cert/certificate.key'),
+  cert: fs.readFileSync('cert/certificate.crt')
+};
+
+
+// Create an HTTPS service identical to the HTTP service.
 
 const app = express()
 
@@ -371,6 +383,11 @@ app.get('/ya/playlist/:playlistId/add', checkToken , async (req,res)=>{
   res.json(result)
 })
 
-app.listen(process.env.PORT, function() {
+http.createServer(app).listen(process.env.PORT-1, function() {
+  console.log(`[NodeJS] Application Listening on Port ${process.env.PORT-1}`);
+});
+
+
+https.createServer(options, app).listen(process.env.PORT, function() {
   console.log(`[NodeJS] Application Listening on Port ${process.env.PORT}`);
 });
