@@ -234,7 +234,7 @@ const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks,revision)
 // -------------------- ROUTES --------------------
 
 app.get('/ya/user', async (req,res) =>{
-  const accessHeader = req.header('Authorization').split(":")[1]
+  const accessHeader = req.header('Authorization')?.split(":")[1]
   const api = new YMApi();
   await api.init({ uid:"xui", access_token:accessHeader });
   let track = await api.getAccountStatus()
