@@ -69,16 +69,21 @@ let getLikedTracks = async (userId,accessToken) => {
 
 let getTrackLink = async (id,userId,accessToken) => {
   try {
+    let link = ""
     const api = new YMApi();
     await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
     console.log(info)
-    info = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
-
-    const link = await api.getTrackDirectLink(info.downloadInfoUrl);
-    if (link){
-    return link
+    const infoBest = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
+    if (infoBest) {
+      link = await api.getTrackDirectLink(infoBest.downloadInfoUrl);
+    } else {
+      const infoSecond = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 64)
+      link = await api.getTrackDirectLink(infoSecond.downloadInfoUrl);
     }
+      if (link){
+        return link
+      }
   } catch (e) {
     console.log(`api error ${e.message}`);
   }
