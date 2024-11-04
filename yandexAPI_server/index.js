@@ -74,7 +74,7 @@ let getTrackLink = async (id,userId,accessToken) => {
     await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
     console.log(info)
-    const infoBest = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128)
+    const infoBest = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128 || elem.codec === 'aac' && elem.bitrateInKbps === 64 )
     if (infoBest) {
       link = await api.getTrackDirectLink(infoBest.downloadInfoUrl);
     } else {
