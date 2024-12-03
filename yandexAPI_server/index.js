@@ -73,12 +73,20 @@ let getTrackLink = async (id,userId,accessToken) => {
     await api.init({ uid:userId,access_token:accessToken});
     let info = await api.getTrackDownloadInfo(`${id}`);
     console.log(info)
-    const infoBest = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128 || elem.codec === 'aac' && elem.bitrateInKbps === 64 )
+    const infoBest = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 192 || elem.codec === 'mp3' && elem.bitrateInKbps === 192 )
     if (infoBest) {
       link = await api.getTrackDirectLink(infoBest.downloadInfoUrl);
+        console.log("Chosen quality: " + infoBest.codec + " " + infoBest.bitrateInKbps)
     } else {
-      const infoSecond = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 64)
-      link = await api.getTrackDirectLink(infoSecond.downloadInfoUrl);
+      const infoSecond = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 128 || elem.codec === "mp3" && elem.bitrateInKbps === 128)
+      if (infoSecond) {
+          console.log("Chosen quality: " + infoSecond.codec + " " + infoSecond.bitrateInKbps)
+          link = await api.getTrackDirectLink(infoSecond.downloadInfoUrl);
+      } else {
+          const infoThird = info.find(elem => elem.codec === 'aac' && elem.bitrateInKbps === 64 || elem.codec === "mp3" && elem.bitrateInKbps === 64)
+          link = await api.getTrackDirectLink(infoSecond.downloadInfoUrl);
+          console.log("Chosen quality: " + infoThird.codec + " " + infoThird.bitrateInKbps)
+      }
     }
       if (link){
         return link
