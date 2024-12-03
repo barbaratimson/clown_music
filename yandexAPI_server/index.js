@@ -1,7 +1,7 @@
-import { YMApi, WrappedYMApi } from "ym-api";
-import express from 'express'
-import cors from 'cors'
-import {} from 'dotenv/config'
+const {YMApi} = require("ym-api");
+const express = require('express')
+const cors = require('cors')
+const {} = require('dotenv/config')
 
 const app = express()
 
@@ -46,7 +46,6 @@ let getPlaylists = async (userId,accessToken) => {
   try {
     const api = new YMApi();
     await api.init({ uid:userId, access_token:accessToken});
-    console.log({ uid:userId,accessToken:accessToken})
     let result = await api.getUserPlaylists(userId);
     return result
   } catch (e) {
@@ -239,7 +238,8 @@ const addTrackToPlaylist = async (userId,accessToken,playlistId,tracks,revision)
 // -------------------- ROUTES --------------------
 
 app.get('/ya/user', async (req,res) =>{
-  const accessHeader = req.header('Authorization')?.split(":")[1]
+  const accessHeader = req.header('Authorization').split(":")[1]
+  if (!accessHeader) res.json({message:"No Auth header provided"})
   const api = new YMApi();
   await api.init({ uid:"xui", access_token:accessHeader });
   let track = await api.getAccountStatus()
